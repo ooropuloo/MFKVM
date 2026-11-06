@@ -133,7 +133,7 @@ The `sdkconfig` diff is only the four new options. So the round panel's code is 
 
 ## Phase E: ATX fixes
 
-`patches/0002` is the same change as v2's: a press in flight no longer survives `esp_restart` or a panic, a reset with no warning is released right after `kvm_log_init` in `app_main`, a released button output no longer keeps a pull-up, and the idle level is set before the output is enabled. Reasons, evidence, what stays exposed and the measurement plan are in `lay-board/firmware/BUILD_v2.md`, under "ATX on by default". `atx_enable` is unchanged here: it defaults to 0 and needs the console.
+`patches/0002` is the same change as v2's: a press in flight no longer survives `esp_restart` or a panic, a reset with no warning is released right after `kvm_log_init` in `app_main`, a released button output no longer keeps a pull-up, and the idle level is set before the output is enabled. Reasons, evidence, what stays exposed and the measurement plan are in `lay-board/firmware/BUILD_v2.md`, under "Once ATX is on". `atx_enable` is unchanged here: it defaults to 0 and needs the console.
 
 On v3's GPIO 28 and 29, function 0 is plain GPIO, not JTAG (`io_mux_reg.h:324,331`), so the MTDO question from v2 does not apply. Only a scope can show what these pins do across a reset. `kvm_atx` has no test harness in the repo, so this was not run in any test.
 

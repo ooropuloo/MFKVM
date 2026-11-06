@@ -1,8 +1,8 @@
 # P4 KVM Mini, ESP-KVM board overlay, starts from boards/moduledevkit_p4.defaults and boards/moduledevkit_p4_rev3.defaults.
 #
 # Compile checked on ESP-KVM 0893eef with patches/0001, not run on hardware. See BUILD_v2.md.
-# Without that patch the three *_DEFAULT options below are ignored silently and the panel and ATX stay off.
-#   idf.py -B build.v2r5_rev3 -D SDKCONFIG=build.v2r5_rev3/sdkconfig -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;boards/moduledevkit_p4.defaults;boards/moduledevkit_p4_rev3.defaults;boards/p4_kvm_mini.defaults" build
+# Without that patch the *_DEFAULT options below are ignored silently and the panel stays off.
+#   idf.py -B build.v2r7_rev3 -D SDKCONFIG=build.v2r7_rev3/sdkconfig -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;boards/moduledevkit_p4.defaults;boards/moduledevkit_p4_rev3.defaults;boards/p4_kvm_mini.defaults" build
 # For a module with a chip older than rev 3.0: the same, without boards/moduledevkit_p4_rev3.defaults. An image runs on one family only.
 # An existing sdkconfig beats this file with no warning. After changing it, start from a new build directory.
 #
@@ -22,8 +22,8 @@ CONFIG_KVM_DISP_SCLK_GPIO=10
 CONFIG_KVM_DISP_CS_GPIO=11
 CONFIG_KVM_DISP_DC_GPIO=12
 CONFIG_KVM_DISP_RST_GPIO=13
-# ATX on J4, on at first boot: the optocouplers are on the board, and the outputs idle low, released. atx_active_high stays 1, which is how R52 and R53 drive them. These bank pins stay at 3.3 V whatever LDO channel 4 is set to.
-CONFIG_KVM_ATX_ENABLE_DEFAULT=1
+# ATX on J4, off at first boot: firmware leaves GPIO 4, 5 and 2 alone until atx_enable is turned on in the console (Settings, Power, ATX wiring). A scope decides whether this default ever changes, see BUILD_v2.md. The pins stay configured so that switch is all it takes. atx_active_high stays 1, which is how R52 and R53 drive them. These bank pins stay at 3.3 V whatever LDO channel 4 is set to.
+CONFIG_KVM_ATX_ENABLE_DEFAULT=0
 CONFIG_KVM_ENABLE_ATX=y
 CONFIG_KVM_ATX_PWR_GPIO=4
 CONFIG_KVM_ATX_RST_GPIO=5

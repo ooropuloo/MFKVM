@@ -107,7 +107,7 @@ U10、U11、U12 的 1 腳方向在 `fab_r5/opto_pin1_check.png`。
 設定在 `firmware/p4_kvm_mini.defaults`，要搭配 `firmware/patches/0001-*.patch`，建置紀錄見 `firmware/BUILD_v2.md`。**兩個版本都編譯過，沒有燒錄、沒有實機跑過**，所以下面寫的開機行為都來自讀程式碼。
 
 - **第一次開機（依程式碼）：** 沒有 NVS 設定時，板子開自己的熱點 ESP-KVM-xxxx，密碼第一次隨機產生，圓形螢幕（GC9A01）顯示加入 QR，console 在 `http://192.168.4.1/`。
-- **ATX 預設開啟：** GPIO4、5 平時輸出低電位，不按鍵；只有在 console 按下才動作。J4 接到主機前面板後，**console 從第一次開機就能按主機電源**。登入預設是 admin / admin，第一次要求改密碼。
+- **ATX 預設關閉：** 韌體不碰 GPIO4、5、2，console 也不會出現電源和重置按鍵。要用 ATX：接好 J4，到 web console 的 Settings → Power → ATX wiring 打開 **Enable ATX control**，不用重開機；腳位已經設好，不用再選。打開之後 GPIO4、5 平時輸出低電位，只有在 console 按下才動作。登入預設是 admin / admin，第一次要求改密碼。示波器量過之後才決定要不要改成預設開啟，量測計畫見 `firmware/BUILD_v2.md`。
 - **更新：** `CONFIG_KVM_UPDATE_URL` 是空的，因為官方 DEV-KIT 映像沒有這塊板的腳位。manifest 更新路徑因此關閉，但**還有三條路可以裝到錯的映像**：開啟 `fw_fetch` 可以從 console 裝 GitHub 上的版本、可以手動上傳 `.bin`、NVS 已存的 `upd_url` 會蓋過空預設。不要對這塊板用這三條路裝官方映像。
 - **重新編譯：** 既有的 `sdkconfig` 會蓋過 defaults，而且不會警告。改了 defaults 一定要用新的 build 目錄。
 - **晶片版本：** rev 3 和舊版映像互斥。收到模組先用 esptool 讀晶片版本，再決定燒哪一個。

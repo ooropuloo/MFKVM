@@ -44,8 +44,8 @@ git clone --recurse-submodules https://github.com/espkvm/espkvm off-the-shelf\fi
 git -C off-the-shelf\firmware\espkvm checkout -b mf-v2-defaults 0893eef
 git -C off-the-shelf\firmware\espkvm am <repo 絕對路徑>\lay-board\firmware\patches\0001-Add-Kconfig-defaults-for-disp_enable-disp_type-and-a.patch <repo 絕對路徑>\lay-board\firmware\patches\0002-ATX-never-leave-a-button-pressed-across-a-reset-or-f.patch
 copy lay-board\firmware\p4_kvm_mini.defaults off-the-shelf\firmware\espkvm\boards\
-pwsh -File lay-board\firmware\build_v2.ps1 -Name v2r6_rev3 -Rev3     # 或 -Name v2r6_pre3
-python lay-board\firmware\check_v2_build.py off-the-shelf\firmware\espkvm\build.v2r6_rev3 lay-board\firmware\p4_kvm_mini.defaults
+pwsh -File lay-board\firmware\build_v2.ps1 -Name v2r7_rev3 -Rev3     # 或 -Name v2r7_pre3
+python lay-board\firmware\check_v2_build.py off-the-shelf\firmware\espkvm\build.v2r7_rev3 lay-board\firmware\p4_kvm_mini.defaults
 ```
 
 ESP-IDF 路徑用環境變數 `MFKVM_IDF_PATH`、`MFKVM_IDF_TOOLS_PATH`、`MFKVM_PYTHON_DIR` 覆寫，說明在 `off-the-shelf/firmware/scripts/idf_env.ps1`。
@@ -155,7 +155,7 @@ U10、U11、U12 的 1 腳方向在 `fab_r5/opto_pin1_check.png`。
 設定在 `firmware/p4_kvm_mini.defaults`，要搭配 `firmware/patches/` 的 0001 和 0002，建置紀錄見 `firmware/BUILD_v2.md`。**兩個版本都編譯過，沒有燒錄、沒有實機跑過**，所以下面寫的開機行為都來自讀程式碼。
 
 - **第一次開機（依程式碼）：** 沒有 NVS 設定時，板子開自己的熱點 ESP-KVM-xxxx，密碼第一次隨機產生，圓形螢幕（GC9A01）顯示加入 QR，console 在 `http://192.168.4.1/`。
-- **ATX（`atx_enable`）：** 第一次開機的預設值和它的風險，以 `firmware/BUILD_v2.md` 為準，這份 README 不寫預設值，以免過時。按鍵輸出平時不按，只有在 console 按下才動作。ATX 開啟後，J4 接到主機前面板，console 就能按主機電源和重置。console 登入預設是 admin / admin，第一次要求改密碼，接上網路前先改掉。
+- **ATX（`atx_enable`）：** 第一次開機的預設值、怎麼打開、風險，都以 `firmware/BUILD_v2.md` 為準，這份 README 不重複。ATX 打開之後，按鍵輸出平時不按，只有在 console 按下才動作，J4 接到主機前面板，console 就能按主機電源和重置。console 登入預設是 admin / admin，第一次要求改密碼，打開 ATX 前先改掉。
 - **ATX 重開機安全（`patches/0002`，只編譯過）：** 按鍵途中 `esp_restart` 或 panic 時會先放開，沒有預警的重置則在下次進 `app_main` 時放開；放開後不再留上拉電阻；設定輸出時先設好不按的電位。**還沒解決：** 晶片重置到韌體設定腳位之間，韌體管不到；沒有預警的重置，放開前還要經過 ROM 和 bootloader。只有示波器能確認，量測計畫見 `firmware/BUILD_v2.md`。
 - **更新：** `CONFIG_KVM_UPDATE_URL` 是空的，因為官方 DEV-KIT 映像沒有這塊板的腳位。manifest 更新路徑因此關閉，但**還有三條路可以裝到錯的映像**：開啟 `fw_fetch` 可以從 console 裝 GitHub 上的版本、可以手動上傳 `.bin`、NVS 已存的 `upd_url` 會蓋過空預設。不要對這塊板用這三條路裝官方映像。
 - **重新編譯：** 既有的 `sdkconfig` 會蓋過 defaults，而且不會警告。改了 defaults 一定要用新的 build 目錄。

@@ -1,6 +1,6 @@
 # MF KVM v2 firmware: build record
 
-> **In this repo:** `logs/` holds only the `dependencies.lock` copies. Build logs, build directories, images and the `espkvm` clone are not committed; where this record mentions them, they are the record of the original build. `v2` means `lay-board/` and `v3` means `off-the-shelf/`. Paths under `D:/tools` are where this build was made, not requirements: see `MFKVM_IDF_PATH`, `MFKVM_IDF_TOOLS_PATH`, `MFKVM_PYTHON_DIR` in `off-the-shelf/firmware/scripts/idf_env.ps1`.
+> **In this repo:** `logs/` holds only the `dependencies.lock` copy. Build logs, build directories, images and the `espkvm` clone are not committed; where this record mentions them, they are the record of the original build. `sdkconfig_evidence/` holds the current `v2r7` pair only. `v2` means `lay-board/` and `v3` means `off-the-shelf/`. Paths under `D:/tools` are where this build was made, not requirements: see `MFKVM_IDF_PATH`, `MFKVM_IDF_TOOLS_PATH`, `MFKVM_PYTHON_DIR` in `off-the-shelf/firmware/scripts/idf_env.ps1`.
 
 2026-11-06. **Compile-only. Nothing was flashed or run on hardware.** A successful compile shows the options, code and sizes fit together. It does not show that the panel, QR, ATX, capture, USB, Wi-Fi or SD work on this board. What follows about first boot comes from reading the source.
 
@@ -10,19 +10,19 @@ Both built from clean, in new build directories.
 
 | Variant | Build dir (under `off-the-shelf/firmware/espkvm/`) | Exit | `espkvm.bin` | Free in 4 MB slot | Bootloader | sha256 |
 |---|---|---|---|---|---|---|
-| rev 3.x | `build.v2r6_rev3` | 0 | 2,544,496 (0x26d370) | 39% | 0x5e10, 2% free | `95083ff2a3cc3351387faba312df64ad10fbdd8cf5ca0cb2d730fc6c1bba1341` |
-| pre-3.0 | `build.v2r6_pre3` | 0 | 2,540,944 (0x26c590) | 39% | 0x5b00, 5% free | `542fcf6357d83b02c45c449f2eee98a3d167351c06c2659f3ce668659d45851f` |
+| rev 3.x | `build.v2r7_rev3` | 0 | 2,544,496 (0x26d370) | 39% | 0x5e10, 2% free | `62185dde35f99c2d3e4cd19575b82b81cfd0c0569b1c405ed08d80c994010257` |
+| pre-3.0 | `build.v2r7_pre3` | 0 | 2,540,944 (0x26c590) | 39% | 0x5b00, 5% free | `1266cb0902f42a7cc5421e384409b98456d41a407adeb2bccf31e82ac07f9c05` |
 
-These include the ATX reset fixes in `patches/0002`. The earlier `v2r5` images, without those fixes, remain in their build directories and logs: rev 3.x `0ddd3701...`, pre-3.0 `c7127782...`.
+These have **ATX off by default** (`CONFIG_KVM_ATX_ENABLE_DEFAULT=0`) and keep the ATX reset fixes in `patches/0002`. Only the overlay changed from `v2r6`; the branch and the patches did not. Earlier images remain in their build directories and logs: `v2r6`, ATX on by default, rev 3.x `95083ff2...`, pre-3.0 `542fcf63...`; `v2r5`, ATX on and without the fixes, rev 3.x `0ddd3701...`, pre-3.0 `c7127782...`.
 
-- Logs and exit codes: `logs/build_v2r6_*.log`, `.exit`. Final configs: `sdkconfig_evidence/`. Lock file from the run: `logs/dependencies.lock.v2r6`.
+- Logs and exit codes: `logs/build_v2r7_*.log`, `.exit`. Final configs: `sdkconfig_evidence/`. Lock file from the run: `logs/dependencies.lock.v2r7`.
 - All 20 overlay options are in both final `sdkconfig` files, including `# CONFIG_KVM_ETH_ENABLE is not set` and the three defaults from the patch. `check_v2_build.py` checks this and exits 1 if one is missing.
 - `fw.espkvm.io` appears 0 times in both images. The strings that remain are not an address to update from:
   - `manifest.json`: the help text of the `upd_url` setting.
   - `p4-module-devkit` (`-rev3` on rev 3.x): the board id from `board_header.c`.
   - `https://espkvm.github.io/espkvm/`: the old prefix `migrate_update_url` looks for.
 - The web console inside the image is gzip, so a search of the image cannot see into it. Unpacked, it names `fw.espkvm.io` once, in a set of hosts that the once-a-day device count applies to, and has no manifest address. It also holds the GitHub releases address that `fw_fetch` uses.
-- Images embed `v.0.77.0-2-gbc371a7`. Hashes identify these files; these are not reproducible builds.
+- Images embed `v.0.77.0-2-gbc371a7`, **the same string as `v2r6`**, because the branch did not change. Only the hash, or the setting on the device, tells `v2r6` and `v2r7` apart. These are not reproducible builds.
 
 Not overlay problems, same as every build on this tree (see `off-the-shelf/firmware/BUILD.md`): `CONFIG_MBEDTLS_DYNAMIC_BUFFER` and `CONFIG_MBEDTLS_POLY1305_C` from upstream's `sdkconfig.defaults` are absent from the final config. `ESPTOOLPY_FLASHSIZE_32MB` is replaced by 16MB on purpose, and on rev 3.x so are `ESP32P4_REV_MIN_100` and `SPIRAM_SPEED_200M`.
 
@@ -30,7 +30,7 @@ Not overlay problems, same as every build on this tree (see `off-the-shelf/firmw
 
 | Item | Value |
 |---|---|
-| ESP-KVM | `0893eef` (tag `v.0.77.0`) plus `patches/0001` and `patches/0002`, commit `bc371a7` on branch `mf-v2-defaults` of the clone at `off-the-shelf/firmware/espkvm` |
+| ESP-KVM | `0893eef` (tag `v.0.77.0`) plus `patches/0001` and `patches/0002`, commit `bc371a7` on branch `mf-v2-defaults` of the clone at `off-the-shelf/firmware/espkvm`. `git am` of the two patches on `0893eef` gives tree `14b7cda`, the same as `bc371a7` |
 | Submodules | `third_party/microlink` `d40909c`, `web` `eca5399` |
 | ESP-IDF | v6.1, `D:/tools/esp-idf-v6.1`, tools in `D:/tools/espressif` |
 
@@ -40,12 +40,15 @@ Not overlay problems, same as every build on this tree (see `off-the-shelf/firmw
 git -C <espkvm> checkout -b mf-v2-defaults 0893eef
 git -C <espkvm> am <mini>\firmware\patches\0001-*.patch <mini>\firmware\patches\0002-*.patch
 copy <mini>\firmware\p4_kvm_mini.defaults <espkvm>\boards\
-pwsh -File <mini>\firmware\build_v2.ps1 -Name v2r6_rev3 -Rev3
-pwsh -File <mini>\firmware\build_v2.ps1 -Name v2r6_pre3
-python <mini>\firmware\check_v2_build.py <espkvm>\build.v2r6_rev3 <mini>\firmware\p4_kvm_mini.defaults
+pwsh -File <mini>\firmware\build_v2.ps1 -Name v2r7_rev3 -Rev3
+git -C <espkvm> checkout -- dependencies.lock
+pwsh -File <mini>\firmware\build_v2.ps1 -Name v2r7_pre3
+python <mini>\firmware\check_v2_build.py <espkvm>\build.v2r7_rev3 <mini>\firmware\p4_kvm_mini.defaults
 ```
 
 `build_v2.ps1` runs `idf.py -B build.<name> -D SDKCONFIG=build.<name>/sdkconfig -D SDKCONFIG_DEFAULTS=<list> build`. The list is `sdkconfig.defaults;boards/moduledevkit_p4.defaults;[boards/moduledevkit_p4_rev3.defaults;]boards/p4_kvm_mini.defaults`. It refuses a build directory that already exists, because **an existing `sdkconfig` beats the defaults with no warning**. It uses the private IDF environment from `off-the-shelf/firmware/scripts/idf_env.ps1`, in its own process only.
+
+Restore `dependencies.lock` between builds: each build rewrites it, and the next image then embeds `-dirty` in its version. A first `v2r7_pre3` did that and was thrown away.
 
 Afterwards the copy in `boards/` was removed, `dependencies.lock` restored and the checkout returned to `mf-v3-st7789`, clean. The v3 outputs and overlays were not touched.
 
@@ -53,7 +56,7 @@ Afterwards the copy in `boards/` was removed, `dependencies.lock` restored and t
 
 Upstream hard-codes `.def = 0` for `disp_enable`, `disp_type` and `atx_enable`, so no defaults file can set them. `patches/0001` adds `KVM_DISP_ENABLE_DEFAULT`, `KVM_DISP_TYPE_DEFAULT` and `KVM_ATX_ENABLE_DEFAULT`, all defaulting to 0, so other boards are unchanged. The patch applies cleanly on `0893eef`. The first two have the same names as in v3's patch. The v3 patch was not used, because it adds the ST7789 driver, which v2 does not need.
 
-**Without the patch, those options are ignored silently** and the panel and ATX stay off. Check the final `sdkconfig`, not the exit code.
+**Without the patch, those options are ignored silently** and the panel stays off. Check the final `sdkconfig`, not the exit code. ATX is 0 with or without the patch now. The overlay still sets it, so the choice is written down and `check_v2_build.py` checks it.
 
 ## What a user sees at first boot
 
@@ -62,17 +65,28 @@ By reading the source, with no settings in NVS:
 - **Network:** Ethernet is off in the build, so `net_mode` defaults to 2, the device's own hotspot, `ESP-KVM-xxxx`. A password is made up on first use, unless `ap_open` is turned on.
 - **Panel:** `disp_enable` 1 and `disp_type` 2 (`GC9A01 240x240`). In hotspot mode the panel's face is the join QR (`gc9a01.c:385`). J6 pin 8 (BL) is tied to 3V3, so `disp_bl` stays -1. SPI cannot detect a panel, so with J6 empty the firmware still drives GPIO 9 to 13 into nothing, and the status reports the display as attached.
 - **Console:** `http://192.168.4.1/`, sign in as admin / admin, which asks for a new password first (upstream README).
-- **ATX:** on, on GPIO 4, 5 and LED sense on 2.
+- **ATX:** off. The pins are already set to GPIO 4, 5 and LED sense on 2, so the switch below is all it takes.
 
-**ATX on by default: what protects the target, and what does not.** This is from reading the source and the linked image. Nothing here has been measured, and only a scope can show what a pin does across a reset.
+**ATX is off by default.** User decision, 2026-11-06: nothing has been measured, so a board wired to a motherboard should not be able to press its buttons until someone asks for that. **A scope still decides whether this default changes later**; see the measurement plan.
+
+What `atx_enable` 0 does, from `kvm_atx.c`:
+
+- **Pins:** firmware never sets them. `kvm_atx_init` starts with every pin at -1, so the `release_button` calls in the first `kvm_atx_apply` return at once, and with `want_hw` false nothing is configured. GPIO 4, 5 and 2 stay at their pad defaults. No pull-down is applied either, so the pad's own default is what R52 and R53 see. The cold-boot rows of the plan measure that.
+- **Presses:** every path, console, schedule, button or MQTT, goes through `queue_cmd`, which returns `ESP_ERR_INVALID_STATE`. `atx_task` checks `enabled` again before it moves a pin.
+- **Press marker:** it is written only in `atx_task`, after that check, so it stays clear. At boot `kvm_atx_release_stuck_press` clears it and touches a pin only if it matches, as described below.
+- **Panel:** unchanged. `kvm_display` has no link to ATX, so the hotspot join QR still shows with `disp_enable` 1 and `disp_type` 2.
+
+**To turn ATX on:** wire J4, sign in to the web console and turn on Settings, Power, ATX wiring, **Enable ATX control**. `atx_enable` has no reboot flag, and any `atx_` change runs `kvm_atx_apply`, so it takes effect without a reboot. The pins need no changes. Until then the Power button in the console shows no power or reset buttons (`hasAtx` is false). This comes from the `web` source at `eca5399`. The console in these images has the same labels and the same `caps.atx.active` check.
+
+**Once ATX is on: what protects the target, and what does not.** This is from reading the source and the linked image. Nothing here has been measured, and only a scope can show what a pin does across a reset.
 
 What the design relies on:
 
 - `atx_active_high` defaults to 1, which matches R52 and R53 driving the optocoupler LEDs from the GPIO. A press happens only on a command.
 - LED sense: U12's emitter is on `ATX_LED` with R55 to GND, so it reads high when the target's LED is on. That matches `atx_led_ah` default 1.
-- **What changes for a user:** once J4 is wired to a motherboard, the console can press its power and reset buttons from first boot, with no setting to turn on first. The console's own sign-in is what protects this, so change the password before leaving it on a network.
+- The console's own sign-in is what protects the target's buttons, so change the password before leaving it on a network.
 
-Fixed by `patches/0002`, in `kvm_atx.c`:
+Fixed by `patches/0002`, in `kvm_atx.c`. All of it stays in the image and matters once ATX is on:
 
 | Problem | Evidence | Fix |
 |---|---|---|
@@ -97,10 +111,11 @@ On that third row, two separate things:
 - **A very narrow race:** a press that starts on the other core after the shutdown handler ran and before that core is stalled, microseconds later. The boot release ends it.
 - **The LED sense pin** keeps `gpio_reset_pin`'s pull-up after a release, as upstream does. It no longer applies to buttons.
 
-**Measurement plan.** Scope on the optocoupler collector and emitter (C-E on J4), with 10 kΩ and then 20 kΩ to 3.3 V in place of the motherboard's pull-up, single shot at 1 MHz or faster, triggered on a falling edge. Pass means no pulse at all in the "idle" cases, and a press that ends promptly in the others. Use a pre-3.0 chip on v2, and repeat on v3's GPIO 28 and 29.
+**Measurement plan.** These results decide whether ATX can default to on. Turn ATX on in the console for every case except the two marked ATX off. Scope on the optocoupler collector and emitter (C-E on J4), with 10 kΩ and then 20 kΩ to 3.3 V in place of the motherboard's pull-up, single shot at 1 MHz or faster, triggered on a falling edge. Pass means no pulse at all in the "idle" cases, and a press that ends promptly in the others. Use a pre-3.0 chip on v2, and repeat on v3's GPIO 28 and 29.
 
 | Case | Do | Expect |
 |---|---|---|
+| Cold power-up, ATX off | Repeat at least 20 times, on the default as shipped | No pulse |
 | Cold power-up | Repeat at least 20 times, ATX on | No pulse |
 | EN reset | Pull TP EN low, no press | No pulse |
 | Console reboot | Reboot from the console, no press | No pulse |
