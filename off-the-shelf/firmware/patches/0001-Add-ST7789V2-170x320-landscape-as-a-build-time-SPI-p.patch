@@ -1,0 +1,1043 @@
+From c5a0ef7f016a2a61ca3ea1280347a998a8a4aabe Mon Sep 17 00:00:00 2001
+From: MF KVM v3 <mf-kvm@localhost>
+Date: Fri, 6 Nov 2026 13:58:15 +0800
+Subject: [PATCH] Add ST7789V2 170x320 landscape as a build-time SPI panel
+ choice
+
+disp_type 2 stays "the SPI colour panel", and CONFIG_KVM_SPI_PANEL picks
+which one. GC9A01 is the default. The console, the stored NVS index and the
+pin settings are unchanged. Adds Kconfig defaults for disp_enable, disp_type
+and disp_bl, all at their old values.
+
+Layout lives in st7789_ui.c, apart from the panel I/O, so a host test can
+render it. Not run on a panel.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Y2gafkZviHqY45NzkXoZ7C
+---
+ components/kvm_config/kvm_settings_table.c    |  22 +-
+ components/kvm_display/CMakeLists.txt         |   6 +
+ .../kvm_display/drivers/gc9a01/gc9a01.c       |   2 +-
+ .../kvm_display/drivers/st7789/st7789.c       | 198 +++++++++++
+ .../kvm_display/drivers/st7789/st7789_ui.c    | 307 ++++++++++++++++++
+ .../kvm_display/drivers/st7789/st7789_ui.h    |  34 ++
+ components/kvm_display/kvm_display.c          |   8 +
+ components/kvm_display/kvm_panels.c           |   7 +-
+ components/kvm_display/kvm_panels.h           |   6 +-
+ components/kvm_display/test/run.sh            |  19 ++
+ components/kvm_display/test/stub/esp_err.h    |   9 +
+ components/kvm_display/test/stub/esp_log.h    |   7 +
+ components/kvm_display/test/test_st7789_ui.c  | 152 +++++++++
+ main/Kconfig.projbuild                        |  34 ++
+ tools/test.sh                                 |   3 +
+ 15 files changed, 805 insertions(+), 9 deletions(-)
+ create mode 100644 components/kvm_display/drivers/st7789/st7789.c
+ create mode 100644 components/kvm_display/drivers/st7789/st7789_ui.c
+ create mode 100644 components/kvm_display/drivers/st7789/st7789_ui.h
+ create mode 100644 components/kvm_display/test/run.sh
+ create mode 100644 components/kvm_display/test/stub/esp_err.h
+ create mode 100644 components/kvm_display/test/stub/esp_log.h
+ create mode 100644 components/kvm_display/test/test_st7789_ui.c
+
+diff --git a/components/kvm_config/kvm_settings_table.c b/components/kvm_config/kvm_settings_table.c
+index 7a30a12..04a2c53 100644
+--- a/components/kvm_config/kvm_settings_table.c
++++ b/components/kvm_config/kvm_settings_table.c
+@@ -31,6 +31,15 @@
+ #ifndef CONFIG_KVM_ATX_LED_GPIO
+ #define CONFIG_KVM_ATX_LED_GPIO -1
+ #endif
++#ifndef CONFIG_KVM_DISP_ENABLE_DEFAULT
++#define CONFIG_KVM_DISP_ENABLE_DEFAULT 0
++#endif
++#ifndef CONFIG_KVM_DISP_TYPE_DEFAULT
++#define CONFIG_KVM_DISP_TYPE_DEFAULT 0
++#endif
++#ifndef CONFIG_KVM_DISP_BL_GPIO
++#define CONFIG_KVM_DISP_BL_GPIO -1
++#endif
+ #ifndef CONFIG_KVM_DISP_SCLK_GPIO
+ #define CONFIG_KVM_DISP_SCLK_GPIO -1
+ #endif
+@@ -70,7 +79,12 @@ static const char *const s_side_choices[] = {"left", "right"};
+    Order must match k_panels[] in components/kvm_display/kvm_panels.c: the first
+    three keep the values devices already have stored. */
+ static const char *const s_display_choices[] = {
+-    "SSD1306 128x64", "SH1106 128x64", "GC9A01 240x240",
++    "SSD1306 128x64", "SH1106 128x64",
++#if CONFIG_KVM_SPI_PANEL_ST7789_170X320
++    "ST7789 170x320",
++#else
++    "GC9A01 240x240",
++#endif
+     "SSD1306 128x32", "SSD1306 96x16", "SSD1306 72x40",
+     "SSD1306 64x48",  "SSD1306 64x32", "SH1106 128x32",
+     "SH1106 96x16",   "SH1106 64x48",
+@@ -1432,7 +1446,7 @@ static const kvm_setting_t s_settings[] = {
+                 "and is auto-detected with no extra pins; a round SPI LCD (GC9A01) "
+                 "uses the GPIOs set below, after you pick it as the display type. "
+                 "Off by default; does nothing when no panel is connected.",
+-        .def = 0, .requires_cap = -1,
++        .def = CONFIG_KVM_DISP_ENABLE_DEFAULT, .requires_cap = -1,
+     },
+     {
+         .key = "disp_type", .section = "display", .group = "Screen", .type = KVM_VT_ENUM,
+@@ -1444,7 +1458,7 @@ static const kvm_setting_t s_settings[] = {
+                 "reports none of it. A wrong size shows the picture squeezed into part "
+                 "of the glass, or every other row missing. Shorter panels show fewer "
+                 "status lines.",
+-        .min = 0, .max = ENUM_MAX(s_display_choices), .def = 0, .choices = s_display_choices, .requires_cap = -1,
++        .min = 0, .max = ENUM_MAX(s_display_choices), .def = CONFIG_KVM_DISP_TYPE_DEFAULT, .choices = s_display_choices, .requires_cap = -1,
+     },
+     {
+         .key = "disp_rotate_180", .section = "display", .group = "Screen", .type = KVM_VT_BOOL,
+@@ -1507,7 +1521,7 @@ static const kvm_setting_t s_settings[] = {
+     {
+         .key = "disp_bl", .section = "display", .group = "Wiring", .type = KVM_VT_INT, .title = "LCD backlight",
+         .help = "Backlight GPIO for the GC9A01. -1 (None) if BL is tied to 3V3 (always on).",
+-        .min = -1, .max = 54, .def = -1, .requires_cap = -1, .flags = KVM_SF_PIN | KVM_SF_REBOOT,
++        .min = -1, .max = 54, .def = CONFIG_KVM_DISP_BL_GPIO, .requires_cap = -1, .flags = KVM_SF_PIN | KVM_SF_REBOOT,
+         .visible_key = "disp_type", .visible_val = 2, /* GC9A01 only */
+     },
+ };
+diff --git a/components/kvm_display/CMakeLists.txt b/components/kvm_display/CMakeLists.txt
+index 302cd7f..e4dd01a 100644
+--- a/components/kvm_display/CMakeLists.txt
++++ b/components/kvm_display/CMakeLists.txt
+@@ -1,5 +1,11 @@
++set(kvm_display_panel_srcs)
++if(CONFIG_KVM_SPI_PANEL_ST7789_170X320)
++    list(APPEND kvm_display_panel_srcs "drivers/st7789/st7789.c" "drivers/st7789/st7789_ui.c")
++endif()
++
+ idf_component_register(
+     SRCS
++        ${kvm_display_panel_srcs}
+         "kvm_display.c"
+         "kvm_panels.c"
+         "drivers/mono_oled.c"
+diff --git a/components/kvm_display/drivers/gc9a01/gc9a01.c b/components/kvm_display/drivers/gc9a01/gc9a01.c
+index 86c9408..a89b703 100644
+--- a/components/kvm_display/drivers/gc9a01/gc9a01.c
++++ b/components/kvm_display/drivers/gc9a01/gc9a01.c
+@@ -13,7 +13,7 @@
+  */
+ #include "sdkconfig.h"
+ 
+-#if CONFIG_KVM_ENABLE_DISPLAY
++#if CONFIG_KVM_ENABLE_DISPLAY && !CONFIG_KVM_SPI_PANEL_ST7789_170X320
+ 
+ #include <math.h>
+ #include <stdlib.h>
+diff --git a/components/kvm_display/drivers/st7789/st7789.c b/components/kvm_display/drivers/st7789/st7789.c
+new file mode 100644
+index 0000000..f533edf
+--- /dev/null
++++ b/components/kvm_display/drivers/st7789/st7789.c
+@@ -0,0 +1,198 @@
++/*
++ * SPDX-FileCopyrightText: 2026 ESP-KVM contributors
++ * SPDX-License-Identifier: Apache-2.0
++ *
++ * ST7789V2 170x320 colour LCD over SPI, in landscape - the Waveshare 1.9" module.
++ * Takes the place of the GC9A01 as disp_type 2 in a build that selects it
++ * (CONFIG_KVM_SPI_PANEL_ST7789_170X320), and uses the same disp_* SPI pin settings.
++ *
++ * NOT RUN ON A PANEL. The gap, the mirror and the colour order below come from the
++ * vendor's example code for this module. The vendor writes MADCTL 0x70; this writes
++ * 0x60 (the ML bit changes only which way the panel refreshes, not the picture).
++ */
++#include "sdkconfig.h"
++
++#if CONFIG_KVM_ENABLE_DISPLAY && CONFIG_KVM_SPI_PANEL_ST7789_170X320
++
++#include <stdlib.h>
++
++#include "driver/gpio.h"
++#include "driver/spi_master.h"
++#include "esp_cache.h"
++#include "esp_heap_caps.h"
++#include "esp_lcd_panel_io.h"
++#include "esp_lcd_panel_ops.h"
++#include "esp_lcd_panel_st7789.h"
++#include "esp_log.h"
++#include "esp_private/esp_cache_private.h"
++
++#include "kvm_display_driver.h"
++#include "kvm_settings.h"
++#include "st7789_ui.h"
++
++#define TAG "st7789"
++
++#define LCD_W ST7789_UI_W
++#define LCD_H ST7789_UI_H
++#define FB_PIXELS (LCD_W * LCD_H)
++/* The controller has 240 columns of RAM and the glass the middle 170. Centred, so
++ * the same gap holds with the picture turned over. */
++#define LCD_GAP_X 0
++#define LCD_GAP_Y 35
++/* Rows per SPI transfer; see flush() in gc9a01.c for why not the whole frame. */
++#define FLUSH_BAND_ROWS 24
++
++typedef struct {
++    esp_lcd_panel_handle_t panel;
++    esp_lcd_panel_io_handle_t io;
++    uint16_t *fb; /* RGB565, byte-swapped for the panel, in PSRAM */
++    int bl;       /* backlight GPIO, -1 if left to the module's own pull-up */
++    st7789_ui_t ui;
++} st7789_ctx_t;
++
++static esp_err_t attach(void **ctx)
++{
++    const int sclk = (int)kvm_setting_int("disp_sclk");
++    const int mosi = (int)kvm_setting_int("disp_mosi");
++    const int cs = (int)kvm_setting_int("disp_cs");
++    const int dc = (int)kvm_setting_int("disp_dc");
++    const int rst = (int)kvm_setting_int("disp_rst");
++    const int bl = (int)kvm_setting_int("disp_bl");
++    if (sclk < 0 || mosi < 0 || cs < 0 || dc < 0) {
++        ESP_LOGW(TAG, "ST7789 needs SCLK, MOSI, CS and DC pins set");
++        return ESP_ERR_INVALID_ARG;
++    }
++
++    st7789_ctx_t *g = calloc(1, sizeof(*g));
++    if (!g) {
++        return ESP_ERR_NO_MEM;
++    }
++    g->bl = bl;
++    g->ui.splash = ST7789_UI_SPLASH_TICKS;
++    /* Cache-aligned, so the SPI driver can DMA straight out of PSRAM. */
++    size_t align = 64;
++    (void)esp_cache_get_alignment(MALLOC_CAP_SPIRAM | MALLOC_CAP_DMA, &align);
++    if (align == 0) {
++        align = 64;
++    }
++    const size_t fb_bytes = ((FB_PIXELS * sizeof(uint16_t)) + align - 1) / align * align;
++    g->fb = heap_caps_aligned_alloc(align, fb_bytes, MALLOC_CAP_SPIRAM | MALLOC_CAP_DMA);
++    if (!g->fb) {
++        free(g);
++        return ESP_ERR_NO_MEM;
++    }
++
++    const spi_bus_config_t bus = {
++        .sclk_io_num = sclk,
++        .mosi_io_num = mosi,
++        .miso_io_num = -1,
++        .quadwp_io_num = -1,
++        .quadhd_io_num = -1,
++        .max_transfer_sz = LCD_W * FLUSH_BAND_ROWS * sizeof(uint16_t),
++    };
++    esp_err_t err = spi_bus_initialize(CONFIG_KVM_GC9A01_SPI_HOST, &bus, SPI_DMA_CH_AUTO);
++    if (err != ESP_OK && err != ESP_ERR_INVALID_STATE /* already initialised */) {
++        goto fail_fb;
++    }
++
++    const esp_lcd_panel_io_spi_config_t io_cfg = {
++        .dc_gpio_num = dc,
++        .cs_gpio_num = cs,
++        .pclk_hz = 40 * 1000 * 1000,
++        .lcd_cmd_bits = 8,
++        .lcd_param_bits = 8,
++        .spi_mode = 0,
++        .trans_queue_depth = 10,
++    };
++    err = esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)CONFIG_KVM_GC9A01_SPI_HOST, &io_cfg,
++                                   &g->io);
++    if (err != ESP_OK) {
++        goto fail_fb;
++    }
++    const esp_lcd_panel_dev_config_t panel_cfg = {
++        .reset_gpio_num = rst,
++        .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
++        .bits_per_pixel = 16,
++    };
++    err = esp_lcd_new_panel_st7789(g->io, &panel_cfg, &g->panel);
++    if (err != ESP_OK) {
++        goto fail_io;
++    }
++    esp_lcd_panel_reset(g->panel);
++    esp_lcd_panel_init(g->panel);
++    esp_lcd_panel_invert_color(g->panel, true);
++    esp_lcd_panel_swap_xy(g->panel, true);
++    const bool upside_down = kvm_setting_bool("disp_rotate_180");
++    esp_lcd_panel_mirror(g->panel, !upside_down, upside_down);
++    esp_lcd_panel_set_gap(g->panel, LCD_GAP_X, LCD_GAP_Y);
++    esp_lcd_panel_disp_on_off(g->panel, true);
++
++    if (bl >= 0) {
++        const gpio_config_t bl_cfg = {.pin_bit_mask = 1ULL << bl, .mode = GPIO_MODE_OUTPUT};
++        gpio_config(&bl_cfg);
++        gpio_set_level(bl, 1);
++    }
++
++    ESP_LOGI(TAG, "ST7789 up on SPI%d (sclk %d mosi %d cs %d dc %d rst %d bl %d)",
++             CONFIG_KVM_GC9A01_SPI_HOST, sclk, mosi, cs, dc, rst, bl);
++    *ctx = g;
++    return ESP_OK;
++
++fail_io:
++    esp_lcd_panel_io_del(g->io);
++fail_fb:
++    free(g->fb);
++    free(g);
++    return err == ESP_OK ? ESP_FAIL : err;
++}
++
++static esp_err_t flush(st7789_ctx_t *g)
++{
++    for (int y = 0; y < LCD_H; y += FLUSH_BAND_ROWS) {
++        const int rows = (y + FLUSH_BAND_ROWS <= LCD_H) ? FLUSH_BAND_ROWS : (LCD_H - y);
++        const esp_err_t err =
++            esp_lcd_panel_draw_bitmap(g->panel, 0, y, LCD_W, y + rows, g->fb + (size_t)y * LCD_W);
++        if (err != ESP_OK) {
++            return err;
++        }
++    }
++    return ESP_OK;
++}
++
++static esp_err_t render(void *ctx, const kvm_display_status_t *status)
++{
++    st7789_ctx_t *g = ctx;
++    st7789_ui_render(&g->ui, g->fb, status);
++    return flush(g);
++}
++
++static void detach(void *ctx)
++{
++    st7789_ctx_t *g = ctx;
++    if (!g) {
++        return;
++    }
++    if (g->panel) {
++        esp_lcd_panel_disp_on_off(g->panel, false);
++        esp_lcd_panel_del(g->panel);
++    }
++    if (g->io) {
++        esp_lcd_panel_io_del(g->io);
++    }
++    (void)spi_bus_free(CONFIG_KVM_GC9A01_SPI_HOST);
++    if (g->bl >= 0) {
++        gpio_set_level(g->bl, 0);
++    }
++    free(g->fb);
++    free(g);
++}
++
++const kvm_display_driver_t kvm_display_st7789 = {
++    .name = "st7789",
++    .label = "ST7789 170x320 landscape",
++    .attach = attach,
++    .render = render,
++    .detach = detach,
++};
++
++#endif /* CONFIG_KVM_ENABLE_DISPLAY && CONFIG_KVM_SPI_PANEL_ST7789_170X320 */
+diff --git a/components/kvm_display/drivers/st7789/st7789_ui.c b/components/kvm_display/drivers/st7789/st7789_ui.c
+new file mode 100644
+index 0000000..b02e1d0
+--- /dev/null
++++ b/components/kvm_display/drivers/st7789/st7789_ui.c
+@@ -0,0 +1,307 @@
++/*
++ * SPDX-FileCopyrightText: 2026 ESP-KVM contributors
++ * SPDX-License-Identifier: Apache-2.0
++ *
++ * The same three status screens, notice and splash as the round GC9A01, laid out
++ * for a wide rectangle: a coloured frame takes the place of the status ring, a
++ * header row of icon and title sits top left, and a progress bar takes the place
++ * of the gauge on the rim.
++ */
++#include "st7789_ui.h"
++
++#include <stdio.h>
++#include <string.h>
++
++#include "font5x7.h"
++#include "icons.h"
++#include "logo.h"
++#include "qrcode.h"
++
++#define W ST7789_UI_W
++#define H ST7789_UI_H
++#define MARGIN 12 /* text stays this far from the edge of the glass */
++#define TEXT_W (W - 2 * MARGIN)
++#define GLYPH_W 6 /* 5 columns and a gap, at scale 1 */
++
++#define STATUS_SCREENS 3
++#define SCREEN_DWELL_TICKS 4
++
++#define BG st7789_ui_rgb(8, 10, 14)
++#define WHITE st7789_ui_rgb(235, 238, 245)
++#define GREY st7789_ui_rgb(140, 150, 165)
++#define CYAN st7789_ui_rgb(90, 200, 235)
++#define GREEN st7789_ui_rgb(90, 210, 120)
++#define AMBER st7789_ui_rgb(235, 190, 70)
++#define RED st7789_ui_rgb(235, 100, 90)
++#define TRACK st7789_ui_rgb(38, 42, 50)
++
++static void put_px(uint16_t *fb, int x, int y, uint16_t c)
++{
++    if (x >= 0 && x < W && y >= 0 && y < H) {
++        fb[y * W + x] = c;
++    }
++}
++
++static void fill_rect(uint16_t *fb, int x, int y, int w, int h, uint16_t c)
++{
++    for (int j = 0; j < h; j++) {
++        for (int i = 0; i < w; i++) {
++            put_px(fb, x + i, y + j, c);
++        }
++    }
++}
++
++/* Clear to the background inside a frame of colour @p c. */
++static void background(uint16_t *fb, uint16_t c)
++{
++    fill_rect(fb, 0, 0, W, H, c);
++    fill_rect(fb, ST7789_UI_FRAME, ST7789_UI_FRAME, W - 2 * ST7789_UI_FRAME,
++              H - 2 * ST7789_UI_FRAME, BG);
++}
++
++static void bar(uint16_t *fb, int y, int h, float frac, uint16_t fg)
++{
++    if (frac < 0) {
++        frac = 0;
++    } else if (frac > 1) {
++        frac = 1;
++    }
++    fill_rect(fb, MARGIN, y, TEXT_W, h, TRACK);
++    fill_rect(fb, MARGIN, y, (int)(TEXT_W * frac + 0.5f), h, fg);
++}
++
++static void draw_char(uint16_t *fb, int x, int y, char ch, int s, uint16_t c)
++{
++    const unsigned char u = (unsigned char)ch; /* char is signed on a host */
++    const uint8_t *g = font5x7[(u < 0x20 || u > 0x7F) ? 0 : (u - 0x20)];
++    for (int col = 0; col < 5; col++) {
++        for (int row = 0; row < 7; row++) {
++            if (g[col] & (1 << row)) {
++                fill_rect(fb, x + col * s, y + row * s, s, s, c);
++            }
++        }
++    }
++}
++
++static void draw_icon(uint16_t *fb, int x, int y, const uint8_t g[8], int s, uint16_t c)
++{
++    for (int col = 0; col < 8; col++) {
++        for (int row = 0; row < 8; row++) {
++            if (g[col] & (1u << row)) {
++                fill_rect(fb, x + col * s, y + row * s, s, s, c);
++            }
++        }
++    }
++}
++
++/* The largest scale, up to @p max_s, at which @p str fits @p max_w. Never below 1. */
++static int scale_for(const char *str, int max_w, int max_s)
++{
++    /* Without the gap after the last glyph: it is not ink. */
++    const int cols = (int)strlen(str) * GLYPH_W - 1;
++    for (int s = max_s; s > 1; s--) {
++        if (cols * s <= max_w) {
++            return s;
++        }
++    }
++    return 1;
++}
++
++/* Left-aligned text in a column @p max_w wide. A string too long even at scale 1
++ * is cut at the column rather than left to run into whatever is beside it. */
++static void text_left(uint16_t *fb, int x, int y, const char *str, int max_w, int max_s, uint16_t c)
++{
++    const int s = scale_for(str, max_w, max_s);
++    const int glyph = GLYPH_W * s;
++    for (const char *p = str; *p && 5 * s <= max_w; p++, x += glyph, max_w -= glyph) {
++        draw_char(fb, x, y, *p, s, c);
++    }
++}
++
++static void text_centered(uint16_t *fb, int y, const char *str, int max_s, uint16_t c)
++{
++    const int s = scale_for(str, TEXT_W, max_s);
++    const int ink = (int)strlen(str) * GLYPH_W * s - s;
++    text_left(fb, ink < TEXT_W ? (W - ink) / 2 : MARGIN, y, str, TEXT_W, s, c);
++}
++
++static void header(uint16_t *fb, const uint8_t icon[8], const char *title)
++{
++    draw_icon(fb, MARGIN, MARGIN, icon, 3, CYAN);
++    text_left(fb, MARGIN + 32, MARGIN + 2, title, TEXT_W - 32, 3, CYAN);
++}
++
++static void render_splash(st7789_ui_t *ui, uint16_t *fb, const kvm_display_status_t *st)
++{
++    background(fb, CYAN);
++    if (ui->splash > ST7789_UI_SPLASH_TICKS / 2) {
++        text_centered(fb, 50, "ESP-KVM", 5, WHITE);
++        text_centered(fb, 106, st->version, 2, GREY);
++    } else {
++        const int s = 12;
++        const int x0 = (W - LOGO_COLS * s) / 2, y0 = (H - LOGO_ROWS * s) / 2;
++        for (int row = 0; row < LOGO_ROWS; row++) {
++            for (int col = 0; col < LOGO_COLS; col++) {
++                if (logo_px(col, row)) {
++                    fill_rect(fb, x0 + col * s, y0 + row * s, s, s, st7789_ui_rgb(230, 237, 243));
++                }
++            }
++        }
++    }
++}
++
++/*
++ * The hotspot's join code. Dark on light with its four-module quiet zone, in whole
++ * pixels per module, for the reasons given at the same code in gc9a01.c.
++ */
++#define QR_QUIET 4
++#define QR_BOX 154 /* the glass height, less the frame and a gap */
++#define QR_X 8
++
++typedef struct {
++    uint16_t *fb;
++    int side;
++} qr_paint_t;
++
++static void qr_paint(esp_qrcode_handle_t qr, void *user_data)
++{
++    qr_paint_t *p = (qr_paint_t *)user_data;
++    const int modules = esp_qrcode_get_size(qr);
++    const int total = modules + 2 * QR_QUIET;
++    const int scale = QR_BOX / total;
++    if (scale < 1) {
++        return;
++    }
++    const int side = total * scale;
++    const int y0 = (H - side) / 2;
++    fill_rect(p->fb, QR_X, y0, side, side, st7789_ui_rgb(255, 255, 255));
++    for (int y = 0; y < modules; y++) {
++        for (int x = 0; x < modules; x++) {
++            if (esp_qrcode_get_module(qr, x, y)) {
++                fill_rect(p->fb, QR_X + (QR_QUIET + x) * scale, y0 + (QR_QUIET + y) * scale, scale,
++                          scale, st7789_ui_rgb(0, 0, 0));
++            }
++        }
++    }
++    p->side = side;
++}
++
++static int draw_join_qr(uint16_t *fb, const char *payload)
++{
++    qr_paint_t paint = {.fb = fb, .side = 0};
++    esp_qrcode_config_t cfg = ESP_QRCODE_CONFIG_DEFAULT();
++    cfg.display_func_with_cb = qr_paint;
++    cfg.user_data = &paint;
++    cfg.max_qrcode_version = 6; /* 41 modules, 3 px each; see gc9a01.c */
++    cfg.qrcode_ecc_level = ESP_QRCODE_ECC_LOW;
++    return esp_qrcode_generate(&cfg, payload) == ESP_OK ? paint.side : 0;
++}
++
++static void render_notice(uint16_t *fb, const kvm_display_status_t *st)
++{
++    background(fb, CYAN);
++    text_centered(fb, 40, st->notice, 4, WHITE);
++    text_centered(fb, 88, st->notice_detail, 2, GREY);
++    if (st->notice_pct >= 0) {
++        bar(fb, 122, 20, st->notice_pct / 100.0f, CYAN);
++    }
++}
++
++static void render_network(uint16_t *fb, const kvm_display_status_t *st)
++{
++    char buf[48];
++
++    if (st->ap_mode && st->join_qr[0]) {
++        const int side = draw_join_qr(fb, st->join_qr);
++        if (side > 0) {
++            const int x = QR_X + side + 8;
++            const int w = W - MARGIN - x + 4; /* the frame is the limit on this side */
++            text_left(fb, x, 24, "SCAN TO JOIN", w, 2, CYAN);
++            text_left(fb, x, 52, st->ssid, w, 2, WHITE);
++            text_left(fb, x, 80, "192.168.4.1", w, 2, GREY);
++            if (st->ap_pass[0]) {
++                text_left(fb, x, 108, st->ap_pass, w, 2, GREY);
++            }
++            return;
++        }
++    }
++
++    header(fb, icon_net, st->ap_mode ? "AP RESCUE" : "NETWORK");
++    text_left(fb, MARGIN, 50, st->ip[0] ? st->ip : "no link", TEXT_W, 4, WHITE);
++    if (st->ap_mode) {
++        text_left(fb, MARGIN, 88, "192.168.4.1", TEXT_W, 2, GREY);
++        text_left(fb, MARGIN, 110, st->ssid, TEXT_W, 2, GREY);
++        return;
++    }
++    snprintf(buf, sizeof(buf), "%s.local", st->hostname);
++    text_left(fb, MARGIN, 88, buf, TEXT_W, 2, GREY);
++    snprintf(buf, sizeof(buf), "%s %s", st->link, st->ssid);
++    text_left(fb, MARGIN, 110, buf, TEXT_W, 2, GREY);
++    if (st->ts_ip[0]) {
++        snprintf(buf, sizeof(buf), "TS %s", st->ts_ip);
++        text_left(fb, MARGIN, 132, buf, TEXT_W, 2, GREEN);
++    }
++}
++
++static void render_video(uint16_t *fb, const kvm_display_status_t *st)
++{
++    char buf[40];
++
++    header(fb, icon_video, "VIDEO");
++    if (!st->video_signal) {
++        text_left(fb, MARGIN, 76, "NO SIGNAL", TEXT_W, 4, RED);
++        return;
++    }
++    snprintf(buf, sizeof(buf), "%ux%u", (unsigned)st->hres, (unsigned)st->vres);
++    text_left(fb, MARGIN, 56, buf, TEXT_W, 4, WHITE);
++    snprintf(buf, sizeof(buf), "%u fps  %s", (unsigned)st->fps, st->codec);
++    text_left(fb, MARGIN, 106, buf, TEXT_W, 3, GREY);
++}
++
++static void render_health(uint16_t *fb, const kvm_display_status_t *st)
++{
++    char buf[40];
++    const float ram =
++        st->psram_total_kb ? 1.0f - (float)st->psram_kb / (float)st->psram_total_kb : 0.0f;
++
++    header(fb, icon_health, "HEALTH");
++    snprintf(buf, sizeof(buf), "Temp  %d C", st->temp_c);
++    text_left(fb, MARGIN, 50, buf, TEXT_W, 2, WHITE);
++    bar(fb, 70, 14, st->temp_c / 90.0f, st->temp_c < 60 ? GREEN : st->temp_c < 75 ? AMBER : RED);
++    snprintf(buf, sizeof(buf), "RAM  %d%%", (int)(ram * 100 + 0.5f));
++    text_left(fb, MARGIN, 102, buf, TEXT_W, 2, WHITE);
++    bar(fb, 122, 14, ram, CYAN);
++}
++
++void st7789_ui_render(st7789_ui_t *ui, uint16_t *fb, const kvm_display_status_t *st)
++{
++    if (st->notice[0]) {
++        /* A notice arriving mid-splash ends the splash, as on the round panel. */
++        ui->splash = 0;
++        render_notice(fb, st);
++        return;
++    }
++    if (ui->splash > 0) {
++        render_splash(ui, fb, st);
++        ui->splash--;
++        return;
++    }
++
++    /* Green with a target signal, amber when linked without one, red with no network. */
++    background(fb, st->ip[0] ? (st->video_signal ? GREEN : AMBER) : RED);
++    switch (ui->screen) {
++    case 0:
++        render_network(fb, st);
++        break;
++    case 1:
++        render_video(fb, st);
++        break;
++    default:
++        render_health(fb, st);
++        break;
++    }
++    if (++ui->tick >= SCREEN_DWELL_TICKS) {
++        ui->tick = 0;
++        ui->screen = (uint8_t)((ui->screen + 1) % STATUS_SCREENS);
++    }
++}
+diff --git a/components/kvm_display/drivers/st7789/st7789_ui.h b/components/kvm_display/drivers/st7789/st7789_ui.h
+new file mode 100644
+index 0000000..3db3d93
+--- /dev/null
++++ b/components/kvm_display/drivers/st7789/st7789_ui.h
+@@ -0,0 +1,34 @@
++/*
++ * SPDX-FileCopyrightText: 2026 ESP-KVM contributors
++ * SPDX-License-Identifier: Apache-2.0
++ *
++ * The picture on a 320x170 landscape ST7789. Pixels only, no panel I/O, so that
++ * components/kvm_display/test can run it on a host and look at the result.
++ */
++#pragma once
++
++#include <stdint.h>
++
++#include "kvm_display_driver.h"
++
++#define ST7789_UI_W 320
++#define ST7789_UI_H 170
++#define ST7789_UI_FRAME 4 /* thickness of the status frame around the glass */
++
++#define ST7789_UI_SPLASH_TICKS 4 /* first half: version card, second half: logo */
++
++typedef struct {
++    uint8_t screen;
++    uint8_t tick;
++    uint8_t splash;
++} st7789_ui_t;
++
++/* RGB565, byte-swapped so the buffer can go straight to the panel. */
++static inline uint16_t st7789_ui_rgb(uint8_t r, uint8_t g, uint8_t b)
++{
++    const uint16_t v = (uint16_t)(((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3));
++    return (uint16_t)((v >> 8) | (v << 8));
++}
++
++/* Draw one frame into @p fb (ST7789_UI_W * ST7789_UI_H pixels) and advance @p ui. */
++void st7789_ui_render(st7789_ui_t *ui, uint16_t *fb, const kvm_display_status_t *st);
+diff --git a/components/kvm_display/kvm_display.c b/components/kvm_display/kvm_display.c
+index 8fac072..6f359a7 100644
+--- a/components/kvm_display/kvm_display.c
++++ b/components/kvm_display/kvm_display.c
+@@ -42,14 +42,22 @@
+  * entry in k_panels[] and a matching "disp_type" choice. */
+ extern const kvm_display_driver_t kvm_display_ssd1306;
+ extern const kvm_display_driver_t kvm_display_sh1106;
++#if CONFIG_KVM_SPI_PANEL_ST7789_170X320
++extern const kvm_display_driver_t kvm_display_st7789;
++#else
+ extern const kvm_display_driver_t kvm_display_gc9a01;
++#endif
+ extern const kvm_display_driver_t kvm_display_ssd1315;
+ extern const kvm_display_driver_t kvm_display_sh1107;
+ 
+ static const kvm_display_driver_t *const s_drivers[] = {
+     &kvm_display_ssd1306,
+     &kvm_display_sh1106,
++#if CONFIG_KVM_SPI_PANEL_ST7789_170X320
++    &kvm_display_st7789,
++#else
+     &kvm_display_gc9a01,
++#endif
+     &kvm_display_ssd1315,
+     &kvm_display_sh1107,
+ };
+diff --git a/components/kvm_display/kvm_panels.c b/components/kvm_display/kvm_panels.c
+index 8ea3c85..9b8b691 100644
+--- a/components/kvm_display/kvm_panels.c
++++ b/components/kvm_display/kvm_panels.c
+@@ -8,6 +8,7 @@
+ #include <stddef.h>
+ 
+ #include "kvm_settings.h"
++#include "sdkconfig.h"
+ 
+ /*
+  * Order must match s_display_choices[] in kvm_config/kvm_settings_table.c.
+@@ -23,7 +24,11 @@
+ static const kvm_panel_t k_panels[] = {
+     {KVM_PANEL_DRV_SSD1306, 128, 64, 0},  /* 0.96" and 1.3" */
+     {KVM_PANEL_DRV_SH1106, 128, 64, 0},   /* 1.3" */
+-    {KVM_PANEL_DRV_GC9A01, 240, 240, 0},  /* round colour LCD */
++#if CONFIG_KVM_SPI_PANEL_ST7789_170X320
++    {KVM_PANEL_DRV_SPI_LCD, 320, 170, 0}, /* 1.9" landscape; its driver holds the RAM gap */
++#else
++    {KVM_PANEL_DRV_SPI_LCD, 240, 240, 0}, /* round colour LCD */
++#endif
+     {KVM_PANEL_DRV_SSD1306, 128, 32, 0},  /* 0.91" */
+     {KVM_PANEL_DRV_SSD1306, 96, 16, 0},   /* 0.69" */
+     {KVM_PANEL_DRV_SSD1306, 72, 40, 28},  /* 0.42" */
+diff --git a/components/kvm_display/kvm_panels.h b/components/kvm_display/kvm_panels.h
+index 343e97a..dc33193 100644
+--- a/components/kvm_display/kvm_panels.h
++++ b/components/kvm_display/kvm_panels.h
+@@ -12,15 +12,15 @@
+ typedef enum {
+     KVM_PANEL_DRV_SSD1306 = 0,
+     KVM_PANEL_DRV_SH1106 = 1,
+-    KVM_PANEL_DRV_GC9A01 = 2,
++    KVM_PANEL_DRV_SPI_LCD = 2, /* GC9A01 or ST7789, per CONFIG_KVM_SPI_PANEL */
+     KVM_PANEL_DRV_SSD1315 = 3,
+     KVM_PANEL_DRV_SH1107 = 4,
+ } kvm_panel_drv_t;
+ 
+ typedef struct {
+     uint8_t drv;
+-    uint8_t w;         /* glass width, pixels */
+-    uint8_t h;         /* glass height, pixels */
++    uint16_t w;        /* glass width, pixels */
++    uint16_t h;        /* glass height, pixels */
+     uint8_t extra_col; /* where the glass starts in the controller's RAM */
+ } kvm_panel_t;
+ 
+diff --git a/components/kvm_display/test/run.sh b/components/kvm_display/test/run.sh
+new file mode 100644
+index 0000000..30413d8
+--- /dev/null
++++ b/components/kvm_display/test/run.sh
+@@ -0,0 +1,19 @@
++#!/bin/sh
++# Run the 320x170 layout on this machine - no device needed. It needs the qrcode
++# component, which an ESP-IDF build of the firmware has fetched. An argument names
++# a directory to write each scene to, as a PPM.
++set -e
++here=$(dirname "$0")
++qr=${QRCODE_DIR:-$here/../../../managed_components/espressif__qrcode}
++if [ ! -f "$qr/qrcodegen.c" ]; then
++    echo "st7789 layout: skipped, no qrcode at $qr (build the firmware once, or set QRCODE_DIR)"
++    exit 0
++fi
++out=$(mktemp -d)
++cc -std=gnu11 -Wall -Wextra -O2 -I "$here/stub" -I "$here/../include" -I "$here/../drivers" \
++   -I "$here/../drivers/st7789" -I "$qr/include" -I "$qr" \
++   "$here/test_st7789_ui.c" "$here/../drivers/st7789/st7789_ui.c" \
++   "$qr/esp_qrcode_main.c" "$qr/esp_qrcode_wrapper.c" "$qr/qrcodegen.c" \
++   -lm -o "$out/test_st7789_ui"
++"$out/test_st7789_ui" "$@"
++rm -rf "$out"
+diff --git a/components/kvm_display/test/stub/esp_err.h b/components/kvm_display/test/stub/esp_err.h
+new file mode 100644
+index 0000000..c016c5d
+--- /dev/null
++++ b/components/kvm_display/test/stub/esp_err.h
+@@ -0,0 +1,9 @@
++/* What the display interface and the QR encoder ask of esp_err.h, on a host. */
++#pragma once
++#include <stdlib.h>
++typedef int esp_err_t;
++#define ESP_OK 0
++#define ESP_FAIL -1
++#define ESP_ERR_NO_MEM 0x101
++#define ESP_ERR_INVALID_ARG 0x102
++#define ESP_ERR_INVALID_SIZE 0x104
+diff --git a/components/kvm_display/test/stub/esp_log.h b/components/kvm_display/test/stub/esp_log.h
+new file mode 100644
+index 0000000..e4cf57d
+--- /dev/null
++++ b/components/kvm_display/test/stub/esp_log.h
+@@ -0,0 +1,7 @@
++/* The QR encoder logs through this; on a host, errors are enough. */
++#pragma once
++#include <stdio.h>
++#define ESP_LOGE(tag, ...) (fprintf(stderr, "%s: ", tag), fprintf(stderr, __VA_ARGS__), fputc('\n', stderr))
++#define ESP_LOGW(tag, ...) ((void)0)
++#define ESP_LOGI(tag, ...) ((void)0)
++#define ESP_LOGD(tag, ...) ((void)0)
+diff --git a/components/kvm_display/test/test_st7789_ui.c b/components/kvm_display/test/test_st7789_ui.c
+new file mode 100644
+index 0000000..a70f5da
+--- /dev/null
++++ b/components/kvm_display/test/test_st7789_ui.c
+@@ -0,0 +1,152 @@
++/*
++ * SPDX-FileCopyrightText: 2026 ESP-KVM contributors
++ * SPDX-License-Identifier: Apache-2.0
++ *
++ * Run the 320x170 layout on a host. Each scene must keep the strip just inside
++ * the frame empty: a string that overran its column would show up there. With an
++ * output directory as argv[1], each scene is also written as a PPM to look at.
++ */
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "st7789_ui.h"
++
++#define W ST7789_UI_W
++#define H ST7789_UI_H
++#define STRIP 4 /* the empty band inside the frame, in pixels */
++
++static uint16_t fb[W * H];
++static int failures;
++
++static void write_ppm(const char *dir, const char *name)
++{
++    char path[512];
++    snprintf(path, sizeof(path), "%s/%s.ppm", dir, name);
++    FILE *f = fopen(path, "wb");
++    if (!f) {
++        perror(path);
++        exit(2);
++    }
++    fprintf(f, "P6\n%d %d\n255\n", W, H);
++    for (int i = 0; i < W * H; i++) {
++        const uint16_t v = (uint16_t)((fb[i] >> 8) | (fb[i] << 8));
++        const unsigned char rgb[3] = {(unsigned char)((v >> 8) & 0xF8), (unsigned char)((v >> 3) & 0xFC),
++                                      (unsigned char)((v << 3) & 0xF8)};
++        fwrite(rgb, 1, 3, f);
++    }
++    fclose(f);
++}
++
++static int strip_is_clear(void)
++{
++    const uint16_t bg = fb[(ST7789_UI_FRAME) * W + ST7789_UI_FRAME];
++    const int lo = ST7789_UI_FRAME, hi = ST7789_UI_FRAME + STRIP;
++    for (int y = lo; y < H - lo; y++) {
++        for (int x = lo; x < W - lo; x++) {
++            const int in_strip = x < hi || x >= W - hi || y < hi || y >= H - hi;
++            if (in_strip && fb[y * W + x] != bg) {
++                return 0;
++            }
++        }
++    }
++    return 1;
++}
++
++static void scene(const char *dir, const char *name, int screen, int splash,
++                  const kvm_display_status_t *st)
++{
++    st7789_ui_t ui = {.screen = (uint8_t)screen, .tick = 0, .splash = (uint8_t)splash};
++    memset(fb, 0, sizeof(fb));
++    st7789_ui_render(&ui, fb, st);
++    const int ok = strip_is_clear();
++    printf("  %-22s %s\n", name, ok ? "ok" : "FAIL: ink inside the frame strip");
++    failures += !ok;
++    if (dir) {
++        write_ppm(dir, name);
++    }
++}
++
++static kvm_display_status_t base(void)
++{
++    kvm_display_status_t s;
++    memset(&s, 0, sizeof(s));
++    strcpy(s.hostname, "espkvm");
++    strcpy(s.ip, "192.168.1.123");
++    strcpy(s.link, "Wi-Fi");
++    strcpy(s.ssid, "HomeWiFi");
++    strcpy(s.version, "v.0.77.0-st7789");
++    strcpy(s.codec, "MJPEG");
++    s.video_signal = true;
++    s.hres = 1920;
++    s.vres = 1080;
++    s.fps = 9;
++    s.temp_c = 52;
++    s.psram_kb = 19000;
++    s.psram_total_kb = 32000;
++    s.notice_pct = -1;
++    return s;
++}
++
++int main(int argc, char **argv)
++{
++    const char *dir = argc > 1 ? argv[1] : NULL;
++    kvm_display_status_t s = base();
++
++    scene(dir, "01_splash_version", 0, ST7789_UI_SPLASH_TICKS, &s);
++    scene(dir, "02_splash_logo", 0, ST7789_UI_SPLASH_TICKS / 2, &s);
++    scene(dir, "03_network", 0, 0, &s);
++
++    strcpy(s.ip, "255.255.255.255");
++    strcpy(s.hostname, "a-very-long-host-name-for-a-kvm");
++    strcpy(s.ssid, "a-thirty-two-char-wifi-name-here");
++    strcpy(s.ts_ip, "100.100.100.100");
++    scene(dir, "04_network_longest", 0, 0, &s);
++
++    s = base();
++    s.ip[0] = '\0';
++    s.video_signal = false;
++    scene(dir, "05_network_no_link", 0, 0, &s);
++
++    s = base();
++    s.ap_mode = true;
++    strcpy(s.link, "AP mode");
++    strcpy(s.ip, "192.168.4.1");
++    strcpy(s.ssid, "ESP-KVM-A1B2");
++    strcpy(s.join_qr, "WIFI:T:nopass;S:ESP-KVM-A1B2;;");
++    scene(dir, "06_ap_qr_open", 0, 0, &s);
++
++    strcpy(s.ssid, "a-thirty-two-char-wifi-name-here");
++    strcpy(s.ap_pass, "correct-horse-battery-staple-correct-horse-battery-staple-12345");
++    snprintf(s.join_qr, sizeof(s.join_qr), "WIFI:T:WPA;S:%s;P:%s;;", s.ssid, s.ap_pass);
++    scene(dir, "07_ap_qr_longest", 0, 0, &s);
++
++    s = base();
++    scene(dir, "08_video", 1, 0, &s);
++    strcpy(s.codec, "H.264");
++    s.hres = 3840;
++    s.vres = 2160;
++    s.fps = 120;
++    scene(dir, "09_video_widest", 1, 0, &s);
++    s.video_signal = false;
++    scene(dir, "10_video_no_signal", 1, 0, &s);
++
++    s = base();
++    scene(dir, "11_health", 2, 0, &s);
++    s.temp_c = 88;
++    s.psram_kb = 1000;
++    scene(dir, "12_health_hot", 2, 0, &s);
++
++    s = base();
++    strcpy(s.notice, "RESET PASSWORD");
++    strcpy(s.notice_detail, "keep holding the button");
++    s.notice_pct = 60;
++    scene(dir, "13_notice_progress", 0, 0, &s);
++    strcpy(s.notice, "UPDATE");
++    strcpy(s.notice_detail, "do not power off");
++    s.notice_pct = -1;
++    scene(dir, "14_notice_plain", 0, 0, &s);
++
++    printf(failures ? "st7789 layout: %d failed\n" : "st7789 layout: all ok\n", failures);
++    return failures ? 1 : 0;
++}
+diff --git a/main/Kconfig.projbuild b/main/Kconfig.projbuild
+index 169fea8..d28d13c 100644
+--- a/main/Kconfig.projbuild
++++ b/main/Kconfig.projbuild
+@@ -67,6 +67,34 @@ menu "ESP-KVM"
+                 SPI peripheral index for the round GC9A01 LCD. Only used when the
+                 display type is GC9A01.
+ 
++        # disp_type 2 is "the SPI colour panel". Which panel that is gets fixed at
++        # build time, so the console, the stored index and the pin settings all keep
++        # working unchanged, and a round build is the same as it ever was.
++        choice KVM_SPI_PANEL
++            prompt "SPI colour panel"
++            depends on KVM_ENABLE_DISPLAY
++            default KVM_SPI_PANEL_GC9A01
++
++            config KVM_SPI_PANEL_GC9A01
++                bool "GC9A01 240x240 round"
++            config KVM_SPI_PANEL_ST7789_170X320
++                bool "ST7789V2 170x320 landscape (Waveshare 1.9 inch), not run on a panel"
++        endchoice
++
++        # For a board that is built around its screen. A default is only consulted
++        # when nothing is stored, as with the pins below.
++        config KVM_DISP_ENABLE_DEFAULT
++            int "Status display on by default (0 or 1)"
++            depends on KVM_ENABLE_DISPLAY
++            range 0 1
++            default 0
++
++        config KVM_DISP_TYPE_DEFAULT
++            int "Default disp_type (index into the Panel setting)"
++            depends on KVM_ENABLE_DISPLAY
++            range 0 14
++            default 0
++
+         # The panel's five GPIOs stay runtime settings - the operator solders the
+         # wires and picks the pins in the console. These only choose what the
+         # console offers before anyone touches them, per board, because "free" is
+@@ -107,6 +135,12 @@ menu "ESP-KVM"
+             range -1 ENV_GPIO_RANGE_MAX
+             default 33
+ 
++        config KVM_DISP_BL_GPIO
++            int "SPI LCD default backlight GPIO (-1 if tied high)"
++            depends on KVM_ENABLE_DISPLAY
++            range -1 ENV_GPIO_RANGE_MAX
++            default -1
++
+         # An I2C OLED normally shares the capture chip's bus and needs no pins.
+         # A board whose OLED socket is a bus of its own - the Grove port on the
+         # M5Stack Unit PoE-P4 - names its pins here. -1 keeps the shared bus.
+diff --git a/tools/test.sh b/tools/test.sh
+index bad322f..b4ee66c 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -30,6 +30,9 @@ if [ "$what" = all ] || [ "$what" = host ]; then
+     echo "== a recording as a transport stream, and its keystroke subtitles =="
+     sh "$here/components/kvm_record/test/run.sh"
+     echo
++    echo "== the 320x170 status display layout =="
++    sh "$here/components/kvm_display/test/run.sh"
++    echo
+     echo "== two things on one pin, and device profiles =="
+     sh "$here/components/kvm_config/test/run.sh"
+     echo
+-- 
+2.49.0.windows.1
+

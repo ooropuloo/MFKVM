@@ -1,0 +1,107 @@
+From 6bf192360a1ba1ee2dc607a2f53e637b30d1ced3 Mon Sep 17 00:00:00 2001
+From: ooropuloo <ooropuloo@gmail.com>
+Date: Fri, 6 Nov 2026 15:33:43 +0800
+Subject: [PATCH] Add Kconfig defaults for disp_enable, disp_type and
+ atx_enable
+
+A default is only consulted when nothing is stored in NVS. All three default
+to the old value 0, so other boards are unchanged. Needed for a board built
+around its screen, which has to show the hotspot join code at first boot.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Y2gafkZviHqY45NzkXoZ7C
+---
+ components/kvm_config/kvm_settings_table.c | 15 ++++++++++++---
+ main/Kconfig.projbuild                     | 22 ++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 3 deletions(-)
+
+diff --git a/components/kvm_config/kvm_settings_table.c b/components/kvm_config/kvm_settings_table.c
+index 7a30a12..f1bb3ae 100644
+--- a/components/kvm_config/kvm_settings_table.c
++++ b/components/kvm_config/kvm_settings_table.c
+@@ -31,6 +31,15 @@
+ #ifndef CONFIG_KVM_ATX_LED_GPIO
+ #define CONFIG_KVM_ATX_LED_GPIO -1
+ #endif
++#ifndef CONFIG_KVM_ATX_ENABLE_DEFAULT
++#define CONFIG_KVM_ATX_ENABLE_DEFAULT 0
++#endif
++#ifndef CONFIG_KVM_DISP_ENABLE_DEFAULT
++#define CONFIG_KVM_DISP_ENABLE_DEFAULT 0
++#endif
++#ifndef CONFIG_KVM_DISP_TYPE_DEFAULT
++#define CONFIG_KVM_DISP_TYPE_DEFAULT 0
++#endif
+ #ifndef CONFIG_KVM_DISP_SCLK_GPIO
+ #define CONFIG_KVM_DISP_SCLK_GPIO -1
+ #endif
+@@ -676,7 +685,7 @@ static const kvm_setting_t s_settings[] = {
+         .key = "atx_enable", .section = "power", .group = "ATX wiring", .type = KVM_VT_BOOL,
+         .title = "Enable ATX control",
+         .help = "Requires optocouplers wired to the target's front-panel header.",
+-        .def = 0, .requires_cap = -1,
++        .def = CONFIG_KVM_ATX_ENABLE_DEFAULT, .requires_cap = -1,
+     },
+     /* Pins, so the console offers only what is free on this board. The defaults
+      * come from Kconfig and are picked per board clear of everything else,
+@@ -1432,7 +1441,7 @@ static const kvm_setting_t s_settings[] = {
+                 "and is auto-detected with no extra pins; a round SPI LCD (GC9A01) "
+                 "uses the GPIOs set below, after you pick it as the display type. "
+                 "Off by default; does nothing when no panel is connected.",
+-        .def = 0, .requires_cap = -1,
++        .def = CONFIG_KVM_DISP_ENABLE_DEFAULT, .requires_cap = -1,
+     },
+     {
+         .key = "disp_type", .section = "display", .group = "Screen", .type = KVM_VT_ENUM,
+@@ -1444,7 +1453,7 @@ static const kvm_setting_t s_settings[] = {
+                 "reports none of it. A wrong size shows the picture squeezed into part "
+                 "of the glass, or every other row missing. Shorter panels show fewer "
+                 "status lines.",
+-        .min = 0, .max = ENUM_MAX(s_display_choices), .def = 0, .choices = s_display_choices, .requires_cap = -1,
++        .min = 0, .max = ENUM_MAX(s_display_choices), .def = CONFIG_KVM_DISP_TYPE_DEFAULT, .choices = s_display_choices, .requires_cap = -1,
+     },
+     {
+         .key = "disp_rotate_180", .section = "display", .group = "Screen", .type = KVM_VT_BOOL,
+diff --git a/main/Kconfig.projbuild b/main/Kconfig.projbuild
+index 169fea8..5ff92d1 100644
+--- a/main/Kconfig.projbuild
++++ b/main/Kconfig.projbuild
+@@ -67,6 +67,20 @@ menu "ESP-KVM"
+                 SPI peripheral index for the round GC9A01 LCD. Only used when the
+                 display type is GC9A01.
+ 
++        # For a board built around its screen. A default is only consulted when nothing
++        # is stored, as with the pins below.
++        config KVM_DISP_ENABLE_DEFAULT
++            int "Status display on by default (0 or 1)"
++            depends on KVM_ENABLE_DISPLAY
++            range 0 1
++            default 0
++
++        config KVM_DISP_TYPE_DEFAULT
++            int "Default disp_type (index into the Panel setting)"
++            depends on KVM_ENABLE_DISPLAY
++            range 0 14
++            default 0
++
+         # The panel's five GPIOs stay runtime settings - the operator solders the
+         # wires and picks the pins in the console. These only choose what the
+         # console offers before anyone touches them, per board, because "free" is
+@@ -150,6 +164,14 @@ menu "ESP-KVM"
+             range -1 ENV_GPIO_RANGE_MAX
+             default -1
+ 
++        # For a board with the optocouplers on it, where the pins are not a choice.
++        # Buttons idle released whatever this says; see configure_output in kvm_atx.c.
++        config KVM_ATX_ENABLE_DEFAULT
++            int "ATX control on by default (0 or 1)"
++            depends on KVM_ENABLE_ATX
++            range 0 1
++            default 0
++
+         config KVM_ENABLE_HTTPS
+             bool "HTTPS and authentication"
+             default y
+-- 
+2.49.0.windows.1
+

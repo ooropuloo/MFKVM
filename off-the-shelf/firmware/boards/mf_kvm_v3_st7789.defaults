@@ -1,0 +1,8 @@
+# MF KVM v3 with the Waveshare 1.9" ST7789V2 170x320 in landscape. Needs patches/0001.
+# Layer it after mf_kvm_v3.defaults. Compile checked only. Never flashed, never run on a panel.
+CONFIG_KVM_SPI_PANEL_ST7789_170X320=y
+# On at first boot, so the hotspot's join code is on the glass without needing the console.
+CONFIG_KVM_DISP_ENABLE_DEFAULT=1
+# disp_type 2 is the SPI colour panel.
+CONFIG_KVM_DISP_TYPE_DEFAULT=2
+CONFIG_KVM_DISP_BL_GPIO=33

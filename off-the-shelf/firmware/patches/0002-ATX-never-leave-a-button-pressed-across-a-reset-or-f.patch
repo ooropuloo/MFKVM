@@ -1,0 +1,258 @@
+From 5b4262e774f4a20629f1d84672160ccf8950f208 Mon Sep 17 00:00:00 2001
+From: MF KVM <mf-kvm@localhost>
+Date: Fri, 6 Nov 2026 16:31:49 +0800
+Subject: [PATCH] ATX: never leave a button pressed across a reset, or fed by a
+ pull-up
+
+esp_restart() and a panic reset the CPUs but not the GPIO block, so a pin held
+by a press stays driven through the ROM and bootloader. A click can grow into a
+hold long enough to cut the target's power.
+
+- Write the press in flight (pin, idle level) to RTC no-init memory before the
+  pin moves. End it from a shutdown handler, from a wrap of esp_panic_handler
+  (a panic runs no shutdown handlers and then dumps core to flash), and first
+  thing in app_main for a reset that gives no warning. Only the pin that was
+  pressed is touched, so atx_enable=0 and repurposed pins are left alone.
+- gpio_reset_pin() leaves the pull-up on, a steady current into an active-high
+  optocoupler LED. Button outputs now release with a pull-down instead;
+  active-low ones keep the pull-up, which is their idle level. LED sense pins
+  are unchanged.
+- configure_output() set the idle level after enabling the output, which on an
+  active-low output pressed the button until the next line, and on a warm start
+  showed whatever the latch held. Set the level first, select the GPIO function
+  with the output off, then enable it.
+
+Compile-checked only. Not run on hardware.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Y2gafkZviHqY45NzkXoZ7C
+---
+ components/kvm_atx/CMakeLists.txt    |   4 +
+ components/kvm_atx/include/kvm_atx.h |   7 ++
+ components/kvm_atx/kvm_atx.c         | 105 +++++++++++++++++++++++++--
+ main/main.c                          |   2 +
+ 4 files changed, 112 insertions(+), 6 deletions(-)
+
+diff --git a/components/kvm_atx/CMakeLists.txt b/components/kvm_atx/CMakeLists.txt
+index 6dd2f63..295cb53 100644
+--- a/components/kvm_atx/CMakeLists.txt
++++ b/components/kvm_atx/CMakeLists.txt
+@@ -4,5 +4,9 @@ idf_component_register(
+     PRIV_REQUIRES
+         esp_driver_gpio
+         esp_timer
++        kvm_board
+         kvm_config
+ )
++
++# kvm_atx.c ends a press in flight before a panic prints and dumps core.
++target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--wrap=esp_panic_handler")
+diff --git a/components/kvm_atx/include/kvm_atx.h b/components/kvm_atx/include/kvm_atx.h
+index 78803b9..dcfc974 100644
+--- a/components/kvm_atx/include/kvm_atx.h
++++ b/components/kvm_atx/include/kvm_atx.h
+@@ -34,6 +34,13 @@ typedef struct {
+ /** One-time setup. Configures nothing until kvm_atx_apply() runs. */
+ esp_err_t kvm_atx_init(void);
+ 
++/**
++ * Let go of a button the last run was pressing when it reset, whatever the
++ * settings now say. Touches no pin unless a press was in flight. Needs no setup:
++ * call it as early in boot as possible.
++ */
++void kvm_atx_release_stuck_press(void);
++
+ /**
+  * (Re)read the settings and reconfigure the GPIOs, then report KVM_CAP_ATX.
+  * Safe to call again whenever an atx_* setting changes. Pins that need a reboot
+diff --git a/components/kvm_atx/kvm_atx.c b/components/kvm_atx/kvm_atx.c
+index b6194d0..462b77f 100644
+--- a/components/kvm_atx/kvm_atx.c
++++ b/components/kvm_atx/kvm_atx.c
+@@ -20,12 +20,15 @@
+ #include "driver/gpio.h"
+ #include "esp_attr.h"
+ #include "esp_log.h"
++#include "esp_system.h"
+ #include "esp_timer.h"
+ #include "freertos/FreeRTOS.h"
+ #include "freertos/queue.h"
+ #include "freertos/semphr.h"
+ #include "freertos/task.h"
++#include "hal/gpio_ll.h"
+ 
++#include "kvm_board_header.h"
+ #include "kvm_caps.h"
+ #include "kvm_settings.h"
+ 
+@@ -76,6 +79,49 @@ static void IRAM_ATTR hdd_edge(void *arg)
+ static inline int idle_level(bool active_high) { return active_high ? 0 : 1; }
+ static inline int press_level(bool active_high) { return active_high ? 1 : 0; }
+ 
++/*
++ * The press in flight, if any, kept in memory that a reset leaves alone.
++ *
++ * esp_restart() and a panic reset the CPUs and a list of peripherals, not the
++ * GPIO block, so a pin held at its press level stays there through the ROM and
++ * the bootloader: a click grows into a hold long enough to cut the target's
++ * power. So a press is written down before the pin moves and ends in two places:
++ * on the way down (below), and at the next boot for a reset that gives no warning.
++ *
++ * Only the pin that was really pressed is ever touched, with the polarity it was
++ * pressed with. Settings cannot say that: they may have changed, and with
++ * atx_enable off the configured pins may belong to something else entirely.
++ *
++ * Layout: magic in the top 24 bits, the pin in bits 1-7, its idle level in bit 0.
++ */
++#define ATX_PRESS_MAGIC 0xA7C05A00u
++#define ATX_PRESS_MAGIC_MASK 0xFFFFFF00u
++
++static RTC_NOINIT_ATTR volatile uint32_t s_press;
++
++/* Register writes only and no lock: this runs in a panic, or on a task that may
++ * hold anything, and must not wait for the worker to finish a five-second hold. */
++static void IRAM_ATTR end_press_now(void)
++{
++    const uint32_t press = s_press;
++    if ((press & ATX_PRESS_MAGIC_MASK) == ATX_PRESS_MAGIC) {
++        gpio_ll_set_level(&GPIO, (press >> 1) & 0x7f, press & 1);
++    }
++}
++
++/*
++ * Linked with --wrap=esp_panic_handler: a panic runs no shutdown handlers and
++ * goes on to print and write a core dump to flash, which takes far longer than a
++ * click should last. Ending the press on the way in beats ending it after that.
++ */
++void __real_esp_panic_handler(void *info);
++
++void IRAM_ATTR __wrap_esp_panic_handler(void *info)
++{
++    end_press_now();
++    __real_esp_panic_handler(info);
++}
++
+ static void atx_task(void *arg)
+ {
+     (void)arg;
+@@ -118,9 +164,11 @@ static void atx_task(void *arg)
+         }
+ 
+         ESP_LOGW(TAG, "%s: GPIO %d for %d ms", what, pin, hold_ms);
++        s_press = ATX_PRESS_MAGIC | ((uint32_t)pin << 1) | (uint32_t)idle_level(c.active_high);
+         gpio_set_level(pin, press_level(c.active_high));
+         vTaskDelay(pdMS_TO_TICKS(hold_ms));
+         gpio_set_level(pin, idle_level(c.active_high));
++        s_press = 0;
+         /* A settle gap so a rapid second command is still a distinct press. */
+         vTaskDelay(pdMS_TO_TICKS(150));
+         xSemaphoreGive(s_op_mtx);
+@@ -144,6 +192,11 @@ esp_err_t kvm_atx_init(void)
+     if (xTaskCreate(atx_task, "atx", 2048, NULL, 5, NULL) != pdPASS) {
+         return ESP_ERR_NO_MEM;
+     }
++    /* Not fatal if the table is full: the next boot still ends the press, later. */
++    esp_err_t err = esp_register_shutdown_handler(end_press_now);
++    if (err != ESP_OK) {
++        ESP_LOGW(TAG, "no shutdown handler: %s", esp_err_to_name(err));
++    }
+     return ESP_OK;
+ }
+ 
+@@ -156,6 +209,38 @@ static void release_pin(int gpio)
+     }
+ }
+ 
++/* The same for a button output. gpio_reset_pin() leaves the pull-up on, which on
++ * an active-high output feeds the optocoupler LED a steady trickle, so bias the
++ * pin toward its idle level instead. An active-low one keeps the pull-up: that
++ * is its idle level. */
++static void release_button(int gpio, bool active_high)
++{
++    release_pin(gpio);
++    if (gpio >= 0 && active_high) {
++        gpio_pullup_dis(gpio);
++        gpio_pulldown_en(gpio);
++    }
++}
++
++void kvm_atx_release_stuck_press(void)
++{
++    const uint32_t press = s_press;
++    s_press = 0;
++    if ((press & ATX_PRESS_MAGIC_MASK) != ATX_PRESS_MAGIC) {
++        return; /* no press in flight, or a power-up's random memory */
++    }
++    const int gpio = (press >> 1) & 0x7f;
++    const int idle = press & 1;
++    /* The settings refuse a reserved pin, so this is only ever random memory that
++     * happened to match. Leave those pins to their owners. */
++    if (!GPIO_IS_VALID_OUTPUT_GPIO(gpio) || kvm_board_reserved_by(gpio)) {
++        return;
++    }
++    gpio_set_level(gpio, idle);
++    release_button(gpio, idle == 0);
++    ESP_LOGW(TAG, "a press on GPIO %d was cut short by the reset", gpio);
++}
++
+ static esp_err_t configure_output(int gpio, bool active_high)
+ {
+     gpio_config_t io = {
+@@ -165,9 +250,17 @@ static esp_err_t configure_output(int gpio, bool active_high)
+         .pull_down_en = GPIO_PULLDOWN_DISABLE,
+         .intr_type = GPIO_INTR_DISABLE,
+     };
+-    esp_err_t err = gpio_config(&io);
++    /* Never press on boot. The output latch keeps its value through a warm restart
++     * and reads 0 after a cold one, so set the idle level before the output can
++     * show it. gpio_config() enables the output before it selects the GPIO function,
++     * so select it first with the output still off: GPIO 2 to 5 have JTAG as
++     * function 0. */
++    esp_err_t err = gpio_set_level(gpio, idle_level(active_high));
++    if (err == ESP_OK) {
++        err = gpio_output_disable(gpio);
++    }
+     if (err == ESP_OK) {
+-        gpio_set_level(gpio, idle_level(active_high)); /* never press on boot */
++        err = gpio_config(&io);
+     }
+     return err;
+ }
+@@ -242,8 +335,8 @@ esp_err_t kvm_atx_apply(void)
+     xSemaphoreTake(s_cfg_mtx, portMAX_DELAY);
+ 
+     /* Drop whatever we held before; a pin may have moved or been switched off. */
+-    release_pin(s_cfg.pwr_gpio);
+-    release_pin(s_cfg.rst_gpio);
++    release_button(s_cfg.pwr_gpio, s_cfg.active_high);
++    release_button(s_cfg.rst_gpio, s_cfg.active_high);
+     release_pin(s_cfg.led_gpio);
+     release_hdd(s_cfg.hdd_gpio);
+     s_cfg.enabled = false;
+@@ -273,8 +366,8 @@ esp_err_t kvm_atx_apply(void)
+             s_cfg.led_active_high = led_active_high;
+         } else {
+             ESP_LOGE(TAG, "GPIO setup failed: %s", esp_err_to_name(err));
+-            release_pin(pwr);
+-            release_pin(rst);
++            release_button(pwr, active_high);
++            release_button(rst, active_high);
+             release_pin(led);
+             release_hdd(hdd);
+         }
+diff --git a/main/main.c b/main/main.c
+index 006a10d..49d7734 100644
+--- a/main/main.c
++++ b/main/main.c
+@@ -594,6 +594,8 @@ void app_main(void)
+     /* First, so everything below is captured. What the bootloader and the ROM
+      * printed before this is already gone - it exists only on the wire. */
+     kvm_log_init();
++    /* A pressed button stays pressed through a warm reset until someone lets go. */
++    kvm_atx_release_stuck_press();
+     kvm_log_start_tail(); /* the live view's copy, in PSRAM */
+     log_boot_reason();
+     boot_guard_check();
+-- 
+2.49.0.windows.1
+

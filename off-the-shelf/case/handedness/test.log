@@ -1,0 +1,45 @@
+PASS official figure: OTG shell on the right in the top view (real ok, mirrored copy rejected)
+PASS STEP: seen from the top with CDC away, OTG and BOOT (K2) right, RST (K1) left, as in the figure (real ok, mirrored copy rejected)
+PASS tray: OTG window in the +X wall at y 45.5, solid wall at the same place on -X. U8 is at +x in the STEP
+PASS tray: ATX opening in the -X wall only
+PASS tray: BOOT hole +X, RST hole -X
+PASS tray: HDMI opening at x -6.55, wall at the mirrored x 6.55
+PASS tray: C6 test point hatch at -x, where the figure has the pads
+PASS tray STL has positive signed volume, 10856 mm3, so its faces were not flipped by a mirror
+PASS lid STL has positive signed volume, 3729 mm3, so its faces were not flipped by a mirror
+PASS bridge STL has positive signed volume, 536 mm3, so its faces were not flipped by a mirror
+PASS former STL has positive signed volume, 522 mm3, so its faces were not flipped by a mirror
+PASS tray STL and STEP share the same x range; the X range is asymmetric, so a mirrored STL would not match
+PASS Geekworm figure: HDMI overhangs the left edge of the front view (real ok, mirrored copy rejected)
+PASS assembly C790: same chirality as the figure (HDMI to FPC, then I2S on the right hand side of that) (real ok, mirrored copy rejected)
+PASS C790 pin 1 (I2S end of J2) is on the -x side, x -19.0, so the roll sends it to J1 pin 1 at high y
+PASS LCD vendor STEP: connector at Xl 12.5..16.7, on the 6.25 mm side of the drawing, behind the panel
+PASS assembly LCD: connector where a rotation of the vendor STEP puts it (real ok, mirrored copy rejected)
+PASS window offset is toward low y, the Xl = 51.2 end, where the 2.23 mm margin is
+PASS ATX Gerber in the case: JST at the opening y and opening toward -X, pin row toward the core and the antenna end (real ok, mirrored copy rejected)
+PASS ATX Gerber notch at +x, +y (board stops at y 3.18 there), which clears the core post at case (-11.0, 58.3): post y starts at 56.3, notch at 55.90
+PASS assembly ATX model puts the JST at y 60.35, Gerber says 60.35
+PASS assembly ATX board has the notch on the same corner as the Gerber
+       H1 3V3 hole at (-11.43, 45.847) on P1 pin 2 3V3 error 0.0 mm
+       H2 GND hole at (-11.43, 40.767) on P1 pin 4 GND error 0.0 mm
+       H3 ATX_PWR hole at (-11.43, 35.687) on P1 pin 6 28 error 0.0 mm
+       H4 ATX_RST hole at (-11.43, 33.147) on P1 pin 7 29 error 0.0 mm
+       H5 ATX_LED hole at (-11.43, 30.607) on P1 pin 8 30 error 0.0 mm
+PASS ATX pin map: 5 plated holes each on its named header hole within 0.1 mm, worst 0.000 
+PASS ATX pin map refuses a rewritten copy: mirror across the board width (about its origin). 3V3 at (-21.77, 45.85): nearest header hole is P1-2 3V3, 10.340 mm away
+PASS ATX pin map refuses a rewritten copy: mirror across the pin row: holes still fit, board on the wrong side. JST at x -6.39 is not on the -X side of the row, x -11.43
+PASS ATX pin map refuses a rewritten copy: row reversal, 3V3 end swapped with GPIO30 end. 3V3 lands on P1-8 30, it must be 3V3
+PASS ATX pin map refuses a rewritten copy: 180 degree turn about the middle of the row. 3V3 lands on P1-8 30, it must be 3V3
+PASS ATX pin map refuses a rewritten copy: 3V3 and GND nets swapped. GND lands on P1-2 3V3, it must be GND
+PASS ATX pin map refuses a rewritten copy: row shifted by one pitch. 3V3 lands on P1-1 RST, it must be 3V3
+PASS assembly model pin H1 at (-11.43, 45.847), STEP hole 3V3 at (-11.43, 45.847)
+PASS assembly model pin H2 at (-11.43, 40.767), STEP hole GND at (-11.43, 40.767)
+PASS assembly model pin H3 at (-11.43, 35.687), STEP hole 28 at (-11.43, 35.687)
+PASS assembly model pin H4 at (-11.43, 33.147), STEP hole 29 at (-11.43, 33.147)
+PASS assembly model pin H5 at (-11.43, 30.607), STEP hole 30 at (-11.43, 30.607)
+PASS assembly STL has pins from y 30.29 to 46.17 above the core, and none at P1 pin 1 (RST), y 48.387
+PASS page: no errors 
+PASS page: root transform determinant 1.000 is positive, a rotation and not a mirror
+PASS page: from above with CDC up the screen, OTG right, BOOT right, RST left; mesh vertices right 626 left 0 (real ok, mirrored copy rejected)
+PASS page pixels: bright OTG shell on the right half of the board, same test as the official figure (real ok, mirrored copy rejected)
+RESULT OK 

@@ -1,0 +1,24 @@
+0 under limit; VIA outer min 0.2 (limit 0.2), VIA inner min 0.2015 (limit 0.2), NPTH outer min 0.3005 (limit 0.2), NPTH inner min 0.3005 (limit 0.2), PTH outer min 0.3017 (limit 0.28), PTH inner min 0.3025 (limit 0.3); holes {'VIA': 230, 'PTH': 12, 'NPTH': 4} on 6 copper layers
+limits: JLCPCB capabilities page, 2026-11-06. Same-net copper on plated holes is exempt, NPTH has no exemption.
+same-net objects exempted, by hole type and object: {('PTH', 'ComponentPad'): 72, ('PTH', 'Conductor'): 7, ('PTH', 'Zone'): 51, ('VIA', 'ComponentPad'): 6, ('VIA', 'Conductor'): 585, ('VIA', 'SMDPad'): 171, ('VIA', 'ViaPad'): 1464, ('VIA', 'Zone'): 270}
+zone regions whose parsed area was checked against the outline: 24
+PTH holes, closest other-net copper within 0.45 mm of the hole edge: 30 objects (12 under the 0.35 JLC recommends)
+  0.3017 limit 0.28 J5.2 [GND] L6 to track(13.75,-1.15) [VDDC]
+  0.3025 limit 0.3 J5.2 [GND] L3 to track(13.74,-3.37) [I2C_SDA]
+  0.3200 limit 0.3 J3.4 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3200 limit 0.3 J3.3 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3200 limit 0.3 J3.1 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3200 limit 0.3 J5.4 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3200 limit 0.3 J5.3 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3201 limit 0.3 J5.1 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3205 limit 0.3 J3.2 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3205 limit 0.3 J5.2 [GND] L4 to zone(18.44,-19.78) [3V3]
+  0.3243 limit 0.28 J5.2 [GND] L6 to track(12.26,-0.25) [VDDC]
+  0.3243 limit 0.28 J5.2 [GND] L6 to track(13.16,-1.14) [VDDC]
+NPTH hole wall to any copper, reported margin above the 0.2 limit. 4 holes:
+  (-18.00,-18.00) 0.3005, margin 0.1005, L6 to zone(18.44,-19.78) [GND]
+  (-18.00,18.00) 0.3005, margin 0.1005, L6 to zone(18.44,-19.78) [GND]
+  (18.00,-18.00) 0.3005, margin 0.1005, L6 to zone(18.44,-19.78) [GND]
+  (18.00,18.00) 0.3005, margin 0.1005, L6 to zone(18.44,-19.78) [GND]
+under limit: 0
+RESULT PASS

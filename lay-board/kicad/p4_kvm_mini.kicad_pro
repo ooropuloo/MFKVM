@@ -1,0 +1,62 @@
+{
+ "board": {
+  "design_settings": {
+   "rules": {
+    "min_clearance": 0.09,
+    "min_track_width": 0.09,
+    "min_via_diameter": 0.35,
+    "min_via_annular_width": 0.075,
+    "min_through_hole_diameter": 0.15,
+    "min_hole_to_hole": 0.2,
+    "min_hole_clearance": 0.2,
+    "min_copper_edge_clearance": 0.2,
+    "min_silk_clearance": 0,
+    "min_text_height": 0.5,
+    "min_text_thickness": 0.08,
+    "solder_mask_clearance": 0,
+    "min_connection": 0.09
+   },
+   "defaults": {},
+   "rule_severities": {
+    "lib_footprint_issues": "ignore",
+    "lib_footprint_mismatch": "ignore",
+    "silk_over_copper": "ignore",
+    "silk_overlap": "ignore",
+    "silk_edge_clearance": "ignore",
+    "courtyards_overlap": "warning",
+    "solder_mask_bridge": "error",
+    "starved_thermal": "warning",
+    "text_height": "ignore",
+    "text_thickness": "ignore"
+   }
+  }
+ },
+ "net_settings": {
+  "classes": [
+   {
+    "name": "Default",
+    "clearance": 0.1,
+    "track_width": 0.127,
+    "via_diameter": 0.4,
+    "via_drill": 0.2,
+    "microvia_diameter": 0.3,
+    "microvia_drill": 0.1,
+    "diff_pair_width": 0.127,
+    "diff_pair_gap": 0.198,
+    "wire_width": 6,
+    "bus_width": 12,
+    "line_style": 0,
+    "schematic_color": "rgba(0, 0, 0, 0.000)",
+    "pcb_color": "rgba(0, 0, 0, 0.000)",
+    "priority": 2147483647
+   }
+  ],
+  "meta": {
+   "version": 4
+  }
+ },
+ "meta": {
+  "filename": "p4_kvm_mini.kicad_pro",
+  "version": 3
+ }
+}

@@ -1,0 +1,819 @@
+{
+ "U11/J4": {
+  "a": "U11",
+  "b": "J4",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   1.65,
+   1.265
+  ],
+  "body_nom": 0.9,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.155,
+  "metal_worst": -0.2,
+  "body_worst": 0.4,
+  "a_body_to_b_pad": 2.1,
+  "b_body_to_a_pad": 0.035,
+  "lead_to_b_body": 0.155,
+  "lead_to_a_body": 2.25,
+  "pad_pad": [
+   0.15000000000000568,
+   "3",
+   "RST_E",
+   "1",
+   "PWR_C"
+  ],
+  "jlc_gap": 0.035,
+  "jlc_rule": [
+   null,
+   "connector: no row"
+  ],
+  "heights": [
+   2.2,
+   2.95
+  ],
+  "src": [
+   "DS LITE-ON p2",
+   "DS JST eSH p1,p3"
+  ]
+ },
+ "C11/U5": {
+  "a": "C11",
+  "b": "U5",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   2.56,
+   0.025
+  ],
+  "body_nom": 1.25,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.65,
+  "metal_worst": 0.25,
+  "body_worst": 0.875,
+  "a_body_to_b_pad": 0.25,
+  "b_body_to_a_pad": 1.175,
+  "lead_to_b_body": null,
+  "lead_to_a_body": 0.65,
+  "pad_pad": [
+   0.17500000000001137,
+   "2",
+   "GND",
+   "3",
+   "V2V5"
+  ],
+  "jlc_gap": 0.175,
+  "jlc_rule": [
+   0.2,
+   "chip 0603 / SOT"
+  ],
+  "heights": [
+   0.8,
+   1.45
+  ],
+  "src": [
+   "DS Samsung CL10 p6",
+   "DS TI DBV0005A"
+  ]
+ },
+ "C19/Y1": {
+  "a": "C19",
+  "b": "Y1",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   0.82,
+   0.035
+  ],
+  "body_nom": 0.55,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.55,
+  "metal_worst": 0.25,
+  "body_worst": 0.25,
+  "a_body_to_b_pad": 0.451,
+  "b_body_to_a_pad": 0.29,
+  "lead_to_b_body": null,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.18794946129211285,
+   "2",
+   "GND",
+   "1",
+   "OSC_VDD"
+  ],
+  "jlc_gap": 0.188,
+  "jlc_rule": [
+   null,
+   "oscillator: no row"
+  ],
+  "heights": [
+   0.5,
+   1.2
+  ],
+  "src": [
+   "DS FH 0402B471K500NT p5, CA",
+   "DS YXC YSO110TR p3"
+  ]
+ },
+ "C40/J7": {
+  "a": "C40",
+  "b": "J7",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   0.23,
+   0.215
+  ],
+  "body_nom": 0.809,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.809,
+  "metal_worst": 0.373,
+  "body_worst": 0.373,
+  "a_body_to_b_pad": 1.755,
+  "b_body_to_a_pad": 0.46,
+  "lead_to_b_body": null,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   2.246536222721556,
+   "1",
+   "SD1_VDD",
+   "SH3",
+   "GND"
+  ],
+  "jlc_gap": 0.46,
+  "jlc_rule": [
+   null,
+   "connector: no row"
+  ],
+  "heights": [
+   0.8,
+   1.57
+  ],
+  "src": [
+   "DS Samsung CL10 p6",
+   "DS Molex SD-104031-001"
+  ]
+ },
+ "R52/R42": {
+  "a": "R52",
+  "b": "R42",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [
+   "R42"
+  ],
+  "crt_overlap": [
+   0.02,
+   0.12
+  ],
+  "body_nom": 0.728,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.728,
+  "metal_worst": 0.31,
+  "body_worst": 0.31,
+  "a_body_to_b_pad": 0.462,
+  "b_body_to_a_pad": 0.462,
+  "lead_to_b_body": null,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.19697715603590166,
+   "2",
+   "PWR_LED",
+   "1",
+   "3V3"
+  ],
+  "jlc_gap": 0.197,
+  "jlc_rule": [
+   0.15,
+   "chip 0402 / chip 0402"
+  ],
+  "heights": [
+   0.35,
+   0.35
+  ],
+  "src": [
+   "DS UNI-ROYAL 0402 p4",
+   "DS UNI-ROYAL 0402 p4"
+  ],
+  "note": "R42 is DNP: no body exists; gaps with its body are shown for the case someone fits it"
+ },
+ "R53/C41": {
+  "a": "R53",
+  "b": "C41",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   0.02,
+   0.32
+  ],
+  "body_nom": 0.7,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.7,
+  "metal_worst": 0.35,
+  "body_worst": 0.35,
+  "a_body_to_b_pad": 0.44,
+  "b_body_to_a_pad": 0.44,
+  "lead_to_b_body": null,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.1799999999999784,
+   "2",
+   "RST_LED",
+   "1",
+   "SD1_VDD"
+  ],
+  "jlc_gap": 0.18,
+  "jlc_rule": [
+   0.15,
+   "chip 0402 / chip 0402"
+  ],
+  "heights": [
+   0.35,
+   0.5
+  ],
+  "src": [
+   "DS UNI-ROYAL 0402 p4",
+   "DS Samsung CL05 p6"
+  ]
+ },
+ "Y1/C17": {
+  "a": "Y1",
+  "b": "C17",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   0.82,
+   0.035
+  ],
+  "body_nom": 0.55,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.55,
+  "metal_worst": 0.25,
+  "body_worst": 0.25,
+  "a_body_to_b_pad": 0.29,
+  "b_body_to_a_pad": 0.425,
+  "lead_to_b_body": null,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.16499999999999204,
+   "2",
+   "GND",
+   "1",
+   "VDD_MIPI"
+  ],
+  "jlc_gap": 0.165,
+  "jlc_rule": [
+   null,
+   "oscillator: no row"
+  ],
+  "heights": [
+   1.2,
+   0.5
+  ],
+  "src": [
+   "DS YXC YSO110TR p3",
+   "DS FH 0402B471K500NT p5, CA"
+  ]
+ },
+ "U10/R22": {
+  "a": "U10",
+  "b": "R22",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   0.01,
+   0.82
+  ],
+  "body_nom": 2.4,
+  "body_overlap_area": 0.0,
+  "metal_nom": 1.1,
+  "metal_worst": 0.701,
+  "body_worst": 1.9,
+  "a_body_to_b_pad": 2.14,
+  "b_body_to_a_pad": 0.45,
+  "lead_to_b_body": 1.1,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.18999999999998352,
+   "1",
+   "PWR_LED",
+   "2",
+   "3V3"
+  ],
+  "jlc_gap": 0.19,
+  "jlc_rule": [
+   0.4,
+   "chip 0402 / SOP"
+  ],
+  "heights": [
+   2.2,
+   0.35
+  ],
+  "src": [
+   "DS LITE-ON p2",
+   "DS UNI-ROYAL 0402 p4"
+  ]
+ },
+ "U10/R23": {
+  "a": "U10",
+  "b": "R23",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   0.01,
+   0.82
+  ],
+  "body_nom": 2.4,
+  "body_overlap_area": 0.0,
+  "metal_nom": 1.217,
+  "metal_worst": 0.852,
+  "body_worst": 1.9,
+  "a_body_to_b_pad": 2.14,
+  "b_body_to_a_pad": 0.602,
+  "lead_to_b_body": 1.217,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.38948684188300386,
+   "2",
+   "GND",
+   "2",
+   "3V3"
+  ],
+  "jlc_gap": 0.389,
+  "jlc_rule": [
+   0.4,
+   "chip 0402 / SOP"
+  ],
+  "heights": [
+   2.2,
+   0.35
+  ],
+  "src": [
+   "DS LITE-ON p2",
+   "DS UNI-ROYAL 0402 p4"
+  ]
+ },
+ "U4/C10": {
+  "a": "U4",
+  "b": "C10",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": [
+   2.56,
+   0.025
+  ],
+  "body_nom": 1.25,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.65,
+  "metal_worst": 0.25,
+  "body_worst": 0.875,
+  "a_body_to_b_pad": 1.175,
+  "b_body_to_a_pad": 0.25,
+  "lead_to_b_body": 0.65,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.17500000000001137,
+   "3",
+   "3V3",
+   "2",
+   "GND"
+  ],
+  "jlc_gap": 0.175,
+  "jlc_rule": [
+   0.2,
+   "chip 0603 / SOT"
+  ],
+  "heights": [
+   1.45,
+   0.8
+  ],
+  "src": [
+   "DS TI DBV0005A",
+   "DS Samsung CL10 p6"
+  ]
+ },
+ "U10/U11": {
+  "a": "U10",
+  "b": "U11",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": null,
+  "body_nom": 0.0,
+  "body_overlap_area": 1.1,
+  "metal_nom": 0.0,
+  "metal_worst": -0.2,
+  "body_worst": -0.2,
+  "a_body_to_b_pad": 0.085,
+  "b_body_to_a_pad": 0.085,
+  "lead_to_b_body": 0.205,
+  "lead_to_a_body": 0.205,
+  "pad_pad": [
+   0.4200000000000159,
+   "2",
+   "GND",
+   "1",
+   "RST_LED"
+  ],
+  "jlc_gap": 0.0,
+  "jlc_rule": [
+   0.5,
+   "SOP / SOP"
+  ],
+  "heights": [
+   2.2,
+   2.2
+  ],
+  "src": [
+   "DS LITE-ON p2",
+   "DS LITE-ON p2"
+  ]
+ },
+ "U12/L1": {
+  "a": "U12",
+  "b": "L1",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": null,
+  "body_nom": 0.0,
+  "body_overlap_area": 0.175,
+  "metal_nom": 0.0,
+  "metal_worst": -0.2,
+  "body_worst": -0.2,
+  "a_body_to_b_pad": 0.025,
+  "b_body_to_a_pad": 0.21,
+  "lead_to_b_body": 0.33,
+  "lead_to_a_body": null,
+  "pad_pad": [
+   0.36000000000001364,
+   "1",
+   "LED_IN",
+   "1",
+   "SW"
+  ],
+  "jlc_gap": 0.0,
+  "jlc_rule": [
+   null,
+   "inductor: no row"
+  ],
+  "heights": [
+   2.2,
+   2.0
+  ],
+  "src": [
+   "DS LITE-ON p2",
+   "STD SWPA4020 family 4.0x4.0"
+  ]
+ },
+ "U4/Q1": {
+  "a": "U4",
+  "b": "Q1",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": null,
+  "body_nom": 0.0,
+  "body_overlap_area": 0.094,
+  "metal_nom": 0.0,
+  "metal_worst": -0.2,
+  "body_worst": -0.2,
+  "a_body_to_b_pad": 0.4,
+  "b_body_to_a_pad": 0.0,
+  "lead_to_b_body": 0.09,
+  "lead_to_a_body": 0.856,
+  "pad_pad": [
+   0.20000000000000284,
+   "3",
+   "3V3",
+   "1",
+   "SD_PWR_N"
+  ],
+  "jlc_gap": 0.0,
+  "jlc_rule": [
+   0.4,
+   "SOT / SOT"
+  ],
+  "heights": [
+   1.45,
+   1.12
+  ],
+  "src": [
+   "DS TI DBV0005A",
+   "STD JEDEC TO-236 / SOT-23 (AOS sheet has no outline)"
+  ]
+ },
+ "C11/U10": {
+  "a": "C11",
+  "b": "U10",
+  "side": [
+   "B.Cu",
+   "B.Cu"
+  ],
+  "dnp": [],
+  "crt_overlap": null,
+  "body_nom": 0.025,
+  "body_overlap_area": 0.0,
+  "metal_nom": 0.025,
+  "metal_worst": -0.2,
+  "body_worst": -0.2,
+  "a_body_to_b_pad": 1.016,
+  "b_body_to_a_pad": 0.0,
+  "lead_to_b_body": null,
+  "lead_to_a_body": 1.109,
+  "pad_pad": [
+   0.6372793735874515,
+   "1",
+   "V2V5",
+   "1",
+   "PWR_LED"
+  ],
+  "jlc_gap": 0.0,
+  "jlc_rule": [
+   0.4,
+   "chip 0603 / SOP"
+  ],
+  "heights": [
+   0.8,
+   2.2
+  ],
+  "src": [
+   "DS Samsung CL10 p6",
+   "DS LITE-ON p2"
+  ]
+ },
+ "_j4": {
+  "housing_rear_y": 15.225,
+  "housing_front_y": 19.475,
+  "u11_pad3_to_housing": 0.035,
+  "u11_lead3_nom_to_housing": 0.155,
+  "u11_lead3_max_to_housing_max": 0.0,
+  "u11_body_to_housing": 0.9,
+  "u11_body_to_j4_pad7": 2.403,
+  "u11_lead3_to_tail1": 0.95,
+  "plug_rear_y_mated": 21.475,
+  "plug_swath_to_u11_body_y_gap": 3.97,
+  "parts_within_1p5_of_plug_swath": []
+ },
+ "_audit": {
+  "U11": {
+   "crt": [
+    -0.85,
+    11.91,
+    7.65,
+    15.29
+   ],
+   "real": [
+    -0.1,
+    11.675,
+    6.9,
+    15.525
+   ],
+   "area_outside_crt": 2.068,
+   "area_crt_extra": 8.866
+  },
+  "U4": {
+   "crt": [
+    -1.55,
+    3.3,
+    1.15,
+    7.1
+   ],
+   "real": [
+    -1.65,
+    3.8,
+    1.25,
+    6.6
+   ],
+   "area_outside_crt": 0.32,
+   "area_crt_extra": 2.94
+  },
+  "Q1": {
+   "crt": [
+    -4.25,
+    4.425,
+    -1.55,
+    7.975
+   ],
+   "real": [
+    -4.36,
+    5.0,
+    -1.44,
+    7.4
+   ],
+   "area_outside_crt": 0.286,
+   "area_crt_extra": 4.23
+  },
+  "Y1": {
+   "crt": [
+    8.6,
+    -9.475,
+    12.2,
+    -6.525
+   ],
+   "real": [
+    8.8,
+    -9.25,
+    12.0,
+    -6.75
+   ],
+   "area_outside_crt": 0.0,
+   "area_crt_extra": 1.58
+  },
+  "J4": {
+   "crt": [
+    -8.2,
+    14.025,
+    0.8,
+    20.28
+   ],
+   "real": [
+    -8.0,
+    14.525,
+    0.6,
+    19.575
+   ],
+   "area_outside_crt": 0.0,
+   "area_crt_extra": 16.575
+  },
+  "J7": {
+   "crt": [
+    -19.9,
+    -2.34,
+    -7.65,
+    10.54
+   ],
+   "real": [
+    -19.5,
+    -1.855,
+    -8.1,
+    10.095
+   ],
+   "area_outside_crt": 0.0,
+   "area_crt_extra": 15.702
+  },
+  "L1": {
+   "crt": [
+    11.45,
+    11.95,
+    15.75,
+    15.85
+   ],
+   "real": [
+    11.6,
+    11.9,
+    15.6,
+    15.9
+   ],
+   "area_outside_crt": 0.4,
+   "area_crt_extra": 0.8
+  },
+  "C10": {
+   "crt": [
+    -1.48,
+    7.075,
+    1.08,
+    8.225
+   ],
+   "real": [
+    -1.0,
+    7.25,
+    0.6,
+    8.05
+   ],
+   "area_outside_crt": 0.0,
+   "area_crt_extra": 0.816
+  },
+  "R52": {
+   "crt": [
+    -2.76,
+    10.99,
+    -1.04,
+    11.81
+   ],
+   "real": [
+    -2.4,
+    11.15,
+    -1.4,
+    11.65
+   ],
+   "area_outside_crt": 0.0,
+   "area_crt_extra": 0.516
+  },
+  "C17": {
+   "crt": [
+    8.79,
+    -6.56,
+    9.61,
+    -4.84
+   ],
+   "real": [
+    8.95,
+    -6.2,
+    9.45,
+    -5.2
+   ],
+   "area_outside_crt": 0.0,
+   "area_crt_extra": 0.516
+  }
+ },
+ "_ssop_preview": {
+  "U10": [
+   [
+    "R52",
+    1.338,
+    0.634
+   ],
+   [
+    "R23",
+    1.1,
+    0.415
+   ],
+   [
+    "R22",
+    1.1,
+    0.415
+   ],
+   [
+    "C11",
+    0.6,
+    0.525
+   ],
+   [
+    "C10",
+    0.849,
+    0.569
+   ]
+  ],
+  "U11": [
+   [
+    "C62",
+    0.975,
+    0.5
+   ],
+   [
+    "J4",
+    0.79,
+    0.375
+   ],
+   [
+    "R53",
+    1.3,
+    0.615
+   ]
+  ],
+  "U12": [
+   [
+    "R55",
+    1.15,
+    0.465
+   ],
+   [
+    "R54",
+    1.15,
+    0.465
+   ],
+   [
+    "L1",
+    0.45,
+    0.45
+   ]
+  ]
+ }
+}

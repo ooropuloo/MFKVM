@@ -1,0 +1,6 @@
+mask bridge minimum 0.15 mm, 0 under 0.1, 0 under 0.13 (black/white only); opening to other-net conductor minimum 0.1007 mm, 0 under 0.09; 0 openings merged across nets; openings {'F': {'openings': 180, 'copper': 743, 'not_on_a_pad': 4}, 'B': {'openings': 323, 'copper': 1210, 'not_on_a_pad': 4}}
+bridges under 0.10: 0
+bridges 0.10 to 0.13: 0
+openings merged across nets: 0
+opening to conductor under 0.09: 0
+RESULT PASS

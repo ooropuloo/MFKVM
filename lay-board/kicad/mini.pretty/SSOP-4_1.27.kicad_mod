@@ -1,0 +1,8 @@
+(footprint "SSOP-4_1.27" (version 20241229) (generator "p4mini") (generator_version "9.0") (layer "B.Cu") (uuid "54f8dee0-d627-4e46-8e7b-e855b187f79c") 
+    (property "Reference" "REF**" (at -4.025 -1.950) (layer "B.Fab") (uuid "0f950826-6b86-4544-afc2-7cc81e1063f1") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "Value" "EL3H7(C)(TA)-G" (at 0 0) (layer "B.Fab") (hide yes) (uuid "b2f00bef-97a7-41a7-b2f8-3a545c92a6c5") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "LCSC" "C92243" (at 0 0) (layer "B.Fab") (hide yes) (uuid "168050a0-60b2-4ceb-9f83-2c14c06a9325") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+        (attr smd)
+    (fp_rect (start -4.025 -1.650) (end 4.025 1.650) (stroke (width 0.05) (type default)) (fill no) (layer "B.CrtYd") (uuid "cc3c2b44-0ca2-4fb5-a4ea-e7e83260dbc5"))
+    (pad "1" smd rect (at 3.1750 -0.6350) (size 1.5 0.6) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "c9252148-86a6-4276-9e5f-c559a78e9d53")) (pad "2" smd rect (at 3.1750 0.6350) (size 1.5 0.6) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "95e7ca65-2a1b-4cbf-96fb-74846ad5be50")) (pad "3" smd rect (at -3.1750 0.6350) (size 1.5 0.6) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "9ad58bcc-99c4-45ab-a264-cf073eef4178")) (pad "4" smd rect (at -3.1750 -0.6350) (size 1.5 0.6) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "dfd17008-2e56-497a-a064-97e3986f91ab"))
+  )

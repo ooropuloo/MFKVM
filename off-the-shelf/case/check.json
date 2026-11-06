@@ -1,0 +1,529 @@
+{
+ "overall": [
+  38.050000000000004,
+  75.0,
+  26.73
+ ],
+ "volume": 76.28073750000001,
+ "results": [
+  {
+   "a": "tray",
+   "b": "lid",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "bridge",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "former",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "c790",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "lcd",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "atx",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "tray",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "bridge",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "former",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "c790",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "lcd",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "atx",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lid",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "bridge",
+   "b": "former",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "bridge",
+   "b": "c790",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "bridge",
+   "b": "lcd",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "bridge",
+   "b": "atx",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "bridge",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "bridge",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "former",
+   "b": "c790",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "former",
+   "b": "lcd",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "former",
+   "b": "atx",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "former",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "former",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "c790",
+   "b": "lcd",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "c790",
+   "b": "atx",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "c790",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "c790",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lcd",
+   "b": "atx",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lcd",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "lcd",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "atx",
+   "b": "fpc",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "atx",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  },
+  {
+   "a": "fpc",
+   "b": "lcd_plug",
+   "vol": 0.0,
+   "bad": false
+  }
+ ],
+ "core_hits": [
+  [
+   "tray",
+   "tray",
+   "Board",
+   0.0116
+  ],
+  [
+   "atx",
+   "H1_pin",
+   "Board",
+   0.5208
+  ],
+  [
+   "atx",
+   "H2_pin",
+   "Board",
+   0.5208
+  ],
+  [
+   "atx",
+   "H3_pin",
+   "Board",
+   0.5208
+  ],
+  [
+   "atx",
+   "H4_pin",
+   "Board",
+   0.5208
+  ],
+  [
+   "atx",
+   "H5_pin",
+   "Board",
+   0.5208
+  ]
+ ],
+ "real": [
+  {
+   "group": "tray",
+   "part": "tray",
+   "core": "Board",
+   "box_vol": 0.0116,
+   "real_vol": 0.0
+  },
+  {
+   "group": "atx",
+   "part": "H1_pin",
+   "core": "Board",
+   "box_vol": 0.5208,
+   "real_vol": 0.0
+  },
+  {
+   "group": "atx",
+   "part": "H2_pin",
+   "core": "Board",
+   "box_vol": 0.5208,
+   "real_vol": 0.0
+  },
+  {
+   "group": "atx",
+   "part": "H3_pin",
+   "core": "Board",
+   "box_vol": 0.5208,
+   "real_vol": 0.0
+  },
+  {
+   "group": "atx",
+   "part": "H4_pin",
+   "core": "Board",
+   "box_vol": 0.5208,
+   "real_vol": 0.0
+  },
+  {
+   "group": "atx",
+   "part": "H5_pin",
+   "core": "Board",
+   "box_vol": 0.5208,
+   "real_vol": 0.0
+  }
+ ],
+ "probes": [
+  {
+   "probe": "usb_cdc_plug",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "usb_otg_plug",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "hdmi_plug_metal",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "hdmi_overmould",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "atx_plug",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "tf_card",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "rst_needle",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "boot_needle",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  },
+  {
+   "probe": "c6_probe",
+   "tray": 0.0,
+   "lid": 0.0,
+   "bridge": 0.0,
+   "atx": 0.0
+  }
+ ],
+ "screws": [
+  {
+   "screw": "M1.6x5 core 0"
+  },
+  {
+   "screw": "M1.6x5 core 1"
+  },
+  {
+   "screw": "M2.5x10 A"
+  },
+  {
+   "screw": "M2.5x8 B"
+  },
+  {
+   "screw": "M2.5x6 C"
+  },
+  {
+   "screw": "M2x8 lid 0"
+  },
+  {
+   "screw": "M2x8 lid 1"
+  }
+ ],
+ "texts": [
+  {
+   "part": "tray",
+   "text": "HOST",
+   "removed": 2.423,
+   "text_volume": 2.423,
+   "ok": true
+  },
+  {
+   "part": "tray",
+   "text": "NO VBUS",
+   "removed": 2.148,
+   "text_volume": 2.148,
+   "ok": true
+  },
+  {
+   "part": "tray",
+   "text": "TF",
+   "removed": 0.775,
+   "text_volume": 0.775,
+   "ok": true
+  },
+  {
+   "part": "tray",
+   "text": "5V",
+   "removed": 1.041,
+   "text_volume": 1.063,
+   "ok": true
+  },
+  {
+   "part": "tray",
+   "text": "ATX",
+   "removed": 1.638,
+   "text_volume": 1.638,
+   "ok": true
+  },
+  {
+   "part": "lid",
+   "text": "MF KVM",
+   "removed": 13.313,
+   "text_volume": 13.313,
+   "ok": true
+  },
+  {
+   "part": "lid",
+   "text": "HDMI",
+   "removed": 1.848,
+   "text_volume": 1.848,
+   "ok": true
+  }
+ ],
+ "dist": {
+  "c790": 21.262540292142887,
+  "lcd": 18.700234181227977,
+  "screws": 29.512169100220337,
+  "atx": 23.96940747056547,
+  "ribbon": 7.0774570585769006,
+  "atx_module_end": 13.306999999999999
+ },
+ "fails": [],
+ "atx": {
+  "gap": 1.2,
+  "floor": 0.4999999999999991,
+  "tail_clear": 0.40000000000000036,
+  "pin_tip": 1.0,
+  "bridge_clear": 0.30000000000000004,
+  "copper_y": 29.907,
+  "ant": 23.907,
+  "module": 13.306999999999999,
+  "size": [
+   11.05,
+   35.400000000000006
+  ],
+  "pins": [
+   {
+    "ref": "H1",
+    "x": -11.43,
+    "y": 45.847
+   },
+   {
+    "ref": "H2",
+    "x": -11.43,
+    "y": 40.767
+   },
+   {
+    "ref": "H3",
+    "x": -11.43,
+    "y": 35.687
+   },
+   {
+    "ref": "H4",
+    "x": -11.43,
+    "y": 33.147
+   },
+   {
+    "ref": "H5",
+    "x": -11.43,
+    "y": 30.607
+   }
+  ]
+ },
+ "levels": {
+  "X0": -21.55,
+  "YFE": 26.0,
+  "PCB_B": 6.704999999999999,
+  "PCB_T": 8.305,
+  "LEVEL": 9.504999999999999,
+  "ZH": 15.504999999999999,
+  "PANEL": 20.155,
+  "SPLIT": 16.8,
+  "OZ0": -5.52,
+  "OZ1": 21.21,
+  "OX0": -23.450000000000003,
+  "OX1": 14.6,
+  "OY0": -1.9000000000000001,
+  "OY1": 73.1,
+  "LCD_X0": -18.7,
+  "LCD_Y0": 15.0,
+  "WIN": [
+   -16.7,
+   6.6000000000000005,
+   16.930000000000003,
+   60.25
+  ],
+  "ATX_C": [
+   -16.6,
+   52.75,
+   -3.8200000000000003
+  ],
+  "HX": -6.550000000000001,
+  "JY": 60.35,
+  "OTG_Y": 45.5
+ }
+}

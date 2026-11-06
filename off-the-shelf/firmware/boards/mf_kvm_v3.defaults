@@ -1,0 +1,31 @@
+# MF KVM v3, DFRobot FireBeetle 2 ESP32-P4 (DFR1172). Overlay on top of boards/firebeetle2_p4.defaults.
+#
+# Compile checked only. Never flashed. LCD pins follow v3/research/firebeetle_firmware.md section 4; ATX moved to 28/29/30 on 2026-11-06.
+# Run from the espkvm clone:
+#   idf.py -B build.v3 -D SDKCONFIG=build.v3/sdkconfig \
+#     -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;boards/firebeetle2_p4.defaults;../boards/mf_kvm_v3.defaults" build
+#
+# These are only the defaults the console offers. The panel and ATX stay off at first boot on an
+# unpatched tree: disp_enable and atx_enable are NVS settings whose table default is 0.
+
+# No update manifest. The inherited FireBeetle URL offers the official image, which has neither the
+# ST7789 driver nor these pins. Empty is handled: UpdateWidget.vue stops checking, and
+# fw_latest_version() returns an error that kvm_mqtt.c treats as no answer.
+CONFIG_KVM_UPDATE_URL=""
+
+# LCD on header P2.
+CONFIG_KVM_ENABLE_DISPLAY=y
+CONFIG_KVM_DISP_SCLK_GPIO=20
+CONFIG_KVM_DISP_MOSI_GPIO=21
+CONFIG_KVM_DISP_CS_GPIO=22
+CONFIG_KVM_DISP_DC_GPIO=23
+CONFIG_KVM_DISP_RST_GPIO=51
+# Backlight is GPIO 33. Upstream has no Kconfig option for it (disp_bl is hard-coded to -1 in
+# kvm_settings_table.c), so it cannot be set here. mf_kvm_v3_gc9a01.defaults and
+# mf_kvm_v3_st7789.defaults set it, and they need patches/0001.
+
+# ATX board plugs straight into header P1. The Kconfig defaults (46, 47) are not brought out on this board.
+CONFIG_KVM_ENABLE_ATX=y
+CONFIG_KVM_ATX_PWR_GPIO=28
+CONFIG_KVM_ATX_RST_GPIO=29
+CONFIG_KVM_ATX_LED_GPIO=30

@@ -1,0 +1,8 @@
+(footprint "R0402" (version 20241229) (generator "p4mini") (generator_version "9.0") (layer "F.Cu") (uuid "dfa6e19c-c274-4c9c-a7ee-b3265d182656") 
+    (property "Reference" "REF**" (at -0.860 -0.710) (layer "F.Fab") (uuid "92354df4-2949-4c0d-9b2b-da8899a2b758") (effects (font (size 0.5 0.5) (thickness 0.08))))
+    (property "Value" "5.1k 0402" (at 0 0) (layer "F.Fab") (hide yes) (uuid "a323bab3-565d-4497-9d47-ae1abad3ec25") (effects (font (size 0.5 0.5) (thickness 0.08))))
+    (property "LCSC" "C25905" (at 0 0) (layer "F.Fab") (hide yes) (uuid "8e0b16dd-7554-4625-ab32-8888f7dc4bfd") (effects (font (size 0.5 0.5) (thickness 0.08))))
+        (attr smd)
+    (fp_rect (start -0.860 -0.410) (end 0.860 0.410) (stroke (width 0.05) (type default)) (fill no) (layer "F.CrtYd") (uuid "e43331a2-1e2b-4d8e-81a3-74922e752f40"))
+    (pad "1" smd rect (at -0.4800 0.0000) (size 0.56 0.62) (layers "F.Cu" "F.Paste" "F.Mask") (uuid "39e85645-93a2-4d09-b033-1d0afaf62185")) (pad "2" smd rect (at 0.4800 0.0000) (size 0.56 0.62) (layers "F.Cu" "F.Paste" "F.Mask") (uuid "8052c34e-06fb-472a-b0d1-1f2d10985c30"))
+  )

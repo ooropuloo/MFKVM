@@ -1,0 +1,65 @@
+tray  valid True vol 10856.7 solids 1
+lid   valid True vol 3729.5 solids 1
+bridge valid True vol 535.7 solids 1
+shim valid True vol 74.7 solids 1
+core loaded 25.49 61.47 9.42
+pairs checked 36
+core: box hits 6 real hits 0 []
+PASS interference: 36 part-group pairs, 0 overlap 
+PASS core (real STEP) against all parts: 6 bounding box touches, 0 real overlaps 
+PASS cable probes clear of plastic 
+PASS text 'HOST' on tray: cut 2.423 mm3 of 2.423 mm3
+PASS text 'NO VBUS' on tray: cut 2.148 mm3 of 2.148 mm3
+PASS text 'TF' on tray: cut 0.775 mm3 of 0.775 mm3
+PASS text '5V' on tray: cut 1.041 mm3 of 1.063 mm3
+PASS text 'ATX' on tray: cut 1.638 mm3 of 1.638 mm3
+PASS text 'MF KVM' on lid: cut 13.313 mm3 of 13.313 mm3
+PASS text 'HDMI' on lid: cut 1.848 mm3 of 1.848 mm3
+PASS ATX top -2.82 to core underside -1.62: gap 1.20 mm, tallest core part in the footprint: nothing under the core in x < -9.38 for y 29 to 56
+PASS ATX underside -3.82 to floor top -4.32: 0.50 mm
+PASS pin tail end -4.60 to groove floor -5.00: 0.40 mm clear, plastic under the groove 0.52 mm
+PASS rails stop 0.15 mm under the board, so the pins carry it
+PASS pin tip 1.00 above core top, bridge underside 1.30: 0.30 mm. Next up: LOWER FPC run 9.35, so 8.35 mm
+PASS pin fillet edge x -10.63 to DSI J2 x -6.75: 3.88 mm. Row is not under the former or the ribbon
+PASS ATX copper starts at y 29.91: 23.9 mm from the antenna (y < 6), 13.3 mm from the C6 module end (y 16.6)
+PASS ATX -X edge -21.55 to wall -21.85: 0.30 mm. It stops the board if the plug is pulled
+PASS ATX notch edge x -13.60 to core post x -13.00: 0.60 mm. It stops the board if the plug is pushed
+PASS ATX tongue edge -10.50 to core rest x -10.10: 0.40 mm
+PASS ATX shim clear of pins, fillets, parts and core underside 
+PASS shim slides out toward -y: slot 1.56 wide, fillet 1.40, open at y 41.4; left leg stops before R1 at y 42.2
+PASS window on AA: window centre -5.05,38.59, LCD PCB centre -5.05,40.60, offset 2.01 mm (2.01 expected) toward low y
+PASS window lies inside the panel body
+PASS HDMI shell front y 73.10 at the outer face y 73.10, opening centred on x -6.55
+PASS OTG window centre y 45.5 matches U8 y 41.03..49.97 centre 45.50, z 1.105 matches 1.105
+PASS FPC: all conductors 41.74 mm between connectors, ribbon has 42.0 (50 less 4.5 and 3.5); slack 0.26
+PASS FPC path uses the 50 mm ribbon without a storage loop, and it is not taut
+PASS pin 1 on C790 at x -13.70 lands at y 21.90, J1 pin 1 is y 21.90
+PASS pin 15 on C790 at x 0.30 lands at y 7.90, J1 pin 15 is y 7.90
+PASS lower run 9.35 clears the DSI connector top 5.40
+PASS upper run 15.65 clears the LCD PCB back 16.66; only bare PCB lies over it
+PASS straight above J1 7.10 mm, 2 needed
+PASS M1.6x5 core: 3.38 mm thread engagement, want 2.4
+PASS M2.5x10 A in post: 5.40 mm thread engagement, want 3.5
+PASS M2.5x8 B in post: 6.40 mm thread engagement, want 3.5
+PASS M2.5x6 C in bridge: 4.40 mm thread engagement, want 3.5
+PASS M2x8 lid in boss: 5.05 mm thread engagement, want 3.0
+PASS antenna to metal: c790 21.3, lcd 18.7, screws 29.5, atx 24.0, ribbon 7.1, atx_module_end 13.3 mm. Espressif advises 15. Ribbon is the known exception, plus the core's own connectors.
+overall [38.05, 75.0, 26.73] volume cm3 76.3 tray bbox 38.06 75.01 22.32 lid 5.61
+min wall 1.6 floor 1.2 roof 1.0 split z 16.8
+ screw {'screw': 'M1.6x5 core 0'}
+ screw {'screw': 'M1.6x5 core 1'}
+ screw {'screw': 'M2.5x10 A'}
+ screw {'screw': 'M2.5x8 B'}
+ screw {'screw': 'M2.5x6 C'}
+ screw {'screw': 'M2x8 lid 0'}
+ screw {'screw': 'M2x8 lid 1'}
+ probe {'probe': 'usb_cdc_plug', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'usb_otg_plug', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'hdmi_plug_metal', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'hdmi_overmould', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'atx_plug', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'tf_card', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'rst_needle', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'boot_needle', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+ probe {'probe': 'c6_probe', 'tray': 0.0, 'lid': 0.0, 'bridge': 0.0, 'atx': 0.0}
+RESULT OK 

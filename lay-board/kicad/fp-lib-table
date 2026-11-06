@@ -1,0 +1,1 @@
+(fp_lib_table (version 7) (lib (name "mini") (type "KiCad") (uri "${KIPRJMOD}/mini.pretty") (options "") (descr "")))

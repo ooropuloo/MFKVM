@@ -1,0 +1,8 @@
+(footprint "TP_1.0" (version 20241229) (generator "p4mini") (generator_version "9.0") (layer "B.Cu") (uuid "28c65f68-f663-4441-a6fd-be25fb191882") 
+    (property "Reference" "REF**" (at -0.600 -0.900) (layer "B.Fab") (uuid "65af6e61-9dcd-4553-9183-7834276202e1") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "Value" "test pad" (at 0 0) (layer "B.Fab") (hide yes) (uuid "8b8d348f-d5d6-4ece-afd9-4a586569a493") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "LCSC" "" (at 0 0) (layer "B.Fab") (hide yes) (uuid "28637b78-0372-4d6a-9571-19b1670a8149") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+        (attr smd exclude_from_bom exclude_from_pos_files)
+    (fp_rect (start -0.600 -0.600) (end 0.600 0.600) (stroke (width 0.05) (type default)) (fill no) (layer "B.CrtYd") (uuid "b9f1c1fd-4425-486d-8155-3c55a40637fa"))
+    (pad "1" smd circle (at 0.0000 0.0000) (size 1 1) (layers "B.Cu" "B.Mask") (uuid "b9ba6908-c5c8-4b65-a8e1-07116170b408"))
+  )

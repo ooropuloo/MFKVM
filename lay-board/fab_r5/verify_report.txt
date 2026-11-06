@@ -1,0 +1,40 @@
+pads with nets read back 483
+PASS 50 module pins match the vendor pin table 
+TC358743 balls in the reference 64
+PASS 64 TC358743 balls match by function (PFIL and DAOUT per the datasheet, the reference has them swapped), 13 left open 
+PASS HDMI connector follows the standard pinout 
+PASS microSD follows the standard pinout 
+PASS USB-C data, VBUS and 5.1k CC pull-downs 
+PASS host VBUS stays apart from the box 5V, neither can feed the other
+PASS regulators, level shifter, oscillator and SD switch pins 
+PASS buck feedback sets 3.327 V from 0.6 V reference
+PASS opto LED current 4.6 mA from a 3.3 V GPIO
+PASS opto can sink 8.3 mA at 25 C at CTR minimum, against an assumed under-5 mA ATX header pull-up
+PASS VBUS divider gives 2.5 V at 5 V
+PASS routed tracks were read back from the saved board (1195 segments on 89 nets)
+pair            P mm    N mm   skew   vias P/N
+D2              9.76   11.73   1.97   0/0
+D1             11.91   13.88   1.97   0/0
+D0             14.56   16.17   1.61   0/0
+CK             16.71   18.32   1.61   0/0
+CSI_D0          5.98    8.06   2.08   1/1
+CSI_D1          3.98    3.91   0.07   1/1
+CSI_CK          2.58    4.05   1.47   1/1
+USB             8.97    9.50   0.53   3/3
+PASS every high speed line has routed length, shortest 2.58 mm
+PASS worst P/N length difference 2.08 mm is within 3.0 mm (about 14 ps; one bit at 972 Mbit/s is 1029 ps)
+PASS no via hole touches a BGA ball pad, 230 vias checked 
+PASS no net has only one pin 
+PASS every part number decodes to its stated value 
+PASS every fitted part is stocked at JLC 
+PASS MASKCHECK mask bridge minimum 0.15 mm, 0 under 0.1, 0 under 0.13 (black/white only); opening to other-net conductor minimum 0.1007 mm, 0 under 0.09; 0 openings merged across nets; openings {'F': {'openings': 180, 'copper': 743, 'not_on_a_pad': 4}, 'B': {'openings': 323, 'copper': 1210, 'not_on_a_pad': 4}}
+PASS HOLECHECK 0 under limit; VIA outer min 0.2 (limit 0.2), VIA inner min 0.2015 (limit 0.2), NPTH outer min 0.3005 (limit 0.2), NPTH inner min 0.3005 (limit 0.2), PTH outer min 0.3017 (limit 0.28), PTH inner min 0.3025 (limit 0.3); holes {'VIA': 230, 'PTH': 12, 'NPTH': 4} on 6 copper layers
+PASS BODYCHECK 98 parts, 3136 same-side pairs, 0 overlaps, 6 worst-case warnings, smallest nominal gap 0.300 mm
+  L1/U12       B  nom  0.450 (area  0.00)  max  0.050  worst -0.150  flash       -  body-to-land  0.600
+  FB2/C24      B  nom  0.325 (area  0.00)  max  0.075  worst -0.125  flash       -  body-to-land  0.265
+  U7/Y1        B  nom  0.300 (area  0.00)  max  0.150  worst -0.050  flash       -  body-to-land  0.200
+  C61/C62      B  nom  0.550 (area  0.00)  max  0.150  worst -0.050  flash       -  body-to-land  0.500
+  U4/U5        B  nom  0.400 (area  0.00)  max  0.250  worst  0.050  flash  -0.200  body-to-land  0.600
+  U4/Q1        B  nom  0.490 (area  0.00)  max  0.355  worst  0.155  flash  -0.095  body-to-land  0.690
+BOARD sha256 4fcf3c612922adf4019fdd1c52f929d05b71e3d92db88b34b96c6cf5c180156a
+RESULT ALL PASS

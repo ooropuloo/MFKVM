@@ -1,0 +1,6 @@
+# MF KVM v3 with a round GC9A01 240x240, on the same pins as the ST7789 variant. Needs patches/0001.
+# Layer it after mf_kvm_v3.defaults. Compile checked only. Never flashed.
+CONFIG_KVM_SPI_PANEL_GC9A01=y
+CONFIG_KVM_DISP_ENABLE_DEFAULT=1
+CONFIG_KVM_DISP_TYPE_DEFAULT=2
+CONFIG_KVM_DISP_BL_GPIO=33

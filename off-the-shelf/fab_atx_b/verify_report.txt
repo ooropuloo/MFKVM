@@ -1,0 +1,22 @@
+PASS ERC 0 violations
+PASS DRC 0 errors, 0 warnings
+PASS unconnected 0
+PASS schematic parity 0
+PASS real part outlines, worst case with +-0.1 placement (assumption), minimum gap 0.1, opto pitch [4.6, 4.6]. Tightest: U1/U2 0.25 (body / body), U2/U3 0.25 (body / body), R2/H1 0.259 (body / pin)
+PASS part positions the body check used match the saved board, 13 parts
+PASS JLC spacing page, closest to its rule: U1/R1 0.49 (rule 0.4), U2/R2 0.49 (rule 0.4), U3/R3 0.49 (rule 0.4)
+PASS the same check refuses the earlier layout: [('U1', 'R4', -0.325, 'body / body'), ('U1', 'R4', 0.015, 'JLC spacing wants 0.4'), ('U1', 'R4', -0.2, 'body over a land'), ('U1', 'R4', -0.2, 'body over a land'), ('U3', 'J1', 0.025, 'body / body'), ('U3', 'J1', -0.105, 'body over a land')]
+PASS allow_soldermask_bridges_in_footprints is off in the saved board
+PASS saved board pad nets match the hand written intent, 31 pads 
+PASS JST mount tabs tied to nothing, so the header side stays apart from logic ground
+PASS PWR/RST LED from a 3.3 V GPIO, 470 ohm: 4.5 mA, limit 50 mA
+PASS front panel LED input from 5 V, 270 ohm plus board LED drop ignored: 14.1 mA, limit 50 mA
+PASS export gerbers
+PASS export drill
+PASS mask on real Gerber polygons, JLCPCB 0.10 mm: mask bridge minimum None mm, 0 under 0.1, 0 under 0.13 (black/white only); opening to other-net conductor minimum 0.1517 mm, 0 under 0.09; 0 openings merged across nets; openings {'F': {'openings': 33, 'copper': 108, 'not_on_a_pad': 0}, 'B': {'openings': 5, 'copper': 43, 'not_on_a_pad': 0}}
+PASS smallest mask web between any two openings, measured directly on the Gerber: 0.3563 mm
+PASS hole rules, mini/tools/holecheck.py on real drill and copper: 0 under limit; VIA outer min 0.3015 (limit 0.2), VIA inner min none near (limit 0.2), NPTH outer min none near (limit 0.2), NPTH inner min none near (limit 0.2), PTH outer min 0.4444 (limit 0.28), PTH inner min none near (limit 0.3); holes {'VIA': 12, 'PTH': 5, 'NPTH': 0} on 2 copper layers | limits: JLCPCB capabilities page, 2026-11-06. Same-net copper on plated holes is exempt, NPTH has no exemption. | same-net objects exempted, by hole type and object: {('PTH', 'ComponentPad'): 10, ('PTH', 'Conductor'): 6, ('VIA', 'Conductor'): 36, ('VIA', 'SMDPad'): 6, ('VIA', 'ViaPad'): 24} | zone regions
+PASS outline from the Gerber 11.05 x 35.40
+PASS every fitted part stocked at JLC: C119091 LTV-357T-C 186974 (expand), C160405 SM06B-SRSS-TB(LF)(SN) 19604 (expand), C25099 0402WGF2700TCE 1106986 (expand), C25117 0402WGF4700TCE 3117601 (base), C25744 0402WGF1002TCE 16603455 (base)
+mask web minimum 0.3563 mm, opening to other-net copper minimum 0.1517 mm
+package sha256 f67933de962fa9717cdbd35170307bb3bdf30eee1a3b0773b4f5eda76fd37977

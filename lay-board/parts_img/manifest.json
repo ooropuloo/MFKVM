@@ -1,0 +1,77 @@
+{
+ "p4": {
+  "file": "p4.webp",
+  "w": 349,
+  "h": 341,
+  "alt": "Waveshare ESP32-P4-Module 16MB -U 版實物照片，左上角是 IPEX 座",
+  "kind": "廠商照片（經銷商頁面）"
+ },
+ "ant": {
+  "file": "ant.svg",
+  "w": 320,
+  "h": 156,
+  "alt": "2.4 GHz IPEX FPC 天線示意圖",
+  "kind": "示意",
+  "cap": "示意"
+ },
+ "lcd128": {
+  "file": "lcd128.webp",
+  "w": 476,
+  "h": 480,
+  "alt": "微雪 1.28 吋圓形 LCD 模組（SKU 19192）實物照片",
+  "kind": "廠商照片（經銷商頁面）"
+ },
+ "jst8": {
+  "file": "jst8.svg",
+  "w": 320,
+  "h": 164,
+  "alt": "JST SH 1.0 八腳外殼示意圖",
+  "kind": "示意",
+  "cap": "示意"
+ },
+ "jst6": {
+  "file": "jst6.svg",
+  "w": 320,
+  "h": 164,
+  "alt": "JST SH 1.0 六腳外殼示意圖",
+  "kind": "示意",
+  "cap": "示意"
+ },
+ "m2": {
+  "file": "m2.svg",
+  "w": 320,
+  "h": 128,
+  "alt": "M2 × 16 螺絲示意圖",
+  "kind": "示意",
+  "cap": "示意"
+ },
+ "power3": {
+  "file": "power3.svg",
+  "w": 310,
+  "h": 194,
+  "alt": "5 V USB-C 電源、HDMI 線、USB-C 線示意圖",
+  "kind": "示意",
+  "cap": "示意"
+ },
+ "tray": {
+  "file": "tray.webp",
+  "w": 480,
+  "h": 376,
+  "alt": "底殼的 3D 模型渲染，實體約 44.0 × 44.0 × 13.8 mm",
+  "kind": "實際 STL 渲染"
+ },
+ "lid": {
+  "file": "lid.webp",
+  "w": 480,
+  "h": 344,
+  "alt": "上蓋的 3D 模型渲染，實體約 44.0 × 44.0 × 10.3 mm",
+  "kind": "實際 STL 渲染"
+ },
+ "main": {
+  "file": "main.webp",
+  "w": 480,
+  "h": 480,
+  "alt": "P4 主板 r5 正面的板圖",
+  "kind": "KiCad 板圖"
+ }
+}

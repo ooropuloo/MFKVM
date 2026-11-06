@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MF KVM v3 買現成不用洗主板 · __HHMM__</title>
+<style>
+:root {
+  --bg: #e9ecec; --panel: #f6f7f6; --fg: #1b2226; --muted: #566067; --line: #c9d0d1; --accent: #9c5a1c; --ok: #1d6f4a; --warn: #9a5b07; --stage: #dfe4e4;
+  --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; --mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14181a; --panel: #1c2225; --fg: #e7ecec; --muted: #9ba7ac; --line: #30393d; --accent: #e0a062; --ok: #63c295; --warn: #e3ab55; --stage: #20272a } }
+:root[data-theme="dark"] { --bg: #14181a; --panel: #1c2225; --fg: #e7ecec; --muted: #9ba7ac; --line: #30393d; --accent: #e0a062; --ok: #63c295; --warn: #e3ab55; --stage: #20272a }
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.65 }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 28px 16px 40px; display: grid; gap: 22px }
+.wrap > * { min-width: 0 }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px }
+h1 { font-size: clamp(26px, 4.2vw, 38px); margin: 0; line-height: 1.2 }
+.dim { font-family: var(--mono); font-size: clamp(16px, 2.6vw, 23px); color: var(--accent) }
+.sub { margin: 0; color: var(--muted); flex-basis: 100% }
+.stage { background: var(--stage); border: 1px solid var(--line); border-radius: 6px; overflow: hidden }
+canvas#view { display: block; width: 100%; height: clamp(330px, 56vw, 590px); touch-action: none }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; border-top: 1px solid var(--line); background: var(--panel) }
+.tabs button { font: inherit; font-size: 14px; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 4px; padding: 6px 13px; cursor: pointer }
+.tabs button[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg) }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.cap { margin: 0; padding: 10px 14px 12px; font-size: 14px; color: var(--muted); background: var(--panel); border-top: 1px solid var(--line); min-height: 3.4em }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 22px }
+.grid > * { min-width: 0 }
+h2 { font-size: 18px; margin: 0 0 8px }
+h2.more { margin-top: 18px }
+.scroll { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { color: var(--muted); font-weight: 500 }
+tr.me td { font-weight: 700 }
+td.n { font-family: var(--mono); font-size: 13.5px; white-space: nowrap }
+ul { margin: 0; padding-left: 1.15em; display: grid; gap: 7px; font-size: 14.5px }
+.ok { color: var(--ok) } .warn { color: var(--warn) }
+section > h3 { font-size: 15px; margin: 18px 0 6px }
+.note { color: var(--muted); font-size: 14px; margin: 6px 0 0; max-width: 72ch }
+td a { color: var(--accent) }
+code { font-family: var(--mono); font-size: .92em; overflow-wrap: anywhere }
+footer { font-family: var(--mono); font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; overflow-wrap: anywhere }
+.headline { flex-basis: 100%; margin: 0; font-size: clamp(18px, 3.2vw, 25px); font-weight: 700; line-height: 1.3 }
+.topbar { display: grid; gap: 4px }
+.topline { margin: 0; font-size: 14px; font-weight: 500; color: var(--accent); overflow-wrap: anywhere }
+.toplinks { display: flex; flex-wrap: wrap; gap: 0 18px; font-size: 14.5px }
+.toplinks a { color: var(--accent); padding: 4px 0 }
+.pimg { width: 112px; min-width: 112px }
+.pfig { display: block; width: 96px }
+.pthumb { display: block; width: 96px; padding: 3px; background: #fff; border: 1px solid var(--line); border-radius: 6px; cursor: zoom-in; line-height: 0 }
+.pthumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.pthumb img { display: block; width: 100%; height: auto; max-height: 124px; object-fit: contain; border-radius: 3px }
+.pcap { display: block; margin-top: 2px; font-size: 12px; line-height: 1.3; color: var(--muted); text-align: center }
+li.haspimg { display: flow-root }
+li.haspimg .pfig { float: left; margin: 3px 12px 4px 0 }
+#plb { width: min(92vw, 680px); max-height: 92vh; padding: 12px; color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 8px }
+#plb::backdrop { background: rgba(0, 0, 0, .72) }
+#plb img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; background: #fff; border-radius: 4px }
+#plb p { margin: 8px 0; font-size: 14px }
+#plb button { font: inherit; font-size: 14px; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 4px; padding: 5px 14px; cursor: pointer }
+@media (max-width: 560px) { #parts th, #parts td { padding-left: 5px; padding-right: 5px } #parts .pimg { width: 81px; min-width: 81px; padding-right: 4px } .pfig, .pthumb { width: 72px } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>MF KVM 第三版</h1>
+    <span class="dim" id="dim"></span>
+    <p class="headline">買現成模組，不用洗主板</p>
+    <p class="sub">FireBeetle 2 ESP32-P4、Geekworm C790、1.9 吋 LCD。先用線接起來驗證，不用打板也不用列印；要裝成完整外殼才需要一片 ATX 小板和 3D 列印。還沒有實品，高度用估計上限。</p>
+  </header>
+  <div class="topbar">
+    <p class="topline">build __TOPBUILD__ · ATX 小板 rev B 未送審 · 未實機驗證</p>
+    <nav class="toplinks" aria-label="頁內連結"><a href="#parts">要準備什麼</a></nav>
+  </div>
+  <section class="stage" aria-label="3D 模型，可拖曳旋轉">
+    <canvas id="view"></canvas>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-mode="closed" aria-selected="true">合殼</button>
+      <button role="tab" data-mode="back" aria-selected="false">接頭面</button>
+      <button role="tab" data-mode="side" aria-selected="false">HOST 與 TF</button>
+      <button role="tab" data-mode="open" aria-selected="false">分解</button>
+      <button role="tab" data-mode="wired" aria-selected="false">接線</button>
+    </div>
+    <p class="cap" id="cap" aria-live="polite"></p>
+  </section>
+  <div class="grid">
+    <section>
+      <h2>尺寸比較</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>版本</th><th>長 × 寬 × 高 (mm)</th><th>體積</th></tr></thead>
+        <tbody>
+          <tr class="me"><td>v3 這一版</td><td class="n" id="t-me"></td><td class="n" id="v-me"></td></tr>
+          <tr><td>v3 備案（扁 L 形）</td><td class="n" id="t-b"></td><td class="n" id="v-b"></td></tr>
+          <tr><td>v2 單片板</td><td class="n">44 × 44 × 20</td><td class="n">39 cm³</td></tr>
+          <tr><td>JetKVM Mini</td><td class="n">42 × 42 × 23</td><td class="n">41 cm³</td></tr>
+        </tbody>
+      </table></div>
+      <h2 class="more">為什麼是這個形狀</h2>
+      <ul>
+        <li><b>排線決定擺法：</b>排線只能沿寬度方向彎，所以 C790 要順著核心板放，一定得斜著捲一次。</li>
+        <li><b>天線：</b>C790 從 y 26 才開始，C790、LCD、ATX 和螺絲都離天線超過 15 mm。排線最近 7.1 mm。</li>
+        <li><b>ATX 小板：</b>5 支直針直接插進 FireBeetle 的 P1 排，兩塊板之間沒有線。PWR、RST、LED 用 GPIO 28、29、30。</li>
+        <li><b>代價：</b>比 v2 大將近一倍。5V 插頭要伸進 HDMI 下方 12 mm 深的凹槽。</li>
+      </ul>
+      <h2 class="more">主機 USB 的 VBUS</h2>
+      <ul>
+        <li><b>結論：</b>用拿掉 VBUS 的線，外殼標 NO VBUS。外殼不用變大。</li>
+        <li><b>沒選的做法：</b>內部 USB-C 轉接板能防呆，但外殼寬度多 11 mm，體積多三成，TF 卡也更難拿。</li>
+        <li class="warn"><b>限制：</b>接一般 USB 線一樣能動，但會反灌電。這只能靠線材標示和上電前的量測。</li>
+      </ul>
+    </section>
+    <section>
+      <h2>查證狀態</h2>
+      <ul>
+        <li class="ok" id="s-int"></li>
+        <li class="ok" id="s-atx"></li>
+        <li class="ok"><b>接腳：</b>ATX 的 5 個孔用 Gerber、鑽孔檔對 STEP 逐孔驗過，誤差 0。鏡像、反排、差一格的檔案全部驗不過。排線 pin 1 對 pin 1，由幾何推導。</li>
+        <li class="warn"><b>裝入底殼：</b>ATX 焊上核心板後要斜著放，+X 邊先進。路徑模擬 22 個姿勢都不碰殼，但沒試裝過，最緊的地方約 0.6 mm。</li>
+        <li class="warn"><b>第一次開機：</b>韌體的 disp_enable、atx_enable 預設是 0，要到網頁設定打開螢幕和 ATX。</li>
+        <li class="warn"><b>排線：</b>要買接點異面的 Würth 686715050001。J1 接點方向只看過原廠 3D 模型，到貨要目視，也要量通。</li>
+        <li class="warn"><b>MIPI 斜捲：</b>理論上每條線等長，但這條線、這個半徑沒有人測過。畫面要先實測。</li>
+        <li class="warn"><b>估計值：</b>C790 的所有高度、排線彎折半徑和插入深度，都還沒量。</li>
+        <li class="warn"><b>沒驗證：</b>散熱（C790 約 0.9 W）、Wi-Fi 實際距離、列印公差、ST7789 韌體。</li>
+      </ul>
+    </section>
+  </div>
+  <section id="parts">
+    <h2>要準備什麼</h2>
+    <p class="note">三類：直接買、JLC 打板、3D 列印。第一台驗證機只要做到下面第 2 階段，不用打板也不用列印。價格和庫存是 2026-11-06 查的，下單前再確認。</p>
+    <p class="note">廠商照片版權屬原廠，僅供辨識料件。</p>
+    <h3>分階段</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>階段</th><th>要準備</th><th>能驗證</th></tr></thead>
+      <tbody>
+        <tr class="me"><td>1. 裸機</td><td>FireBeetle、C790、排線、電源、改好的 USB 線</td><td>影像、USB、Wi-Fi、影格率</td></tr>
+        <tr class="me"><td>2. 加螢幕</td><td>1.9 吋 LCD 和附線</td><td>ST7789 顯示</td></tr>
+        <tr><td>3. 加 ATX</td><td>ATX 小板，或先用光耦接線測</td><td>開機、重開、LED</td></tr>
+        <tr><td>4. 裝外殼</td><td>列印件、螺絲、JST 線</td><td>組裝、散熱、Wi-Fi 距離</td></tr>
+      </tbody>
+    </table></div>
+    <h3>直接買</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>圖</th><th>料件</th><th>數量</th><th>階段</th><th>哪裡買、注意事項</th></tr></thead>
+      <tbody>
+        <tr><td class="pimg"><!--PIMG:fb--></td><td>FireBeetle 2 ESP32-P4（DFR1172）</td><td>1</td><td>1</td><td><a href="https://www.digikey.tw/en/products/detail/dfrobot/DFR1172/28531144">DigiKey 台灣</a> NT$601，或 <a href="https://www.dfrobot.com/product-2915.html">DFRobot</a> US$16.50。只要核心板，不要擴充板</td></tr>
+        <tr><td class="pimg"><!--PIMG:c790--></td><td>Geekworm C790</td><td>1</td><td>1</td><td><a href="https://geekworm.com/products/c790">Geekworm</a> 約 US$30，<b>庫存要確認</b>。不要買 X1300、X1301，它們只有 22-pin</td></tr>
+        <tr><td class="pimg"><!--PIMG:ffc_opp--></td><td>Würth 686715050001，50 mm 排線，接點異面</td><td>1</td><td>1</td><td><a href="https://www.digikey.tw/en/products/detail/w%C3%BCrth-elektronik/686715050001/16608546">DigiKey 台灣</a> NT$110。C790 附的 15 cm 排線也可先測</td></tr>
+        <tr><td class="pimg"><!--PIMG:ffc_same--></td><td>Würth 686615050001，50 mm 排線，接點同面</td><td>1</td><td>1</td><td><a href="https://www.digikey.tw/en/products/detail/w%C3%BCrth-elektronik/686615050001/16608612">DigiKey 台灣</a> NT$110。備用，看實物接點方向決定用哪條</td></tr>
+        <tr><td class="pimg"><!--PIMG:power--></td><td>5 V 2 A USB-C 電源</td><td>1</td><td>1</td><td>插頭寬 13 mm、高 6.6 mm 以內。電腦 USB-A 電流不夠</td></tr>
+        <tr><td class="pimg"><!--PIMG:usb_a--></td><td>USB-A 轉 C 線，改成不帶 VBUS</td><td>1</td><td>1</td><td>A 頭第 1 腳貼 Kapton 或剪斷紅線，用之前要量過</td></tr>
+        <tr><td class="pimg"><!--PIMG:lcd19--></td><td>微雪 1.9 吋 LCD（SKU 23822）</td><td>1</td><td>2</td><td><a href="https://www.waveshare.com/1.9inch-lcd-module.htm">Waveshare</a> US$11.99，附 MX1.25 8P 線，裁線接 FireBeetle</td></tr>
+        <tr><td class="pimg"><!--PIMG:wire--></td><td>Ø0.64 mm 鍍錫單芯線（AWG 22）</td><td>5 段各約 10 mm</td><td>3</td><td>當 ATX 直針。不能用排針的 0.64 mm 方針，孔只有 0.9 mm</td></tr>
+        <tr><td class="pimg"><!--PIMG:jst6--></td><td>JST SHR-06V-S 外殼加端子，或現成 SH1.0 6P 線</td><td>1</td><td>3</td><td>接主機板前面板。不要用帶凸耳的 -B 版</td></tr>
+        <tr><td class="pimg"><!--PIMG:screws--></td><td>自攻螺絲</td><td>7 支</td><td>4</td><td>M1.6 × 5 兩支；M2.5 × 10、× 8、× 6 各一支；M2 × 8 兩支</td></tr>
+      </tbody>
+    </table></div>
+    <h3>要打板</h3>
+    <ul>
+      <li class="haspimg"><span class="pfig"><!--PIMG:atx--></span><b>ATX 小板 rev B：</b>11.05 × 35.4 mm，2 層，JLC 打板加貼片，檔案在 <code>v3\fab_atx_b\</code>，零件都有庫存。等第 1、2 階段跑通再打，舊的 <code>fab_atx</code> 不要用。</li>
+      <li><b>FireBeetle 不用送 JLC：</b>它是買來的成品。</li>
+    </ul>
+    <h3>要 3D 列印</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>圖</th><th>檔案（v3\case\stl\）</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td class="pimg"><!--PIMG:tray--></td><td><code>mf_kvm_tray.stl</code></td><td>底殼</td></tr>
+        <tr><td class="pimg"><!--PIMG:lid--></td><td><code>mf_kvm_lid.stl</code></td><td>上蓋，卡扣要有彈性，建議 PETG</td></tr>
+        <tr><td class="pimg"><!--PIMG:bridge--></td><td><code>mf_kvm_bridge.stl</code></td><td>C790 橋架</td></tr>
+        <tr><td class="pimg"><!--PIMG:former--></td><td><code>mf_kvm_former.stl</code></td><td>排線斜折的捲線棒</td></tr>
+        <tr><td class="pimg"><!--PIMG:atx_shim--></td><td><code>mf_kvm_atx_shim.stl</code></td><td>焊 ATX 針時用的墊片，不裝在成品裡</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">C790 高度和排線方向要看實物，建議到第 4 階段才印，現在印可能要重印。沒有試印過。</p>
+    <h3>韌體</h3>
+    <p class="note">用 <code>v3\firmware\espkvm\build.v3r2_st7789</code>（1.9 吋）。只編譯過，沒燒錄。第一次開機要到網頁開啟螢幕和 ATX。說明在 <code>v3\firmware\BUILD.md</code>。</p>
+  </section>
+  <footer id="build"></footer>
+</div>
+<dialog id="plb" aria-label="料件大圖"><img alt=""><p></p><button type="button">關閉</button></dialog>
+<script>
+(function () {
+  const d = document.getElementById('plb'), big = d.querySelector('img'), cap = d.querySelector('p');
+  document.querySelectorAll('.pthumb').forEach((b) => b.addEventListener('click', () => {
+    const m = b.querySelector('img');
+    big.src = m.src; big.alt = m.alt; cap.textContent = m.alt + '（' + b.dataset.kind + '）';
+    d.showModal();
+  }));
+  d.addEventListener('click', (e) => { if (e.target === d || e.target.closest('button')) d.close(); });
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/STLLoader.js"></script>
+<script>
+const DATA = /*__DATA__*/null;
+const STLS = /*__STL__*/null;
+const BUILD = '/*__BUILD__*/';
+const L = DATA.levels, O = DATA.overall;
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (id) => document.getElementById(id);
+const fmt = (a) => a.map((v) => v.toFixed(1).replace(/\.0$/, '')).join(' × ');
+$('dim').textContent = fmt([O[1], O[0], O[2]]) + ' mm · ' + Math.round(DATA.volume) + ' cm³';
+$('t-me').textContent = fmt([O[1], O[0], O[2]]);
+$('v-me').textContent = Math.round(DATA.volume) + ' cm³';
+$('t-b').textContent = fmt(DATA.runner);
+$('v-b').textContent = Math.round(DATA.runner_real) + ' cm³';
+$('s-int').innerHTML = '<b>碰撞：</b>' + DATA.pairs + ' 組零件對照、真實 FireBeetle STEP 對全部零件，重疊 0。接線插頭探針都不碰殼，字都確實刻進殼壁。';
+$('s-atx').innerHTML = '<b>ATX 板 rev B：</b>' + DATA.atx.size[0].toFixed(2) + ' × ' + DATA.atx.size[1].toFixed(1) + ' mm。ERC 0、DRC 0、未接 0。Gerber 實測防焊橋最小 0.36 mm，孔距規則通過。零件用規格書最壞尺寸逐對檢查，都不重疊。料都有庫存。沒有下單。';
+$('build').textContent = 'build ' + BUILD + ' · not ordered, not built · off-the-shelf/';
+
+const canvas = $('view');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.42;
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(28, 1, 1, 6000);
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.enableDamping = !reduced;
+const sun = new THREE.DirectionalLight(0xfff2e0, 0.7);
+sun.position.set(-90, 190, 120);
+scene.add(sun);
+
+const mat = (color, roughness, metalness, extra) => new THREE.MeshStandardMaterial(Object.assign({ color, roughness: roughness ?? 0.6, metalness: metalness ?? 0, side: THREE.DoubleSide }, extra || {}));
+const M = {
+  tray: mat(0x2b3036, 0.62, 0.02), lid: mat(0x363c43, 0.6, 0.02), bridge: mat(0xb98a3e, 0.6), former: mat(0xd6cdbc, 0.6),
+  board: mat(0x14171a, 0.5), parts: mat(0xb9bcc0, 0.4, 0.75), c790: mat(0x1d4a3c, 0.5, 0.15), lcd: mat(0x16304a, 0.35, 0.2), atx: mat(0x2f6d4d, 0.5), fpc: mat(0xc9852c, 0.42, 0.1),
+};
+const root = new THREE.Group();
+root.rotation.x = -Math.PI / 2;           // CAD z up becomes screen y up
+const cx = (L.OX0 + L.OX1) / 2, cy = (L.OY0 + L.OY1) / 2;
+root.position.set(-cx, -L.OZ0, cy);
+scene.add(root);
+const stl = new THREE.STLLoader();
+function part(name, m) {
+  const g = stl.parse(Uint8Array.from(atob(STLS[name]), (c) => c.charCodeAt(0)).buffer);
+  g.computeVertexNormals();
+  const mesh = new THREE.Mesh(g, m);
+  const grp = new THREE.Group();
+  grp.add(mesh);
+  root.add(grp);
+  return grp;
+}
+const P = { tray: part('tray', M.tray), lid: part('lid', M.lid), bridge: part('bridge', M.bridge), former: part('former', M.former), core_board: part('core_board', M.board), core_parts: part('core_parts', M.parts), c790: part('c790', M.c790), lcd: part('lcd', M.lcd), atx: part('atx', M.atx), fpc: part('fpc', M.fpc) };
+// the lit screen, sitting exactly on the panel behind the window
+const W = L.WIN;
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(W[1] - W[0] - 0.6, W[3] - W[2] - 0.6), new THREE.MeshBasicMaterial({ color: 0x1b6f98 }));
+screen.position.set((W[0] + W[1]) / 2, (W[2] + W[3]) / 2, L.PANEL + 0.02);
+P.lcd.add(screen);
+
+function tube(group, pts, color, r) {
+  const curve = new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p)));
+  group.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 60, r, 8, false), mat(color, 0.55)));
+}
+function label(text, sub) {
+  const c = document.createElement('canvas'); c.width = 320; c.height = sub ? 120 : 76;
+  const g = c.getContext('2d');
+  g.fillStyle = 'rgba(16,20,23,.88)'; g.fillRect(0, 0, c.width, c.height);
+  g.fillStyle = '#fff'; g.font = '600 42px sans-serif'; g.textAlign = 'center'; g.fillText(text, 160, 50);
+  if (sub) { g.font = '36px sans-serif'; g.fillStyle = '#f0d3a0'; g.fillText(sub, 160, 100); }
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false }));
+  s.scale.set(c.width / 11, c.height / 11, 1);
+  return s;
+}
+// inner wires and outer cables
+const wired = new THREE.Group(); root.add(wired);
+const lcdPins = [[15.37, 0xf2c14e], [17.91, 0x3aa0ff], [20.45, 0xffffff], [22.99, 0x9b5de5], [25.53, 0x56c271], [28.07, 0xf08a24], [33.15, 0x111111], [35.69, 0xd33a2c]];
+lcdPins.forEach(([y, col], i) => tube(wired, [[11.43, y, 0], [11.43, y, 6], [10.6 + i * 0.1, 46 + i * 0.3, 12.5], [7, 58, 14.6], [-5 + i * 0.8, 58, 14.8]], col, 0.28));
+const outside = new THREE.Group(); root.add(outside);
+const jy = L.JY;
+tube(outside, [[L.HX, L.OY1, 11.6], [L.HX, L.OY1 + 22, 11.6], [L.HX + 5, L.OY1 + 70, 9]], 0x1c1f22, 2.2);
+tube(outside, [[0, 62, 1.1], [0, L.OY1 + 10, 1.1], [14, L.OY1 + 60, -2]], 0xc96a1d, 1.6);
+tube(outside, [[12.7, L.OTG_Y, 1.1], [L.OX1 + 18, L.OTG_Y, 1.1], [L.OX1 + 60, L.OTG_Y + 14, 2]], 0x2f6fb7, 1.6);
+tube(outside, [[L.OX0, jy, -1.2], [L.OX0 - 14, jy, -1.2], [L.OX0 - 52, jy - 12, -2]], 0xbfbfbf, 1.1);
+[[label('HDMI', '接主機'), L.HX + 8, L.OY1 + 42, 22], [label('5V', '2 A 電源'), 22, L.OY1 + 42, -2], [label('HOST', '不接 VBUS'), L.OX1 + 40, L.OTG_Y + 8, 12], [label('ATX', '主機板前面板'), L.OX0 - 36, jy - 8, 10]].forEach(([s, x, y, z]) => { s.position.set(x, y, z); outside.add(s); });
+
+const span = O[1];
+const MODES = {
+  closed: { cap: '合殼，LCD 朝上。天線在靠近鏡頭這一端的底面，上方沒有螢幕，也沒有金屬。', cam: [-92, 112, 142], tgt: [0, 12, 0], ex: 0, ghost: false },
+  back: { cap: 'HDMI 在上，5V USB-C 在下方的凹槽裡。凹槽可容納寬 13 mm、高 6.6 mm 以內的模壓插頭。', cam: [-58, 52, -148], tgt: [0, 12, 0], ex: 0, ghost: false },
+  side: { cap: '+X 側。USB-C 接主機，要用不接 VBUS 的線。TF 卡插在同一個開口下方，底部有指甲缺口。右側小孔可按 BOOT。', cam: [158, 44, -40], tgt: [0, 12, 0], ex: 0, ghost: false },
+  open: { cap: '由上而下：上蓋、LCD、C790、排線與捲線棒、橋架、FireBeetle、ATX 小板、底殼。ATX 用 5 支直針焊在核心板下方，實際上不會分開。排線斜捲一次，所以 C790 能順著核心板放。', cam: [-235, 165, 225], tgt: [0, 42, 0], ex: 1, ghost: false },
+  wired: { cap: '外殼半透明。內部的線只有 LCD 8 條，接到 FireBeetle 的 P2 排，路徑只是示意。ATX 小板沒有線，靠 5 支直針接 P1 排。外面的線是 HDMI、藍色 HOST（不接 VBUS）、橘色 5V、灰色 ATX。', cam: [-70, 185, 165], tgt: [0, 8, 0], ex: 0, ghost: true, wired: true },
+};
+const EX = { lid: 88, lcd: 70, c790: 46, fpc: 46, former: 46, bridge: 28, core_board: 12, core_parts: 12, atx: -14, tray: -32 };
+let ex = 0, exTarget = 0, camGoal = null, tgtGoal = null;
+function applyEx() { for (const k in EX) P[k].position.z = EX[k] * ex; }
+function setMode(m, instant) {
+  const c = MODES[m];
+  document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
+  $('cap').textContent = c.cap;
+  exTarget = c.ex; wired.visible = !!c.wired; outside.visible = !!c.wired;
+  [M.tray, M.lid].forEach((x) => { x.transparent = c.ghost; x.opacity = c.ghost ? 0.2 : 1; x.depthWrite = !c.ghost; x.needsUpdate = true; });
+  camGoal = new THREE.Vector3(...c.cam); tgtGoal = new THREE.Vector3(...c.tgt);
+  if (instant || reduced) { ex = exTarget; camera.position.copy(camGoal); controls.target.copy(tgtGoal); camGoal = null; tgtGoal = null; applyEx(); }
+  controls.update();
+}
+document.querySelectorAll('.tabs button').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
+controls.addEventListener('start', () => { camGoal = null; tgtGoal = null; });
+function resize() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (canvas.width !== Math.round(w * renderer.getPixelRatio()) || canvas.height !== Math.round(h * renderer.getPixelRatio())) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+}
+function tick() {
+  resize();
+  if (Math.abs(exTarget - ex) > 0.002) { ex += (exTarget - ex) * 0.12; applyEx(); }
+  if (camGoal) { camera.position.lerp(camGoal, 0.1); controls.target.lerp(tgtGoal, 0.1); if (camera.position.distanceTo(camGoal) < 0.2) { camGoal = null; tgtGoal = null; } }
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(tick);
+}
+const want = location.hash.slice(1);
+setMode(MODES[want] ? want : 'closed', true);
+window.__ready = true;
+tick();
+</script>
+</body>
+</html>

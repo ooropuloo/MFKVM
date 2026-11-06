@@ -1,0 +1,75 @@
+Copper per net, old against new. Segments and vias match only if every coordinate, width and layer match, to 0.1 um.
+0 of 89 routed nets changed
+
+High-speed nets:
+  identical D2_P       4 segments, 0 vias
+  identical D2_N       5 segments, 0 vias
+  identical D1_P       4 segments, 0 vias
+  identical D1_N       5 segments, 0 vias
+  identical D0_P       4 segments, 0 vias
+  identical D0_N       5 segments, 0 vias
+  identical CK_P       4 segments, 0 vias
+  identical CK_N       5 segments, 0 vias
+  identical CSI_D0_P   6 segments, 1 vias
+  identical CSI_D0_N   5 segments, 1 vias
+  identical CSI_D1_P   5 segments, 1 vias
+  identical CSI_D1_N   3 segments, 1 vias
+  identical CSI_CK_P   5 segments, 1 vias
+  identical CSI_CK_N   5 segments, 1 vias
+  identical USB_DP     6 segments, 3 vias
+  identical USB_DN     6 segments, 3 vias
+  identical USB2_DP    20 segments, 4 vias
+  identical USB2_DN    19 segments, 4 vias
+  identical DDC_SCL    18 segments, 3 vias
+  identical DDC_SDA    18 segments, 0 vias
+  identical DDC3_SCL   22 segments, 3 vias
+  identical DDC3_SDA   21 segments, 3 vias
+  identical TC_REFCLK  3 segments, 0 vias
+  identical OSC_OUT    3 segments, 0 vias
+
+Gerber XOR per layer, mm2. Areas are design coordinates, x right and y down:
+  p4_kvm_mini-B_Cu.gbr: 3.4012 in 4 pieces
+      extent x -19.40..19.40, y -19.40..19.40
+  p4_kvm_mini-B_Mask.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-B_Paste.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-B_Silkscreen.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-Edge_Cuts.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Cu.gbr: 3.4012 in 4 pieces
+      extent x -19.40..19.40, y -19.40..19.40
+  p4_kvm_mini-F_Mask.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Paste.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Silkscreen.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-In1_Cu.gbr: 3.4012 in 4 pieces
+      extent x -19.40..19.40, y -19.40..19.40
+  p4_kvm_mini-In2_Cu.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-In3_Cu.gbr: 3.3644 in 4 pieces
+      extent x -19.40..19.40, y -19.40..19.40
+  p4_kvm_mini-In4_Cu.gbr: 3.4012 in 4 pieces
+      extent x -19.40..19.40, y -19.40..19.40
+  p4_kvm_mini-NPTH-drl_map.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-PTH-drl_map.gbr: 0.0000 in 0 pieces
+
+Drill files:
+  p4_kvm_mini-PTH.drl: 242 holes, then 242; removed [], added []
+  p4_kvm_mini-NPTH.drl: 4 holes, then 4; removed [], added []
+
+RESULT high-speed nets identical
+
+Added by hand, 2026-11-06. Measured on fab_r4/gerber against fab_r5/gerber.
+
+Change: H1-H4 pads carry a local clearance of 0.30 mm (generator: MH_CLEARANCE). The board-wide min_hole_clearance stays 0.20, because via holes sit at 0.2000.
+KiCad's zone fill honoured it: hole wall to pour went from 0.2005 to 0.3005 mm on all five poured layers at all four holes (hole_report.txt).
+
+XOR per corner per layer, mm2:
+  F.Cu, In1.Cu, In4.Cu, B.Cu   H1 H2 H3 H4 0.8503 each
+  In3.Cu (3V3)                 H1 H2 H4 0.8503, H3 0.8135
+  In2.Cu, masks, pastes, silks, edge    0.0000
+  Outside the 5 mm square around each hole   under 0.0001 in total, rounding, and no piece over 0.00001 mm2
+
+Why In3 at H3 is 0.0368 less: the antipad of the GND via at (16.44,18.45) in the 3V3 plane already took that part of the ring in r4. The ring area that r5 did not remove sits within 0.3 mm of that via centre. On GND layers the via joins the pour, so there is no antipad.
+
+Drill files: same 242 + 4 hole coordinates, and identical line by line apart from comments.
+DRC: the same 19 warnings as r4 (18 courtyard, 1 starved thermal), 0 errors, 0 unconnected, 0 parity.
+Routing: 0 of 89 routed nets changed, 1195 segments and 230 vias on both boards.
+
+Open item, unchanged: (18,18) hole wall to the GND via hole at (16.44,18.45) is 0.425 mm (0.4251 from the drill file). JLC lists pad hole spacing 0.45 mm and via hole spacing 0.2 mm. CAM must say which applies between an NPTH and a via. holecheck.py does not check hole to hole.

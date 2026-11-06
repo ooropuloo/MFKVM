@@ -1,0 +1,440 @@
+<title>MF KVM v2 r5 · __HHMM__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a bench photo on top, then the numbers and open risks an engineer needs before committing to fab */
+:root {
+  --bg: #e9ecec; --panel: #f6f7f6; --fg: #1b2226; --muted: #566067; --line: #c9d0d1; --accent: #9c5a1c; --ok: #1d6f4a; --warn: #9a5b07; --stage: #dfe4e4;
+  --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; --mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14181a; --panel: #1c2225; --fg: #e7ecec; --muted: #9ba7ac; --line: #30393d; --accent: #e0a062; --ok: #63c295; --warn: #e3ab55; --stage: #1a2023; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #14181a; --panel: #1c2225; --fg: #e7ecec; --muted: #9ba7ac; --line: #30393d; --accent: #e0a062; --ok: #63c295; --warn: #e3ab55; --stage: #1a2023; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.65 }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px }
+h1 { font-size: clamp(26px, 4.2vw, 38px); margin: 0; line-height: 1.2; text-wrap: balance }
+.dim { font-family: var(--mono); font-size: clamp(17px, 2.6vw, 23px); color: var(--accent); white-space: nowrap }
+.sub { margin: 0; color: var(--muted); flex-basis: 100% }
+.stage { position: relative; background: var(--stage); border: 1px solid var(--line); border-radius: 6px; overflow: hidden }
+canvas#view { display: block; width: 100%; height: clamp(330px, 56vw, 590px); touch-action: none }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; border-top: 1px solid var(--line); background: var(--panel) }
+.tabs button { font: inherit; font-size: 14px; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 4px; padding: 6px 13px; cursor: pointer; min-height: 38px }
+.tabs button[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg) }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.cap { margin: 0; padding: 10px 14px 12px; font-size: 14px; color: var(--muted); background: var(--panel); border-top: 1px solid var(--line); min-height: 3.4em }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 22px }
+.grid > * { min-width: 0 }
+h2 { font-size: 18px; margin: 0 0 8px }
+.scroll { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { color: var(--muted); font-weight: 500 }
+tr.me td { font-weight: 700 }
+td.n { font-family: var(--mono); font-size: 13.5px; white-space: nowrap }
+ul { margin: 0; padding-left: 1.15em; display: grid; gap: 7px; font-size: 14.5px }
+.ok { color: var(--ok) } .warn { color: var(--warn) }
+li b { font-weight: 700 }
+.scroll { overflow-x: auto }
+section > h3 { font-size: 15px; margin: 18px 0 6px }
+.note { color: var(--muted); font-size: 14px; margin: 6px 0 0; max-width: 72ch }
+td a { color: var(--accent) }
+code { font-family: var(--mono); font-size: .92em; overflow-wrap: anywhere }
+footer { font-family: var(--mono); font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; overflow-wrap: anywhere }
+.headline { flex-basis: 100%; margin: 0; font-size: clamp(18px, 3.2vw, 25px); font-weight: 700; line-height: 1.3 }
+.topbar { display: grid; gap: 4px }
+.topline { margin: 0; font-size: 14px; font-weight: 500; color: var(--accent); overflow-wrap: anywhere }
+.toplinks { display: flex; flex-wrap: wrap; gap: 0 18px; font-size: 14.5px }
+.toplinks a { color: var(--accent); padding: 4px 0 }
+.pimg { width: 112px; min-width: 112px }
+.pfig { display: block; width: 96px }
+.pthumb { display: block; width: 96px; padding: 3px; background: #fff; border: 1px solid var(--line); border-radius: 6px; cursor: zoom-in; line-height: 0 }
+.pthumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.pthumb img { display: block; width: 100%; height: auto; max-height: 124px; object-fit: contain; border-radius: 3px }
+.pcap { display: block; margin-top: 2px; font-size: 12px; line-height: 1.3; color: var(--muted); text-align: center }
+li.haspimg { display: flow-root }
+li.haspimg .pfig { float: left; margin: 3px 12px 4px 0 }
+#plb { width: min(92vw, 680px); max-height: 92vh; padding: 12px; color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 8px }
+#plb::backdrop { background: rgba(0, 0, 0, .72) }
+#plb img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; background: #fff; border-radius: 4px }
+#plb p { margin: 8px 0; font-size: 14px }
+#plb button { font: inherit; font-size: 14px; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 4px; padding: 5px 14px; cursor: pointer }
+@media (max-width: 560px) { #parts th, #parts td { padding-left: 5px; padding-right: 5px } #parts .pimg { width: 81px; min-width: 81px; padding-right: 4px } .pfig, .pthumb { width: 72px } }
+</style>
+<div class="wrap">
+  <header>
+    <h1>MF KVM 第二版 r5</h1>
+    <span class="dim" id="dim"></span>
+    <p class="headline">自製 6 層主板，最小，已送審</p>
+    <p class="sub">6 層單片板，雙面放零件。高速 USB、影像擷取、Wi-Fi、TF 卡和螢幕都保留，只拿掉 RJ45。已布線，打板包已產生，尚未實機驗證。</p>
+  </header>
+  <div class="topbar">
+    <p class="topline">build __TOPBUILD__ · 打板包 fab_r5 · JLC 審查中，未付款 · 未實機驗證</p>
+    <nav class="toplinks" aria-label="頁內連結"><a href="#parts">要準備什麼</a><a href="#compare" id="go-compare">比大小</a></nav>
+  </div>
+  <section class="stage" aria-label="3D 模型，可拖曳旋轉">
+    <canvas id="view"></canvas>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-mode="closed" aria-selected="true">合殼</button>
+      <button role="tab" data-mode="open" aria-selected="false">分解</button>
+      <button role="tab" data-mode="under" aria-selected="false">板子底面</button>
+      <button role="tab" data-mode="wired" aria-selected="false">接到電腦</button>
+      <button role="tab" data-mode="compare" aria-selected="false">比大小</button>
+    </div>
+    <p class="cap" id="cap" aria-live="polite"></p>
+  </section>
+  <div class="grid">
+    <section>
+      <h2>尺寸比較</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>版本</th><th>長 × 寬 × 高</th><th>體積</th></tr></thead>
+        <tbody>
+          <tr class="me"><td>第二版 r5（這一版）</td><td class="n" id="t-me"></td><td class="n" id="v-me"></td></tr>
+          <tr><td>機構檢查下限</td><td class="n" id="t-min"></td><td class="n" id="v-min"></td></tr>
+          <tr><td>JetKVM Mini</td><td class="n">42 × 42 × 23</td><td class="n">41 cm³</td></tr>
+          <tr><td>Codex Mini R1</td><td class="n">46 × 46 × 29</td><td class="n">61 cm³</td></tr>
+          <tr><td>第一版（模組堆疊，不打板）</td><td class="n">59 × 58 × 36</td><td class="n">123 cm³</td></tr>
+          <tr><td>第三版（現成板組合）</td><td class="n">75 × 38 × 26.7</td><td class="n">76 cm³</td></tr>
+        </tbody>
+      </table></div>
+      <h2 style="margin-top:18px">三個要求怎麼達成</h2>
+      <ul>
+        <li><b>速度：</b>TC358743 走 CSI，唯一的高速 USB 留給主機和虛擬媒體。</li>
+        <li><b>Wi-Fi：</b>這版用模組內建的 ESP32-C6，只有 2.4 GHz。要 5 GHz 必須改用 P4 加 C5。</li>
+        <li><b>體積：</b>拿掉 RJ45，C790 和開發板改成直接焊上板。5V USB-C 移到側面，接線面只留 HDMI 和主機 USB-C。</li>
+      </ul>
+    </section>
+    <section>
+      <h2>查證狀態</h2>
+      <ul>
+        <li class="ok"><b>設計檢查：</b>ERC 0、DRC 0 錯誤、未接 0、原理圖與板子差異 0，Gerber 已讀回確認。</li>
+        <li class="ok"><b>接腳：</b>模組腳位對照官方表，TC358743 的 64 顆球對照開源設計與規格書。</li>
+        <li class="ok"><b>封裝：</b>模組用官方焊盤圖，TF 座和多數小零件用 KiCad 官方封裝，USB-C、HDMI、ESD 用 JLC 來源的封裝。</li>
+        <li class="warn"><b>沒有實機：</b>影像、鍵鼠、TF 卡、Wi-Fi 都還沒實測。韌體設定檔沒有編譯過。</li>
+        <li class="ok"><b>外殼：</b>畫面裡是實際可列印的 STL。開孔、螺絲孔和零件碰撞都已對照 KiCad 匯出的實板幾何檢查（case/check_case.py），還沒有試印。</li>
+        <li class="warn"><b>沒有模擬：</b>阻抗是公式估算，散熱沒有量測。</li>
+        <li class="warn"><b>下單要確認：</b>P4 模組要自備寄給工廠，CPL 旋轉角要逐顆看 JLC 預覽，疊構要選 1.2 mm 6 層。</li>
+      </ul>
+    </section>
+  </div>
+  <section id="parts">
+    <h2>要準備什麼</h2>
+    <p class="note">三類：直接買、JLC 打板貼片、3D 列印。r5 只送審，全部驗證過才打板。價格是 2026-11-06 查的，下單前再確認。</p>
+    <p class="note">廠商照片版權屬原廠，僅供辨識料件。</p>
+    <h3>分階段</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>階段</th><th>要準備</th><th>能驗證</th></tr></thead>
+      <tbody>
+        <tr class="me"><td>1. 送審</td><td>JLC 上傳 fab_r5，先審後付，審查中</td><td>工廠能不能做</td></tr>
+        <tr><td>2. 打板貼片</td><td>PCBA 訂單、BOM、CPL、自備 P4 模組</td><td>焊接、開機</td></tr>
+        <tr><td>3. 接線測試</td><td>天線、螢幕線、ATX 線、電源</td><td>影像、USB、Wi-Fi、ATX、散熱</td></tr>
+        <tr><td>4. 裝外殼</td><td>列印件、螺絲</td><td>組裝、開孔、卡片取放</td></tr>
+      </tbody>
+    </table></div>
+    <h3>直接買</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>圖</th><th>料件</th><th>數量</th><th>哪裡買、注意事項</th></tr></thead>
+      <tbody>
+        <tr><td class="pimg"><!--PIMG:p4--></td><td>Waveshare ESP32-P4-Module-U（IPEX 版）</td><td>1</td><td><a href="https://www.waveshare.com/esp32-p4-module.htm">Waveshare</a> 約 US$10。選 16MB、With IPEX。BOM 不含它，要寄給工廠或自己焊</td></tr>
+        <tr><td class="pimg"><!--PIMG:ant--></td><td>2.4 GHz IPEX FPC 天線</td><td>1</td><td>通用料，接頭型號要先對模組確認。放在塑膠上蓋側，沒測過</td></tr>
+        <tr><td class="pimg"><!--PIMG:lcd128--></td><td>微雪 1.28 吋圓形 LCD（SKU 19192）</td><td>1</td><td><a href="https://www.waveshare.com/1.28inch-lcd-module.htm">Waveshare</a> US$14.99。<b>附的是 PH2.0 線，板上 J6 是 JST SH 1.0，要自己做線</b>。外框 40.4 × 37.5 mm，外殼是用估計值畫的，到貨要量</td></tr>
+        <tr><td class="pimg"><!--PIMG:jst8--></td><td>JST SHR-08V-S 加端子</td><td>1 組</td><td>接 J6 螢幕</td></tr>
+        <tr><td class="pimg"><!--PIMG:jst6--></td><td>JST SHR-06V-S 加端子</td><td>1 組</td><td>接 J4 主機板前面板，不要用帶凸耳的 -B 版</td></tr>
+        <tr><td class="pimg"><!--PIMG:m2--></td><td>M2 × 16 螺絲</td><td>4</td><td>從底部穿過底殼和 PCB，鎖進上蓋</td></tr>
+        <tr><td class="pimg"><!--PIMG:power3--></td><td>5 V USB-C 電源、HDMI 線、USB-C 線</td><td>各 1</td><td>接 J5 供電、J2、J3。J3 的 VBUS 已和板上 5 V 分開，一般線可用</td></tr>
+      </tbody>
+    </table></div>
+    <h3>要打板貼片</h3>
+    <ul>
+      <li class="haspimg"><span class="pfig"><!--PIMG:main--></span><b>打板檔：</b><code>v2\fab_r5\p4_kvm_mini_gerber.zip</code>，6 層、1.2 mm、3313 疊構、0.2 mm 過孔、Epoxy Filled &amp; Capped。</li>
+      <li><b>貼片：</b><code>BOM_JLC.csv</code>、<code>CPL_JLC.csv</code>，雙面 Standard PCBA，BGA 要 X-ray。CPL 旋轉角還沒逐顆確認。</li>
+      <li><b>不要焊：</b>R31、R42。U1 自備。</li>
+      <li><b>庫存：</b>U5 只剩約 36 顆，TC358743 約 230 顆，下單前再查。</li>
+    </ul>
+    <h3>要 3D 列印</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>圖</th><th>檔案（v2\case\stl\）</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td class="pimg"><!--PIMG:tray--></td><td><code>mf_kvm_tray.stl</code></td><td>底殼，開口朝上印</td></tr>
+        <tr><td class="pimg"><!--PIMG:lid--></td><td><code>mf_kvm_lid.stl</code></td><td>上蓋，上下顛倒印</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">舊打包裡的 STL 開孔左右相反，只用這裡的。沒有試印過；(-18, +18) 角只有 3.5 mm 螺紋，別鎖太緊。</p>
+    <h3>韌體</h3>
+    <p class="note">用 <code>v3\firmware\espkvm\build.v2r6_rev3</code> 或 <code>build.v2r6_pre3</code>，先讀晶片版本再決定。只編譯過，沒燒錄。說明在 <code>v2\firmware\BUILD_v2.md</code>。</p>
+  </section>
+  <footer id="build"></footer>
+</div>
+<dialog id="plb" aria-label="料件大圖"><img alt=""><p></p><button type="button">關閉</button></dialog>
+<script>
+(function () {
+  const d = document.getElementById('plb'), big = d.querySelector('img'), cap = d.querySelector('p');
+  document.querySelectorAll('.pthumb').forEach((b) => b.addEventListener('click', () => {
+    const m = b.querySelector('img');
+    big.src = m.src; big.alt = m.alt; cap.textContent = m.alt + '（' + b.dataset.kind + '）';
+    d.showModal();
+  }));
+  d.addEventListener('click', (e) => { if (e.target === d || e.target.closest('button')) d.close(); });
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/STLLoader.js"></script>
+<script>
+const L = /*__LAYOUT__*/null;
+const STLS = /*__STL__*/null;
+const BUILD = '/*__BUILD__*/';
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (id) => document.getElementById(id);
+const fmt = (a, b, c) => `${a} × ${b} × ${c}`;
+$('dim').textContent = fmt(L.s, L.s, L.height) + ' mm';
+$('t-me').textContent = fmt(L.s, L.s, L.height);
+$('v-me').textContent = Math.round(L.s * L.s * L.height / 1000) + ' cm³';
+$('t-min').textContent = fmt(L.min.s, L.min.s, L.min.height_min.toFixed(1));
+$('v-min').textContent = Math.round(L.min.s * L.min.s * L.min.height_min / 1000) + ' cm³';
+$('build').textContent = 'build ' + BUILD + ' · 打板包 fab_r5 · JLC 審查中，未付款 · 未實機驗證 · lay-board/';
+
+const canvas = $('view');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.6;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(28, 1, 1, 6000);
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.enableDamping = !reduced;
+const sun = new THREE.DirectionalLight(0xfff2e0, 0.65);
+sun.position.set(-90, 190, 120);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.4;
+Object.assign(sun.shadow.camera, { left: -180, right: 180, top: 180, bottom: -180, near: 1, far: 600 });
+scene.add(sun);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.ShadowMaterial({ opacity: 0.2 }));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.02; ground.receiveShadow = true; scene.add(ground);
+
+const mat = (color, roughness, metalness, extra) => new THREE.MeshStandardMaterial(Object.assign({ color, roughness: roughness ?? 0.6, metalness: metalness ?? 0 }, extra || {}));
+const M = {
+  steel: mat(0xb9bdc2, 0.32, 1), nickel: mat(0xd8d9d6, 0.25, 1), gold: mat(0xd9b45f, 0.3, 1), shield: mat(0xc8ccce, 0.38, 0.9),
+  black: mat(0x101114, 0.65), plastic: mat(0x17181c, 0.55), ic: mat(0x141518, 0.6), pcb: mat(0x12382f, 0.5), cream: mat(0xe6dcc3, 0.6), cap: mat(0xa98a63, 0.55),
+  base: mat(0x5f666c, 0.46, 0.8, { side: THREE.DoubleSide }), lid: mat(0x1d2125, 0.62, 0.02), glass: mat(0x05070a, 0.12, 0.1), ant: mat(0xb9772b, 0.5), other: mat(0x77808a, 0.5, 0.3),
+  pc: mat(0x2c3238, 0.5, 0.25), charger: mat(0xdfe2e3, 0.55),
+};
+function box(parent, x0, x1, y0, y1, z0, z1, m, shadow) {
+  const g = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0), m);
+  g.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+  g.castShadow = shadow !== false; g.receiveShadow = true;
+  parent.add(g); return g;
+}
+function rrect(w, d, r) {
+  const s = new THREE.Shape(), a = w / 2, b = d / 2;
+  s.moveTo(-a + r, -b); s.lineTo(a - r, -b); s.quadraticCurveTo(a, -b, a, -b + r); s.lineTo(a, b - r); s.quadraticCurveTo(a, b, a - r, b);
+  s.lineTo(-a + r, b); s.quadraticCurveTo(-a, b, -a, b - r); s.lineTo(-a, -b + r); s.quadraticCurveTo(-a, -b, -a + r, -b);
+  return s;
+}
+function slab(parent, shape, z0, z1, m) {
+  const g = new THREE.ExtrudeGeometry(shape, { depth: z1 - z0, bevelEnabled: false, curveSegments: 20 });
+  g.rotateX(-Math.PI / 2);
+  const mesh = new THREE.Mesh(g, m);
+  mesh.position.y = z0; mesh.castShadow = mesh.receiveShadow = true;
+  parent.add(mesh); return mesh;
+}
+function prismY(parent, shape, cx, cz, yBack, yFront, m) {
+  const g = new THREE.ExtrudeGeometry(shape, { depth: yFront - yBack, bevelEnabled: false, curveSegments: 14 });
+  const mesh = new THREE.Mesh(g, m);
+  mesh.position.set(cx, cz, yBack); mesh.castShadow = true;
+  parent.add(mesh); return mesh;
+}
+function stadium(w, h) {
+  const r = h / 2, s = new THREE.Shape();
+  s.moveTo(-w / 2 + r, -r); s.lineTo(w / 2 - r, -r); s.absarc(w / 2 - r, 0, r, -Math.PI / 2, Math.PI / 2, false);
+  s.lineTo(-w / 2 + r, r); s.absarc(-w / 2 + r, 0, r, Math.PI / 2, Math.PI * 1.5, false);
+  return s;
+}
+function hdmiShape(w, h, c) {
+  const s = new THREE.Shape();
+  s.moveTo(-w / 2 + c, -h / 2); s.lineTo(w / 2 - c, -h / 2); s.lineTo(w / 2, -h / 2 + c * 0.8); s.lineTo(w / 2, h / 2);
+  s.lineTo(-w / 2, h / 2); s.lineTo(-w / 2, -h / 2 + c * 0.8); s.closePath();
+  return s;
+}
+function usbC(parent, cx, cz, yBack, yFront) {
+  const shell = stadium(8.94, 3.2); shell.holes.push(new THREE.Path(stadium(8.34, 2.6).getPoints(24).reverse()));
+  prismY(parent, shell, cx, cz, yBack, yFront, M.nickel);
+  prismY(parent, stadium(8.34, 2.6), cx, cz, yBack, yFront - 3.2, M.black);
+  box(parent, cx - 3.3, cx + 3.3, yFront - 3.2, yFront - 0.5, cz - 0.3, cz + 0.3, M.plastic);
+  for (let i = 0; i < 12; i++) {
+    const x = cx - 2.75 + i * 0.5;
+    box(parent, x - 0.12, x + 0.12, yFront - 3, yFront - 0.6, cz + 0.28, cz + 0.33, M.gold, false);
+    box(parent, x - 0.12, x + 0.12, yFront - 3, yFront - 0.6, cz - 0.33, cz - 0.28, M.gold, false);
+  }
+}
+function hdmi(parent, cx, cz, yBack, yFront) {
+  const outer = hdmiShape(15, 5.9, 2.0); outer.holes.push(new THREE.Path(hdmiShape(14, 4.5, 1.7).getPoints(4).reverse()));
+  prismY(parent, outer, cx, cz, yBack, yFront, M.steel);
+  prismY(parent, hdmiShape(14, 4.5, 1.7), cx, cz, yBack, yFront - 4.2, M.black);
+  box(parent, cx - 5.8, cx + 5.8, yFront - 4.2, yFront - 0.8, cz - 0.15, cz + 1.2, M.plastic);
+  for (let i = 0; i < 10; i++) {
+    const x = cx - 4.5 + i;
+    box(parent, x - 0.2, x + 0.2, yFront - 4, yFront - 1, cz + 1.2, cz + 1.25, M.gold, false);
+    box(parent, x + 0.3, x + 0.7, yFront - 4, yFront - 1, cz - 0.2, cz - 0.15, M.gold, false);
+  }
+}
+function labelSprite(text, sub) {
+  const c = document.createElement('canvas'); c.width = 640; c.height = sub ? 200 : 110;
+  const g = c.getContext('2d');
+  g.fillStyle = 'rgba(20,24,27,.9)'; g.beginPath(); g.roundRect(4, 4, c.width - 8, c.height - 8, 14); g.fill();
+  g.fillStyle = '#fff'; g.font = '700 54px "Noto Sans TC", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(text, c.width / 2, sub ? 66 : c.height / 2);
+  if (sub) { g.fillStyle = '#e3b27a'; g.font = '500 44px "IBM Plex Mono", monospace'; g.fillText(sub, c.width / 2, 142); }
+  const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false, transparent: true }));
+  s.scale.set(32, 32 * c.height / c.width, 1); s.renderOrder = 10;
+  return s;
+}
+
+// three.js frame: x = case x, y = case z (up), z = -case y, so the I/O face is at +z and it is the same object as the printed STL.
+// With the I/O face toward you, +x is on your right: USB-C J3 left, HDMI J2 right, 5V USB-C in the -x wall, microSD in the +x wall.
+// build_page.py converts every board position with page_xy() into this frame.
+const S = L.s, H = L.height, half = S / 2;
+const zB = L.z_bot, zT = L.z_top;
+const kvm = new THREE.Group(); scene.add(kvm);
+const parts = { base: new THREE.Group(), board: new THREE.Group(), lcd: new THREE.Group(), lid: new THREE.Group() };
+Object.values(parts).forEach((g) => kvm.add(g));
+const hdmiZ = zB - 3, usbZ = zT + 1.6;
+
+// PCB and parts
+const pcbShape = rrect(L.pcb, L.pcb, 2);
+L.holes.forEach(([x, y]) => { const p = new THREE.Path(); p.absarc(x, y, 1.1, 0, Math.PI * 2, true); pcbShape.holes.push(p); });
+slab(parts.board, pcbShape, zB, zT, M.pcb);
+const [mx0, mx1, my0, my1] = L.top['P4 module'];
+box(parts.board, mx0, mx1, my0, my1, zT, zT + 0.8, M.pcb);
+box(parts.board, mx0 + 1.4, mx1 - 1.4, my0 + 1.4, my1 - 1.4, zT + 0.8, zT + 3.3, M.shield);
+for (let i = 0; i < 22; i++) { const t = mx0 + 1.5 + i; box(parts.board, t - 0.22, t + 0.22, my0 - 0.03, my0 + 0.3, zT, zT + 0.8, M.gold, false); box(parts.board, t - 0.22, t + 0.22, my1 - 0.3, my1 + 0.03, zT, zT + 0.8, M.gold, false); box(parts.board, mx0 - 0.03, mx0 + 0.3, my0 + 1.5 + i - 0.22, my0 + 1.5 + i + 0.22, zT, zT + 0.8, M.gold, false); box(parts.board, mx1 - 0.3, mx1 + 0.03, my0 + 1.5 + i - 0.22, my0 + 1.5 + i + 0.22, zT, zT + 0.8, M.gold, false); }
+usbC(parts.board, L.usb_cx, usbZ, L.face - 9.06, L.face);
+// J5 opens toward the -x wall: a quarter turn takes local z to world -x and local x to world z
+const rot = new THREE.Group(); rot.rotation.y = -Math.PI / 2; parts.board.add(rot);
+usbC(rot, L.j5_z, usbZ, L.face - 9.06, L.face);
+const sock = L.top['LCD socket']; box(parts.board, sock[0], sock[1], sock[2], sock[3], sock[4], sock[5], M.cream);
+hdmi(parts.board, L.hdmi_cx, hdmiZ, L.face - 12.2, L.face);
+const sd = L.bottom.microSD; box(parts.board, sd[0], sd[1], sd[2], sd[3], sd[4], sd[5], M.steel);
+const at = L.bottom['ATX 6P']; box(parts.board, at[0], at[1], at[2], at[3], at[4], at[5], M.cream);
+// every other part at its routed position, as its envelope
+const KIND = { ic: M.ic, cap: M.cap, ind: M.black, opto: M.plastic, tp: M.gold };
+L.smd.forEach(([k, x0, x1, y0, y1, z0, z1]) => box(parts.board, x0, x1, y0, y1, z0, z1, KIND[k], false));
+
+// the board's silkscreen, as on the Gerber
+(function () {
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 361;
+  const g = c.getContext('2d'); g.fillStyle = '#f2f2ee'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  // widths from the board: 11 mm and 14.8 mm at 60 px/mm. The canvas may draw before the web font loads, so fit to width whatever font it got.
+  const line = (txt, font, wPx, y) => { g.font = font; const k = wPx / g.measureText(txt).width; g.save(); g.translate(512, y); g.scale(k, 1); g.fillText(txt, 0, 0); g.restore(); };
+  line('MF KVM', '700 150px "IBM Plex Mono", Consolas, monospace', 662, 96);
+  line('P4 MINI REV A 2026-11', '500 60px "IBM Plex Mono", Consolas, monospace', 888, 265);
+  const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(17, 6), new THREE.MeshStandardMaterial({ map: t, transparent: true, roughness: 0.8, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 }));
+  // On the real board the text's top points at the I/O edge, so it reads upright with the I/O edge away from you. Hence the half turn.
+  m.rotation.set(-Math.PI / 2, 0, Math.PI); m.position.set(L.silk[0], zT + 0.06, L.silk[1]); m.renderOrder = 2; parts.board.add(m);
+})();
+
+// LCD and lid
+const lz = H - 1 - L.lcd.t, D = L.lcd.d, cy = 0;
+const disc = new THREE.Mesh(new THREE.CylinderGeometry(D / 2, D / 2, L.lcd.t, 64), M.black); disc.position.set(0, lz + L.lcd.t / 2, cy); disc.castShadow = true; parts.lcd.add(disc);
+const sc = document.createElement('canvas'); sc.width = sc.height = 480; const sg = sc.getContext('2d');
+sg.fillStyle = '#071113'; sg.fillRect(0, 0, 480, 480); sg.strokeStyle = '#2fbf8c'; sg.lineWidth = 8; sg.beginPath(); sg.arc(240, 240, 214, -2.3, 0.9); sg.stroke();
+sg.textAlign = 'center'; sg.fillStyle = '#7fd9b8'; sg.font = '500 30px "IBM Plex Mono", monospace'; sg.fillText('Wi-Fi ON', 240, 142);
+sg.fillStyle = '#fff'; sg.font = '700 46px "IBM Plex Mono", monospace'; sg.fillText('192.168.1.42', 240, 248);
+sg.fillStyle = '#9fb0b5'; sg.font = '500 30px "IBM Plex Mono", monospace'; sg.fillText('HDMI 1080p  USB OK', 240, 322); sg.fillText('UI 示例', 240, 372);
+const st = new THREE.CanvasTexture(sc); st.encoding = THREE.sRGBEncoding; st.anisotropy = 8;
+const face = new THREE.Mesh(new THREE.CircleGeometry(16.2, 64), new THREE.MeshStandardMaterial({ map: st, roughness: 0.2, emissive: 0xffffff, emissiveMap: st, emissiveIntensity: 0.75 }));
+face.rotation.x = -Math.PI / 2; face.position.set(0, lz + L.lcd.t + 0.01, cy); parts.lcd.add(face);
+const fpc = box(parts.lcd, -5, 5, -D / 2 - 1.6, -D / 2 + 3, lz - 0.15, lz - 0.02, M.ant, false);
+// the shell shown is the real printable STL, not a drawing of it
+function useStl(group, text, m) {
+  while (group.children.length) group.remove(group.children[0]);
+  const g = new THREE.STLLoader().parse(Uint8Array.from(atob(text), (c) => c.charCodeAt(0)).buffer), a = g.attributes.position;
+  for (let i = 0; i < a.count; i++) { const x = a.getX(i), y = a.getY(i), z = a.getZ(i); a.setXYZ(i, x, z, -y); }
+  g.computeVertexNormals();
+  const mesh = new THREE.Mesh(g, m); mesh.castShadow = mesh.receiveShadow = true; group.add(mesh);
+}
+useStl(parts.base, STLS.tray, M.base);
+useStl(parts.lid, STLS.lid, M.lid);
+
+// connections
+const scenes = new THREE.Group(); scene.add(scenes);
+const wired = new THREE.Group(); scenes.add(wired); wired.visible = false;
+function cable(pts, color, r) {
+  const curve = new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(p[0], p[1], p[2])));
+  const m = new THREE.Mesh(new THREE.TubeGeometry(curve, 90, r || 1.9, 12), mat(color, 0.6)); m.castShadow = true; wired.add(m); return m;
+}
+const PCX = 150, PCZ = 40;
+box(wired, PCX - 55, PCX + 55, PCZ - 38, PCZ + 38, 0, 46, M.pc);
+box(wired, PCX - 57.5, PCX - 55, PCZ + 6, PCZ + 26, 16, 24, M.black); box(wired, PCX - 57.5, PCX - 55, PCZ - 22, PCZ - 4, 16, 22, M.black);
+const pcTag = labelSprite('主機電腦'); pcTag.position.set(PCX, 60, PCZ); wired.add(pcTag);
+const ChX = -84, ChZ = 8; box(wired, ChX - 16, ChX + 16, ChZ - 20, ChZ + 20, 0, 28, M.charger);
+const chTag = labelSprite('5V 充電器'); chTag.position.set(ChX, 40, ChZ); wired.add(chTag);
+box(wired, L.hdmi_cx - 9.75, L.hdmi_cx + 9.75, half + 0.2, half + 26, zB - 3 - 5.5, zB - 3 + 5.5, M.black);
+box(wired, L.usb_cx - 6, L.usb_cx + 6, half + 0.2, half + 21, usbZ - 4, usbZ + 4, mat(0x2a6fbd, 0.55));
+box(wired, -half - 21, -half - 0.2, L.j5_z - 6, L.j5_z + 6, usbZ - 4, usbZ + 4, mat(0xc27b2a, 0.55));
+cable([[L.hdmi_cx, zB - 3, half + 26], [L.hdmi_cx + 6, 7, half + 58], [PCX - 95, 6, PCZ + 42], [PCX - 57, 20, PCZ + 16]], 0x15171a, 2.6);
+cable([[L.usb_cx, usbZ, half + 21], [L.usb_cx + 2, 8, half + 74], [PCX - 80, 5, PCZ + 62], [PCX - 70, 6, PCZ - 8], [PCX - 57, 19, PCZ - 13]], 0x2a6fbd, 1.8);
+cable([[-half - 21, usbZ, L.j5_z], [-half - 44, 6, L.j5_z], [ChX + 34, 6, 6], [ChX + 16, 14, ChZ]], 0xc27b2a, 1.8);
+
+// comparison: every block true to scale, on the same ground
+const cmp = new THREE.Group(); scenes.add(cmp); cmp.visible = false;
+const others = [['JetKVM Mini', 42, 42, 23, 0x8e9499], ['Codex R1（參考）', 46, 46, 29, 0x365f6c], ['第一版', 59, 58, 36, 0x4b4f56], ['第三版', 75, 38, 26.7, 0xa8662c]];
+let cx = S / 2 + 18;
+others.forEach(([n, w, d, ht, col]) => {
+  slab(cmp, rrect(w, d, 2.5), 0, ht, mat(col, 0.5, 0.25)).position.x = cx + w / 2;
+  const tag = labelSprite(n, `${w}×${d}×${ht}`); tag.scale.multiplyScalar(1.6); tag.position.set(cx + w / 2, ht + 15, 0); cmp.add(tag);
+  cx += w + 18;
+});
+const meTag = labelSprite('第二版 r5 已送審', `${S}×${S}×${H}`); meTag.scale.multiplyScalar(1.6); meTag.position.set(0, H + 15, 0); cmp.add(meTag);
+const cmpMid = (cx - 18 - S / 2) / 2;
+// far enough for the whole row at the current canvas shape, so a phone sees all five too
+const cmpDist = Math.max(345, (cx - 18 + S / 2 + 40) / 2 / (Math.tan(camera.fov * Math.PI / 360) * canvas.clientWidth / canvas.clientHeight));
+
+const MODES = {
+  closed: { cap: `合殼。頂面是 1.28 吋圓形螢幕。站在接線面外側看：接主機的 USB-C 在左、HDMI 在右；5V USB-C 在左手邊的側面，TF 卡從右手邊的側面插入，ATX 端子在背面。`, cam: [-44, 52, 92], tgt: [0, H / 2 - 1, 2], ex: 0 },
+  open: { cap: `分解。上方是上蓋和螢幕；中間是單片板，上面放 P4 模組和兩個 USB-C，MF KVM 絲印在模組和接線面之間，HDMI 在板子底面。下方是底殼。`, cam: [-70, 96, 130], tgt: [0, 30, 0], ex: 1 },
+  under: { cap: `板子底面，鏡頭在板子下方，接線面朝向你。HDMI 旁就是 TC358743，影像走線可以很短。一樣以站在接線面外側為準：TF 卡座靠右側，電源靠左側，光耦和 ATX 端子靠背面。`, cam: [-34, -66, 84], tgt: [0, zB, 2], ex: -1, ground: false },
+  wired: { cap: `實際接法。HDMI 和藍色 USB-C 接主機，橘色 USB-C 接充電器，網路走 Wi-Fi，不需要再接網路線。電腦和充電器只是示意。`, cam: [30, 200, 330], tgt: [34, 12, 30], ex: 0, wired: true },
+  compare: { cap: `五個外殼按同一比例擺放。第二版 r5 的 ${S}×${S}×${H} mm 已完成布線，尚未實機驗證。第一版不打板，第三版是現成板組合。`, cam: [cmpMid, cmpDist * 0.3, cmpDist], tgt: [cmpMid, 14, 0], ex: 0, cmp: true },
+};
+let mode = 'closed';
+let ex = 0, exTarget = 0, camGoal = null, tgtGoal = null;
+function setMode(m, instant) {
+  mode = m; const c = MODES[m];
+  document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
+  $('cap').textContent = c.cap;
+  exTarget = c.ex; wired.visible = !!c.wired; cmp.visible = !!c.cmp; ground.visible = c.ground !== false;
+  camGoal = new THREE.Vector3(...c.cam); tgtGoal = new THREE.Vector3(...c.tgt);
+  if (instant || reduced) { ex = exTarget; camera.position.copy(camGoal); controls.target.copy(tgtGoal); camGoal = null; tgtGoal = null; applyEx(); }
+  controls.update();
+}
+function applyEx() {
+  if (ex >= 0) { parts.base.position.y = -ex * 0; parts.board.position.y = ex * 13; parts.lcd.position.y = ex * 29; parts.lid.position.y = ex * 45; parts.base.visible = true; parts.lcd.visible = true; parts.lid.visible = true; }
+  else { parts.board.position.y = 0; parts.base.visible = false; parts.lcd.visible = false; parts.lid.visible = false; }
+}
+document.querySelectorAll('.tabs button').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
+controls.addEventListener('start', () => { camGoal = null; tgtGoal = null; });
+function resize() {
+  const w = canvas.clientWidth, ht = canvas.clientHeight;
+  if (canvas.width !== Math.round(w * renderer.getPixelRatio()) || canvas.height !== Math.round(ht * renderer.getPixelRatio())) { renderer.setSize(w, ht, false); camera.aspect = w / ht; camera.updateProjectionMatrix(); }
+}
+function tick() {
+  resize();
+  if (Math.abs(exTarget - ex) > 0.002) { ex = exTarget < 0 || ex < 0 ? exTarget : ex + (exTarget - ex) * 0.12; applyEx(); }
+  if (camGoal) { camera.position.lerp(camGoal, 0.1); controls.target.lerp(tgtGoal, 0.1); if (camera.position.distanceTo(camGoal) < 0.2) { camGoal = null; tgtGoal = null; } }
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(tick);
+}
+$('go-compare').addEventListener('click', (e) => { e.preventDefault(); setMode('compare'); document.querySelector('.stage').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); });
+const want = location.hash.slice(1);
+setMode(MODES[want] ? want : 'closed', true);
+window.__ready = true;
+tick();
+</script>

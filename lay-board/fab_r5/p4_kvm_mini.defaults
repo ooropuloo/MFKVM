@@ -1,0 +1,34 @@
+# P4 KVM Mini, ESP-KVM board overlay, starts from boards/moduledevkit_p4.defaults and boards/moduledevkit_p4_rev3.defaults.
+#
+# Compile checked on ESP-KVM 0893eef with patches/0001, not run on hardware. See BUILD_v2.md.
+# Without that patch the three *_DEFAULT options below are ignored silently and the panel and ATX stay off.
+#   idf.py -B build.v2r5_rev3 -D SDKCONFIG=build.v2r5_rev3/sdkconfig -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;boards/moduledevkit_p4.defaults;boards/moduledevkit_p4_rev3.defaults;boards/p4_kvm_mini.defaults" build
+# For a module with a chip older than rev 3.0: the same, without boards/moduledevkit_p4_rev3.defaults. An image runs on one family only.
+# An existing sdkconfig beats this file with no warning. After changing it, start from a new build directory.
+#
+# TC358743: the board drives RESETN from GPIO 23 and fits a 27 MHz oscillator, the firmware's defaults.
+CONFIG_KVM_TC358743_RST_GPIO=23
+CONFIG_KVM_TC358743_REFCLK_HZ=27000000
+# microSD: gate on GPIO 45, active low, IO supplied from LDO channel 4, as on the DEV-KIT.
+CONFIG_KVM_SD_PWR_GPIO=45
+CONFIG_KVM_SD_PWR_ACTIVE_LOW=y
+CONFIG_KVM_SD_IO_LDO_CHAN=4
+# Round GC9A01 LCD on J6, on at first boot so the hotspot join QR shows. Index 2 is GC9A01 240x240. BL is tied to 3V3 on the board, so disp_bl stays -1.
+CONFIG_KVM_DISP_ENABLE_DEFAULT=1
+CONFIG_KVM_DISP_TYPE_DEFAULT=2
+CONFIG_KVM_ENABLE_DISPLAY=y
+CONFIG_KVM_DISP_MOSI_GPIO=9
+CONFIG_KVM_DISP_SCLK_GPIO=10
+CONFIG_KVM_DISP_CS_GPIO=11
+CONFIG_KVM_DISP_DC_GPIO=12
+CONFIG_KVM_DISP_RST_GPIO=13
+# ATX on J4, on at first boot: the optocouplers are on the board, and the outputs idle low, released. atx_active_high stays 1, which is how R52 and R53 drive them. These bank pins stay at 3.3 V whatever LDO channel 4 is set to.
+CONFIG_KVM_ATX_ENABLE_DEFAULT=1
+CONFIG_KVM_ENABLE_ATX=y
+CONFIG_KVM_ATX_PWR_GPIO=4
+CONFIG_KVM_ATX_RST_GPIO=5
+CONFIG_KVM_ATX_LED_GPIO=2
+# No Ethernet on this board. Left on, net_mode defaults to ethernet and there is no console at first boot.
+# CONFIG_KVM_ETH_ENABLE is not set
+# The DEV-KIT's official manifest would install an image without these pins. Empty, the manifest path is off. See BUILD_v2.md for what stays open.
+CONFIG_KVM_UPDATE_URL=""

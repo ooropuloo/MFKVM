@@ -1,0 +1,4 @@
+﻿Ref,Value,Handling,Mid X,Mid Y,Layer,Rotation
+U1,"ESP32-P4-Module-U (IPEX, consigned)",Buy and consign: Waveshare ESP32-P4-Module-U,97.000mm,-105.400mm,Top,90
+R31,0R 0402,Do not fit,82.800mm,-93.800mm,Bottom,90
+R42,0R 0402,Do not fit,96.400mm,-110.700mm,Bottom,0
