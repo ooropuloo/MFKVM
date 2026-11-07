@@ -111,13 +111,16 @@ with open(f'{DEST}/BOM_JLC.csv', 'w', newline='', encoding='utf-8-sig') as f:
     w.writerow(['Comment', 'Designator', 'Footprint', 'LCSC Part #'])
     for (val, lib, lc), refs in sorted(rows.items(), key=lambda x: x[0][2]):
         w.writerow([val, ','.join(sorted(refs)), lib, lc])
+# JLC's part library has its own 0 degree for these parts, so the KiCad angle lands them wrong.
+# Checked 2026-11-07 in JLC's placement preview against pin 1 in the KiCad board; re-check if a part changes.
+JLC_ROT = {'U2': 270, 'U4': 270, 'Q1': 270, 'U10': 270, 'U11': 270, 'U12': 270, 'J7': 90}
 with open(f'{DEST}/CPL_JLC.csv', 'w', newline='', encoding='utf-8-sig') as f:
     w = csv.writer(f)
     w.writerow(['Designator', 'Mid X', 'Mid Y', 'Layer', 'Rotation'])
     for p in parts:
         if p['dnp'] or p['consign'] or not p['lcsc']:
             continue
-        w.writerow([p['ref'], f"{p['x'] + OX:.3f}mm", f"{-(p['y'] + OY):.3f}mm", 'Top' if p['side'] == 'F' else 'Bottom', f"{p['r'] % 360:g}"])
+        w.writerow([p['ref'], f"{p['x'] + OX:.3f}mm", f"{-(p['y'] + OY):.3f}mm", 'Top' if p['side'] == 'F' else 'Bottom', f"{JLC_ROT.get(p['ref'], p['r'] % 360):g}"])
 with open(f'{DEST}/CONSIGNED_AND_NOT_FITTED.csv', 'w', newline='', encoding='utf-8-sig') as f:
     w = csv.writer(f)
     w.writerow(['Ref', 'Value', 'Handling', 'Mid X', 'Mid Y', 'Layer', 'Rotation'])
