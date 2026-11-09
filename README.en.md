@@ -16,6 +16,44 @@ A single 6-layer board with parts on both sides. The controller is an ESP32-P4-M
 |---|---|
 | ![r7f board top render](lay-board/r7f/images/board_top.jpg) | ![r7f board bottom render](lay-board/r7f/images/board_bottom.jpg) |
 
+<details>
+<summary>Part reference table (click to expand)</summary>
+
+**Top**
+
+| Ref | What it is | Purpose / note |
+|---|---|---|
+| U1 | ESP32-P4 module | Controller and Wi-Fi; customer-supplied, hand-soldered after assembly; largest heat source |
+| J3 | USB-C | To the controlled host (keyboard, mouse, virtual media) |
+| J5 | USB-C | 5 V power, flashing, console |
+| J6 | SM08B 8-pin | Round LCD |
+| U14 | ESD protection | USB lines of J5 |
+| U15 + L2 | Buck converter | 3V3 to 1.2 V |
+| D1 | ESD protection | HDMI CEC |
+
+**Bottom**
+
+| Ref | What it is | Purpose / note |
+|---|---|---|
+| J2 | HDMI | Video input |
+| U7 | TC358743 BGA | HDMI to CSI; the hottest chip |
+| J7 | microSD | Virtual media and storage |
+| U16 | TPS259531 eFuse | 5 V input protection; check its orientation when ordering |
+| U2 + L1 | Buck converter | 5 V to 3V3 |
+| U4 | LDO | 3V3 to 2.5 V |
+| U6 | TCA9517A | HDMI DDC level shifter |
+| U3, U8, U9 | ESD protection | USB lines of J3, HDMI TMDS |
+| U10, U11, U12 | Optocoupler | ATX power, reset, LED |
+| J4 | SM06B 6-pin | ATX front panel |
+| J8 | U.FL | Wi-Fi antenna |
+| Y1 | 27 MHz oscillator | Clock for U7 |
+| Q1 | P-channel MOSFET | microSD power switch |
+| C69 | 330 µF POSCAP | 5 V bulk capacitor |
+
+Resistors and most capacitors are not listed; see [`BOM_JLC.csv`](lay-board/r7f/fab_r7f/BOM_JLC.csv) for the full list.
+
+</details>
+
 | Case assembled | Exploded |
 |---|---|
 | ![r7f case assembled render](lay-board/r7f/images/case_assembled.jpg) | ![r7f case exploded render](lay-board/r7f/images/case_exploded.jpg) |

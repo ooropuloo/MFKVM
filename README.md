@@ -16,6 +16,44 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 |---|---|
 | ![r7f 板子正面算繪圖](lay-board/r7f/images/board_top.jpg) | ![r7f 板子背面算繪圖](lay-board/r7f/images/board_bottom.jpg) |
 
+<details>
+<summary>零件代號對照表（點開看圖查詢）</summary>
+
+**正面（Top）**
+
+| 代號 | 是什麼 | 用途／備註 |
+|---|---|---|
+| U1 | ESP32-P4 模組 | 主控加 Wi-Fi，客供、組裝後手焊，最大熱源 |
+| J3 | USB-C | 接被控主機（鍵盤滑鼠、虛擬媒體） |
+| J5 | USB-C | 5 V 供電、燒錄、console |
+| J6 | SM08B 8P | 接圓形 LCD |
+| U14 | ESD 保護 | J5 的 USB 線 |
+| U15 + L2 | 降壓 | 3V3 → 1.2 V |
+| D1 | ESD 保護 | HDMI CEC |
+
+**背面（Bottom）**
+
+| 代號 | 是什麼 | 用途／備註 |
+|---|---|---|
+| J2 | HDMI | 影像輸入 |
+| U7 | TC358743 BGA | HDMI 轉 CSI，最燙的晶片 |
+| J7 | microSD | 虛擬媒體、儲存 |
+| U16 | TPS259531 eFuse | 5 V 輸入保護，下單要核對方向 |
+| U2 + L1 | 降壓 | 5 V → 3V3 |
+| U4 | LDO | 3V3 → 2.5 V |
+| U6 | TCA9517A | HDMI DDC 準位轉換 |
+| U3、U8、U9 | ESD 保護 | J3 的 USB 線、HDMI TMDS |
+| U10、U11、U12 | 光耦 | ATX 電源、重置、LED |
+| J4 | SM06B 6P | 接 ATX 前面板 |
+| J8 | U.FL | 接 Wi-Fi 天線 |
+| Y1 | 27 MHz 振盪器 | U7 的時脈 |
+| Q1 | P 通道 MOSFET | microSD 電源開關 |
+| C69 | 330 µF POSCAP | 5 V 大電容 |
+
+電阻、電容太多沒有列，完整清單見 [`BOM_JLC.csv`](lay-board/r7f/fab_r7f/BOM_JLC.csv)。
+
+</details>
+
 | 外殼組裝 | 爆炸圖 |
 |---|---|
 | ![r7f 外殼組裝算繪圖](lay-board/r7f/images/case_assembled.jpg) | ![r7f 外殼爆炸算繪圖](lay-board/r7f/images/case_exploded.jpg) |
