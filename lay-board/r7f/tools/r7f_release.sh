@@ -4,7 +4,7 @@
 # Gates: any of these failing makes the script exit 1 at the end: check.sh (ERC/DRC), drc_accept, verify, hotplug (r7f: the eFuse input),
 # fab_pack, refplane, pairgap, cpl_pin1, impedance, s3_solver_test, case (regenerated from design.json first), bodycheck, maskcheck,
 # holecheck (inside verify), mutate (r7f family added). coldstart.py is an analysis (no gate).
-M=D:/git/p4-kvm-box/v2_r7f
+M=$(cd "$(dirname "$0")/.." && pwd)
 CASE_PY=${CASE_PY:-$M/.venv-case/Scripts/python.exe}   # r7e: local interpreter (tools/setup_case_env.sh), not another session's temp dir
 cd "$M" || exit 1
 FAILS=""
@@ -43,7 +43,7 @@ cp case/stl/case_spec.json fab_r7f/case_spec_r7f.json
 for f in p4_kvm_mini.kicad_sch mini.kicad_sym p4_kvm_mini.kicad_pro p4_kvm_mini.kicad_pcb p4_kvm_mini.kicad_dru erc.json drc.json; do cp out/$f kicad/$f; done
 # r7f (REVIEW_r7f minor-4): the delivered KiCad project gets the full footprint library, and its own ERC must be as clean as out/'s
 rm -rf kicad/mini.pretty; cp -r out/mini.pretty kicad/mini.pretty; cp out/fp-lib-table out/sym-lib-table kicad/
-(cd kicad && KICAD_DOCUMENTS_HOME=D:/tools/kicad-nightly/home/doc KICAD_CONFIG_HOME=D:/tools/kicad-nightly/home/cfg KICAD_CACHE_HOME=D:/tools/kicad-nightly/home/cache D:/tools/kicad-nightly/app/bin/kicad-cli.exe sch erc --format json --severity-all -o erc_kicad.json p4_kvm_mini.kicad_sch > /dev/null 2>&1)
+(cd kicad && KICAD_DOCUMENTS_HOME=${KICAD_TOOL_HOME:-$HOME/.kicad-tool-home}/doc KICAD_CONFIG_HOME=${KICAD_TOOL_HOME:-$HOME/.kicad-tool-home}/cfg KICAD_CACHE_HOME=${KICAD_TOOL_HOME:-$HOME/.kicad-tool-home}/cache ${KICAD_CLI:-kicad-cli} sch erc --format json --severity-all -o erc_kicad.json p4_kvm_mini.kicad_sch > /dev/null 2>&1)
 python -I -c "import json,sys; a=json.load(open('kicad/erc_kicad.json',encoding='utf-8')); v=[x['type'] for s in a['sheets'] for x in s['violations']]; print('kicad/ ERC violations', len(v), v[:6]); sys.exit(1 if v else 0)"; gate kicad_erc $?
 python -I tools/mutate.py out --report MUTATION_REPORT.txt > out/mutate.log 2>&1; gate mutate $?; tail -2 MUTATION_REPORT.txt
 (cd fab_r7f && sha256sum p4_kvm_mini_layout.pdf coldstart_r7f.txt case_spec_r7f.json hand_solder_gap_r7f.txt csi_via_r7f.txt CPL_polarity_pin1_r7f.md refplane_r7f.txt pairgap_r7f.md drc_instances_r7f.txt bodycheck_r7f.txt s3_solver_test_r7f.txt > SHA256_extra.txt)

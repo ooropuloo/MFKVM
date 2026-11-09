@@ -4,7 +4,7 @@ usage: r7f_plot.py <board.kicad_pcb> <out.png> x0,y0,x1,y1 (design mm, origin at
 import os
 import sys
 
-sys.path.insert(0, 'D:/git/p4-kvm-box/analysis_r7f/si/scripts')
+sys.path.insert(0, os.environ.get('MFKVM_SI_SCRIPTS', 'analysis_r7f/si/scripts'))
 import brd
 import matplotlib
 matplotlib.use('Agg')

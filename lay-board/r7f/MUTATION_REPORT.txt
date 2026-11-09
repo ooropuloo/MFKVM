@@ -1,4 +1,4 @@
-mutation run on D:\git\p4-kvm-box\v2_r7f\out
+mutation run on v2_r7f\out
 ok  | verify   | control | control passes | 
 ok  | verify   | U6.5 TCA9517A EN back on 3V3 (the r6 bug) | caught | FAIL  U6.5    3V3        static level of 3V3 3.185-3.440 V against VIH 3.850 V  [TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3 VIH EN 0.7 x VCCB, max 5.5] / FAIL 
 ok  | verify   | R50 and R51 swapped (3V3 divider) | caught | FAIL  U1.85   3V3        supply 3.0-3.6 V: 3V3 0.7139-0.7519 V  [Waveshare ESP32-P4-Module wiki: 3.3 V supply; 3.0-3.6 is the P4 VDDPST range, ESP32-P4 datashee
@@ -117,13 +117,13 @@ ok  | r7f      | R81 0.08 mm toward R80 (pads 0.08 mm apart) | caught | FAIL R80
 ok  | r7f      | R79 (SD_D3, 0402) 0.75 mm toward U1.70/71 (0.14 mm) | caught | FAIL R79.1 is 0.140 mm from U1.70 (limit 0.2) / FAIL R79.2 is 0.140 mm from U1.71 (limit 0.2)
 ok  | r7f      | C3 0.5 mm toward U1.79/80 (0.14 mm) | caught | FAIL C3.1 is 0.140 mm from U1.80 (limit 0.2) / FAIL C3.2 is 0.140 mm from U1.79 (limit 0.2)
 ok  | r7f      | control (case with plate, vents, gap filler) | control passes | 
-ok  | r7f      | spreader plate file missing | caught | FAIL  r7f plate, gap filler and case_spec files exist / RESULT FAIL: 72 passed, 1 failed, case files C:\Users\IIIT\AppData\Local\Temp\mutate_muxe9l_r\r7f_118\st
+ok  | r7f      | spreader plate file missing | caught | FAIL  r7f plate, gap filler and case_spec files exist / RESULT FAIL: 72 passed, 1 failed, case files <temp>\mutate_muxe9l_r\r7f_118\st
 ok  | r7f      | tray material PLA | caught | FAIL  lid is aluminium, black anodized; tray is heat resistant (not PLA)  [lid Al 6061-T6, black anodized (emissivity ~0.85) except the masked contact faces (ba
 ok  | r7f      | lid material plastic | caught | FAIL  lid is aluminium, black anodized; tray is heat resistant (not PLA)  [lid PETG, printed; tray ASA (or ABS / PC / PA12; heat deflection above 90 C; not PLA)
 ok  | r7f      | post end faces not masked (anodized: no ground contact) | caught | FAIL  every lid contact face that carries ground is masked from the anodize  [masked ['lid_rim', 'post_bore', 'post_shoulder']; missing ['post_end']] / RESULT F
-ok  | r7f      | ground resistance acceptance test dropped | caught | FAIL  lid-to-GND and plate-to-GND < 1 ohm are assembly acceptance tests  [[]] / RESULT FAIL: 98 passed, 1 failed, case files C:\Users\IIIT\AppData\Local\Temp\mu
+ok  | r7f      | ground resistance acceptance test dropped | caught | FAIL  lid-to-GND and plate-to-GND < 1 ohm are assembly acceptance tests  [[]] / RESULT FAIL: 98 passed, 1 failed, case files <temp>\mu
 ok  | r7f      | fan spec says powered from the board | caught | FAIL  the fan is powered from its own USB supply, not from the board  [30 x 30 mm 5 V fan powered from the board 5V] / RESULT FAIL: 98 passed, 1 failed, case fi
-ok  | r7f      | fan duct file missing | caught | FAIL  fan duct files exist / RESULT FAIL: 91 passed, 1 failed, case files C:\Users\IIIT\AppData\Local\Temp\mutate_muxe9l_r\r7f_124\stl
+ok  | r7f      | fan duct file missing | caught | FAIL  fan duct files exist / RESULT FAIL: 91 passed, 1 failed, case files <temp>\mutate_muxe9l_r\r7f_124\stl
 ok  | r7f      | H2 mounting hole pad off GND (case grounding check) | caught | FAIL  four mounting holes are plated and on GND  [[(18, 23, 'thru_hole', 2.9, 'GND'), (-18, -18, 'thru_hole', 2.9, None), (18, -18, 'thru_hole', 2.9, 'GND'), (-
 
 126 runs, 0 bad

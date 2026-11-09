@@ -76,7 +76,7 @@ J6 mouth faces -x, plug and wire keep-out x -19.02..-16.32 y 8.80..17.80 z 9.7..
 PASS  J6 plug and wires clear the lid  [0.00 mm3]
 PASS  M2 shank clears the J6 envelope  [0.37 mm]
 tray bbox 44.00 x 44.00 x 13.80, lid bbox 44.00 x 44.00 x 10.30
-RESULT PASS: 71 passed, 0 failed, case files D:\git\p4-kvm-box\mini\case\stl
+RESULT PASS: 71 passed, 0 failed, case files mini\case\stl
 
 ===== OLD mirrored case, kept to prove this check can fail =====
 board p4_kvm_mini.kicad_pcb sha256 bd67d82cb2569ef1, solids 508, outline 40.00 x 40.00, thru-plated 12
@@ -156,7 +156,7 @@ J6 mouth faces -x, plug and wire keep-out x -19.02..-16.32 y 8.80..17.80 z 9.7..
 FAIL  J6 plug and wires clear the lid  [9.62 mm3]
 PASS  M2 shank clears the J6 envelope  [0.37 mm]
 tray bbox 44.00 x 44.00 x 13.80, lid bbox 44.00 x 44.00 x 10.30
-RESULT FAIL: 44 passed, 27 failed, case files C:\Users\IIIT\AppData\Local\Temp\claude\86c0cbaa790519aa\1f08a804-a0da-4123-b975-567782f2b0c1\scratchpad\case_old
+RESULT FAIL: 44 passed, 27 failed, case files <temp>\case_old
 
 ===== r4 board re-check: case files unchanged (STL byte-identical when regenerated) =====
 board p4_kvm_mini.kicad_pcb sha256 0134dfaaa7eec6bd, solids 508, outline 40.00 x 40.00, thru-plated 12
@@ -236,7 +236,7 @@ J6 mouth faces -x, plug and wire keep-out x -19.02..-16.32 y 8.80..17.80 z 9.7..
 PASS  J6 plug and wires clear the lid  [0.00 mm3]
 PASS  M2 shank clears the J6 envelope  [0.88 mm]
 tray bbox 44.00 x 44.00 x 13.80, lid bbox 44.00 x 44.00 x 10.30
-RESULT PASS: 71 passed, 0 failed, case files D:\git\p4-kvm-box\mini\case\stl
+RESULT PASS: 71 passed, 0 failed, case files mini\case\stl
 
 ===== r5 board re-check: hole relief only, case files unchanged =====
 board p4_kvm_mini.kicad_pcb sha256 4fcf3c612922adf4, solids 508, outline 40.00 x 40.00, thru-plated 12
@@ -316,5 +316,5 @@ J6 mouth faces -x, plug and wire keep-out x -19.02..-16.32 y 8.80..17.80 z 9.7..
 PASS  J6 plug and wires clear the lid  [0.00 mm3]
 PASS  M2 shank clears the J6 envelope  [0.88 mm]
 tray bbox 44.00 x 44.00 x 13.80, lid bbox 44.00 x 44.00 x 10.30
-RESULT PASS: 71 passed, 0 failed, case files D:\git\p4-kvm-box\mini\case\stl
+RESULT PASS: 71 passed, 0 failed, case files mini\case\stl
 

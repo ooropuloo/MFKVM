@@ -1,5 +1,5 @@
 ﻿MF KVM v2 r7f PCB 交付資料（2026-11-09）
-設計資料夾：D:/git/p4-kvm-box/v2_r7f
+設計資料夾：v2_r7f
 Gerber：v2_r7f/fab_r7f/p4_kvm_mini_gerber.zip
   sha256 5edbd11614de56c81819c0f49b667f6346e41d8fef006e6f3f2256d9243e99f7
 板檔 sha256：9233a26ad1a1a5a4264edf774e52bf83be37c0ba679b807c393bb46f27976c97（v2_r7f/out/ 和 v2_r7f/kicad/ 同一份）

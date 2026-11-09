@@ -1,7 +1,7 @@
 (export
 	(version "E")
 	(design
-		(source "C:\\Users\\IIIT\\AppData\\Local\\Temp\\claude\\86c0cbaa790519aa\\1f08a804-a0da-4123-b975-567782f2b0c1\\scratchpad\\antmicro\\repo\\hdmi-mipi-bridge-main\\antmicro-hdmi-mipi-bridge-hw.kicad_sch")
+		(source "hdmi-mipi-bridge-main\\antmicro-hdmi-mipi-bridge-hw.kicad_sch")
 		(date "2026-11-06T08:48:16")
 		(tool "Eeschema 10.99.0-6293-g67abb61a0f")
 		(sheet

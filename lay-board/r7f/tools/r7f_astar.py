@@ -20,7 +20,7 @@ import shapely
 from shapely.geometry import LineString, Point, box
 from shapely.ops import unary_union
 
-sys.path.insert(0, 'D:/git/p4-kvm-box/analysis_r7f/si/scripts')
+sys.path.insert(0, os.environ.get('MFKVM_SI_SCRIPTS', 'analysis_r7f/si/scripts'))
 import brd
 
 pcb, NET, START = sys.argv[1], sys.argv[2], sys.argv[3]

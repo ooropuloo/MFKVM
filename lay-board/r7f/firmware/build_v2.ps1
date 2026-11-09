@@ -6,7 +6,7 @@
 param(
     [Parameter(Mandatory)][string]$Name,
     [switch]$Rev3,
-    [string]$Tree = "D:\git\p4-kvm-box\v3\firmware\espkvm"
+    [string]$Tree = "$PSScriptRoot\espkvm"
 )
 $logs = Join-Path $PSScriptRoot "logs"
 New-Item -ItemType Directory -Force $logs | Out-Null
@@ -18,7 +18,7 @@ if (Test-Path (Join-Path $Tree $dir)) { Write-Output "REFUSED: $dir exists"; exi
 if (-not (Test-Path (Join-Path $Tree "boards\p4_kvm_mini.defaults"))) { Write-Output "REFUSED: copy p4_kvm_mini.defaults to boards\ first"; exit 3 }
 $defaults = "sdkconfig.defaults;boards/moduledevkit_p4.defaults;" + $(if ($Rev3) { "boards/moduledevkit_p4_rev3.defaults;" } else { "" }) + "boards/p4_kvm_mini.defaults"
 
-. "D:\git\p4-kvm-box\v3\firmware\scripts\idf_env.ps1"
+. "$PSScriptRoot\scripts\idf_env.ps1"
 Set-Location $Tree
 & python -u "$env:IDF_PATH\tools\idf.py" -B $dir -D "SDKCONFIG=$dir/sdkconfig" -D "SDKCONFIG_DEFAULTS=$defaults" build *> $log
 $code = $LASTEXITCODE

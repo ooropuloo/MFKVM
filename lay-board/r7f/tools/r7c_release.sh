@@ -1,7 +1,7 @@
 #!/bin/sh
 # r7c: every check, in order, on the board regenerated from out/final.ses. Logs go to out/ and fab_r7c/.
-M=D:/git/p4-kvm-box/v2_r7e
-CASE_PY=${CASE_PY:-C:/Users/IIIT/AppData/Local/Temp/claude/86c0cbaa790519aa/1f08a804-a0da-4123-b975-567782f2b0c1/scratchpad/v3cad/Scripts/python.exe}
+M=$(cd "$(dirname "$0")/.." && pwd)
+CASE_PY=${CASE_PY:-python}
 cd "$M" || exit 1
 sh tools/check.sh out/final.ses > out/check.log 2>&1; echo "check.sh done"; grep -v "^  (" out/check.log | tail -6
 python -I tools/hotplug.py --design out/design.json --out out/hotplug.out > /dev/null 2>&1; echo "hotplug exit $?"; tail -1 out/hotplug.out

@@ -2,7 +2,7 @@
 # r7e: every check, in order, on the board regenerated from out/final.ses (plus the r7d/r7e stages). Logs go to out/ and fab_r7e/.
 # Gates (r7e): any of these failing makes the script exit 1 at the end: check.sh (ERC/DRC), drc_accept, verify, hotplug, fab_pack,
 # refplane, pairgap, cpl_pin1, impedance, s3_solver_test (non-round dimensions), case, bodycheck, mutate. coldstart.py is an analysis (no gate).
-M=D:/git/p4-kvm-box/v2_r7e
+M=$(cd "$(dirname "$0")/.." && pwd)
 CASE_PY=${CASE_PY:-$M/.venv-case/Scripts/python.exe}   # r7e: local interpreter (tools/setup_case_env.sh), not another session's temp dir
 cd "$M" || exit 1
 FAILS=""

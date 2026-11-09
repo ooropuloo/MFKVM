@@ -7,10 +7,11 @@ two resistors' pads >= 0.15 mm from each other.
 Reads the saved or generated .kicad_pcb only (pads rotated and placed as KiCad sees them).
 usage: hand_solder_gap.py <board.kicad_pcb>       exit 1 on any violation
 """
+import os
 import re
 import sys
 
-sys.path.insert(0, 'D:/git/p4-kvm-box/analysis_r7f/si/scripts')
+sys.path.insert(0, os.environ.get('MFKVM_SI_SCRIPTS', 'analysis_r7f/si/scripts'))
 import brd
 
 PCB = sys.argv[1]

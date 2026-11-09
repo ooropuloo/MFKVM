@@ -1,6 +1,6 @@
 # MF KVM v2 r7f 改版報告（使用者核准的六項修改）
 
-日期 2026-11-09。工作副本 `D:/git/p4-kvm-box/v2_r7f`，由 `v2_r7e` 複製。**`v2_r7e` 和更早的版本都沒有動。** 分析副本在 `analysis_r7f/`（由 `analysis_r7d/` 複製，r7d 的結果檔沒有覆蓋）。沒有 commit、沒有 push、沒有碰 JLC 網站或訂單。進度記錄在 `PROGRESS.md`。
+日期 2026-11-09。工作副本 `v2_r7f`，由 `v2_r7e` 複製。**`v2_r7e` 和更早的版本都沒有動。** 分析副本在 `analysis_r7f/`（由 `analysis_r7d/` 複製，r7d 的結果檔沒有覆蓋）。沒有 commit、沒有 push、沒有碰 JLC 網站或訂單。進度記錄在 `PROGRESS.md`。
 
 - **打板包：** `fab_r7f/p4_kvm_mini_gerber.zip`，sha256 `5edbd11614de56c81819c0f49b667f6346e41d8fef006e6f3f2256d9243e99f7`。
 - **板檔：** `out/p4_kvm_mini.kicad_pcb`，sha256 `9233a26a…6c97`（和 `kicad/` 同一份）。佈局 PDF 頁尾的 build 字串是 `20261109-1615`。（`02b51106…` 和 `5edbd116…` 幾何上完全相同（見 0c），但 `02b51106…` 這個檔案作廢、以 `5edbd116…` 為準。更早的三個 fab 包也都作廢：`042293aa…` 是第二輪修改（C70、手焊閘門、風扇）之前的版本；`4802d9ba…` 的 0201 離 U1 只有 0.117 mm、VDD_MIPI 過孔也還沒移；`d132d385…` 是審查前的版本，安裝孔銅環和 U16 錫膏在審查後改過。）

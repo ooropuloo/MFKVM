@@ -1,15 +1,15 @@
 #!/bin/sh
 # Routes repeatedly until KiCad reports no opens and no DRC errors. Keeps the SES that passed as out/final.ses.
-M=D:/git/p4-kvm-box/v2_r7f
-C=D:/tools/kicad-nightly/app/bin/kicad-cli.exe
-H=D:/tools/kicad-nightly/home
+M=$(cd "$(dirname "$0")/.." && pwd)
+C=${KICAD_CLI:-kicad-cli}
+H=${KICAD_TOOL_HOME:-$HOME/.kicad-tool-home}
 export KICAD_DOCUMENTS_HOME="$H/doc" KICAD_CONFIG_HOME="$H/cfg" KICAD_CACHE_HOME="$H/cache" PYTHONIOENCODING=utf-8
 cd "$M" || exit 1
 i=1
 while [ "$i" -le "${1:-10}" ]; do
   python -I gen_mini.py out > out/gen.log 2>&1 || { echo "gen failed"; exit 1; }
   rm -f out/try.ses
-  (cd out && java -jar D:/tools/freerouting/freerouting.jar -de p4_kvm_mini.dsn -do try.ses -mp 40 -l en --gui.enabled=false > fr.log 2>&1)
+  (cd out && java -jar ${FREEROUTING_JAR:-freerouting.jar} -de p4_kvm_mini.dsn -do try.ses -mp 40 -l en --gui.enabled=false > fr.log 2>&1)
   if [ ! -f out/try.ses ]; then echo "try $i: no SES"; i=$((i + 1)); continue; fi
   sh tools/check.sh out/try.ses > out/check.log 2>&1
   R=$(python -I -c "

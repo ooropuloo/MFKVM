@@ -37,8 +37,8 @@ ap.add_argument('--append', action='store_true')
 ap.add_argument('--title', default='')
 A = ap.parse_args()
 
-KICAD = 'D:/tools/kicad-nightly/app/bin/kicad-cli.exe'
-ENV = dict(os.environ, KICAD_DOCUMENTS_HOME='D:/tools/kicad-nightly/home/doc', KICAD_CONFIG_HOME='D:/tools/kicad-nightly/home/cfg', KICAD_CACHE_HOME='D:/tools/kicad-nightly/home/cache')
+KICAD = os.environ.get('KICAD_CLI', 'kicad-cli')
+ENV = dict(os.environ, KICAD_DOCUMENTS_HOME=os.path.join(os.environ.get('KICAD_TOOL_HOME', os.path.expanduser('~/.kicad-tool-home')), 'doc'), KICAD_CONFIG_HOME=os.path.join(os.environ.get('KICAD_TOOL_HOME', os.path.expanduser('~/.kicad-tool-home')), 'cfg'), KICAD_CACHE_HOME=os.path.join(os.environ.get('KICAD_TOOL_HOME', os.path.expanduser('~/.kicad-tool-home')), 'cache'))
 
 # The mechanical stack and hardware. These are requirements on the case, written here on purpose rather than read from gen_case.
 S, WALL = 44.0, 1.6

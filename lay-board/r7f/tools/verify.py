@@ -945,8 +945,8 @@ else:
     import bodycheck
     import holecheck
     import maskcheck
-    KC = 'D:/tools/kicad-nightly/app/bin/kicad-cli.exe'
-    H = 'D:/tools/kicad-nightly/home'
+    KC = os.environ.get('KICAD_CLI', 'kicad-cli')
+    H = os.environ.get('KICAD_TOOL_HOME', os.path.expanduser('~/.kicad-tool-home'))
     ENV = dict(os.environ, KICAD_DOCUMENTS_HOME=f'{H}/doc', KICAD_CONFIG_HOME=f'{H}/cfg', KICAD_CACHE_HOME=f'{H}/cache')
     with tempfile.TemporaryDirectory() as tmp:
         p = subprocess.run([KC, 'pcb', 'export', 'gerbers', '--layers', 'F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Mask,B.Mask', '--no-protel-ext', '-o', tmp + '/', f'{OUT}/p4_kvm_mini.kicad_pcb'], env=ENV, capture_output=True, text=True, errors='replace')

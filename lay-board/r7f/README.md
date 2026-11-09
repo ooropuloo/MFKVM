@@ -89,7 +89,7 @@
 
 `fab_r7f/README.md` 是沿用舊版的文字，內容停在 r7b，請以本頁和 `R7F_REPORT.md` 為準。
 
-規格書版權屬原廠，沒有放在這裡。工具裡有些路徑寫死為本機的 `v2_r7f`，要重跑需自行調整。
+規格書版權屬原廠，沒有放在這裡。要重跑工具，用環境變數指定路徑：`KICAD_CLI`（預設 `kicad-cli`）、`KICAD_TOOL_HOME`、`FREEROUTING_JAR`、`CASE_PY`、`MFKVM_SI_SCRIPTS`（SI 分析程式，不在這個 repo）。這些工具是從原本的工作目錄複製過來的，路徑改成環境變數後只做過語法檢查，沒有在這裡完整跑過。
 
 ## 下單時必做
 

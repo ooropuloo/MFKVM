@@ -30,7 +30,7 @@ Not overlay problems, same as every build on this tree (see `v3/firmware/BUILD.m
 |---|---|
 | ESP-KVM | `0893eef` (tag `v.0.77.0`) plus `patches/0001` and `patches/0002`, commit `bc371a7` on branch `mf-v2-defaults` of the clone at `v3/firmware/espkvm`. `git am` of the two patches on `0893eef` gives tree `14b7cda`, the same as `bc371a7` |
 | Submodules | `third_party/microlink` `d40909c`, `web` `eca5399` |
-| ESP-IDF | v6.1, `D:/tools/esp-idf-v6.1`, tools in `D:/tools/espressif` |
+| ESP-IDF | v6.1, `<idf-root>`, tools in `<idf-tools>` |
 
 ## Reproduce
 

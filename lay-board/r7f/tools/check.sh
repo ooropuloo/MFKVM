@@ -1,8 +1,8 @@
 #!/bin/sh
 # Regenerates schematic and board from the routed SES, then runs ERC and DRC with parity.
-M=D:/git/p4-kvm-box/v2_r7f
-C=D:/tools/kicad-nightly/app/bin/kicad-cli.exe
-H=D:/tools/kicad-nightly/home
+M=$(cd "$(dirname "$0")/.." && pwd)
+C=${KICAD_CLI:-kicad-cli}
+H=${KICAD_TOOL_HOME:-$HOME/.kicad-tool-home}
 export KICAD_DOCUMENTS_HOME="$H/doc" KICAD_CONFIG_HOME="$H/cfg" KICAD_CACHE_HOME="$H/cache" PYTHONIOENCODING=utf-8
 cd "$M" || exit 1
 python -I gen_mini.py out "$1" > out/gen.log 2>&1

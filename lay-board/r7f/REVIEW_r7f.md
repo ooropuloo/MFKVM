@@ -1,6 +1,6 @@
 # MF KVM v2 r7f 送廠前獨立審查
 
-審查日期 2026-11-09。對象：`D:/git/p4-kvm-box/v2_r7f`。
+審查日期 2026-11-09。對象：`v2_r7f`。
 
 - 板檔 `kicad/p4_kvm_mini.kicad_pcb`（與 `out/` 同一份）sha256 `d6fa5a05…b84e`。
 - Gerber zip sha256 `d132d3854c923cfc5f7a18edd087dfc8faa4f43a6ab720348088703eb6a2d0e0`，我自己算過，和指定值一致。

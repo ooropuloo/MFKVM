@@ -104,5 +104,5 @@ PASS  the duct floor closes the part that overhangs the case  [659.3 of 659.3 mm
 PASS  fan seat: one opening and four screw holes on a 24 mm pitch (30 mm fan)  [1 opening(s), screw holes [(-12.0, 20.2), (-12.0, 44.2), (12.0, 20.2), (12.0, 44.2)]]
 PASS  the fan is powered from its own USB supply, not from the board  [30 x 30 mm 5 V axial fan, suction, on the duct top; powered from its own USB-A/USB-C 5 V supply, NOT from the board (board 5V budget unchanged)]
 tray bbox 44.00 x 49.00 x 13.80, lid bbox 44.00 x 49.00 x 10.30
-RESULT PASS: 99 passed, 0 failed, case files D:\git\p4-kvm-box\v2_r7f\case\stl
+RESULT PASS: 99 passed, 0 failed, case files v2_r7f\case\stl
 

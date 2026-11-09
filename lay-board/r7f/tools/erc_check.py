@@ -24,8 +24,8 @@ import schgen
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 NAME = 'p4_kvm_mini'
-KC = 'D:/tools/kicad-nightly/app/bin/kicad-cli.exe'
-H = 'D:/tools/kicad-nightly/home'
+KC = os.environ.get('KICAD_CLI', 'kicad-cli')
+H = os.environ.get('KICAD_TOOL_HOME', os.path.expanduser('~/.kicad-tool-home'))
 ENV = dict(os.environ, KICAD_DOCUMENTS_HOME=f'{H}/doc', KICAD_CONFIG_HOME=f'{H}/cfg', KICAD_CACHE_HOME=f'{H}/cache')
 WAIVERS = os.path.join(HERE, '..', 'data', 'erc_waivers.json')
 OPEN_NEEDS_REASON = ('input', 'bidirectional', 'tri_state', 'power_in')
