@@ -1,0 +1,16 @@
+pin types read back from the schematic: 553 pins {'bidirectional': 73, 'free': 17, 'input': 30, 'open_collector': 1, 'output': 25, 'passive': 344, 'power_in': 57, 'power_out': 5, 'tri_state': 1}
+KiCad 10.99.0 ERC: 0 violations; checks ignored by the project: ['four_way_junction', 'simulation_model_issue', 'footprint_filter']
+open pins: 66
+  PWR_FLAG 3V3: L1 to SW / U2.3 power_out
+  5V: power_in pins, no source behind a link or connector (needs a power_out pin on the net itself)
+  PWR_FLAG AVDD12: FB3 to V1V2 / L2 to SW_1V2 / U15.3 power_out
+  PWR_FLAG AVDD25: FB2 to V2V5 / U4.5 power_out
+  PWR_FLAG GND: J5.A1B12 external: USB-C GND: the board ground is the 5 V source return
+  PWR_FLAG OSC_VDD: FB6 to 3V3 / L1 to SW / U2.3 power_out
+  PWR_FLAG VBUS_IN: J5.A4B9 external: USB Type-C vSafe5V 4.75-5.5 V (box power input; Rd only, so no higher voltage is negotiated)
+  PWR_FLAG VDDC: FB5 to V1V2 / L2 to SW_1V2 / U15.3 power_out
+  PWR_FLAG VDD_MIPI: FB4 to V1V2 / L2 to SW_1V2 / U15.3 power_out
+WARN U7.G6 (EDID_SDA, bidirectional) open: EDID_SDA unused. Toshiba TC358743XBG datasheet 2014-05-16 p10 gives no "when not used" rule for EDID, buffer type N (no pull): floating Schmitt input. Same as the Antmicro reference (pinout audit O2)
+WARN U7.H6 (EDID_SCL, bidirectional) open: EDID_SCL unused, as G6
+SCHEMATIC sha256 25cea755bd43e5c79691ab5729f4afe6e54523f1d3a74c4c16d147c8d36837a8
+ERC_CHECK PASS, 2 warnings

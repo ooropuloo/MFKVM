@@ -1,0 +1,46 @@
+stackup read from the board:
+  F.SilkS        Top Silk Screen                        
+  F.Paste        Top Solder Paste                       
+  F.Mask         Top Solder Mask        0.01            
+  F.Cu           copper                 0.035           
+  dielectric 1   prepreg                0.0994   3313   4.1
+  In1.Cu         copper                 0.0152          
+  dielectric 2   core                   0.35     FR4    4.6
+  In2.Cu         copper                 0.0152          
+  dielectric 3   prepreg                0.1088   2116   4.16
+  In3.Cu         copper                 0.0152          
+  dielectric 4   core                   0.35     FR4    4.6
+  In4.Cu         copper                 0.0152          
+  dielectric 5   prepreg                0.0994   3313   4.1
+  B.Cu           copper                 0.035           
+  B.Mask         Bottom Solder Mask     0.01            
+  B.Paste        Bottom Solder Paste                    
+  B.SilkS        Bottom Silk Screen                     
+solver uses h 0.0994 er 4.1 t 0.035 for F/In1 and B/In4: same as the board stackup
+copper + dielectric 1.1384 mm (order: 1.1384)
+
+Method 1 (field solver) and method 2 (closed form, no mask; Kirschning-Jansen is for zero-thickness copper, see the check below). Ohm.
+line                                      solver mask  solver no mask      K-J t=0  IPC-2141A  target
+TMDS, CSI: 0.127 / 0.198, F ref In1, B ref In4         99.1           105.4        121.2      101.3  100 +-10%  OK  (5.72 ps/mm)
+TMDS ESD flow-through 0.127 / 0.373             105.9           112.0        126.5      107.6  100 +-10%  OK  (5.81 ps/mm)
+USB HS: 0.18 / 0.32                              89.1            93.3        103.5       87.0  90 +-10%  OK  (5.84 ps/mm)
+LNA_OUT 0.15, pour gap 0.25 (CPWG)               50.5            53.0         52.9  (no pour)  50 +-10%  OK
+
+The closed forms are for a zero-thickness strip; at t/h = 0.35 that is not this board. So the coupled formula checks the solver with the
+copper made thin (t 0.5 um), where both describe the same geometry:
+  TMDS, CSI: 0.127 / 0.198, F ref In1, B ref In4 solver thin  118.8   Kirschning-Jansen  121.2   difference -2.0%
+  TMDS ESD flow-through 0.127 / 0.373      solver thin  123.9   Kirschning-Jansen  126.5   difference -2.0%
+  USB HS: 0.18 / 0.32                      solver thin  101.6   Kirschning-Jansen  103.5   difference -1.8%
+
+Sensitivity of TMDS/CSI 0.127 / 0.198 (solver, mask), pitch held at 0.325:
+  w 0.107: 107.6
+  w 0.147: 91.5
+  h 0.0894: 94.7
+  h 0.1094: 102.8
+  er 3.8: 101.8
+  er 4.4: 96.5
+
+In2 (In3 3V3 below, In1 GND above), solver; In2 has no impedance-controlled line in r7. H_MID 0.1164 in the solver against 0.1088 ordered:
+  w 0.127 single-ended, prepreg 0.1088: 49.5 ohm
+  w 0.127 single-ended, prepreg 0.1164: 50.9 ohm
+IMPEDANCE ALL ON TARGET

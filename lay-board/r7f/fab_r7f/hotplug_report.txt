@@ -1,0 +1,6 @@
+design out/design.json sha256 b8cdf4addbbebc1eb306b24dee0f52bded73918058cb87ee5794b85efaacc381
+r7f eFuse U16: J5 rings into VBUS_IN (1.10-1.76 uF effective, no damping) while the eFuse is off
+  worst VBUS_IN peak 10.258 V at Vs 5.25 L 1.5 uH R 30 mOhm C 1.10 uF; 72 cases (limit 18 V, IN abs max 20 V)
+  EN/UVLO peak 3.280 V through 100.0k/47.0k (limit 6 V, abs max 7 V)
+  5V (U2 VIN): the eFuse output is a 12 ms dV/dt ramp, clamped at VCLAMP 5.7 V max (TPS25953x): <= 5.7 V, under 5.8 V
+HOTPLUG WORST 10.258 V at VBUS_IN, 3.280 V at EN, U2 VIN <= 5.70 V OK

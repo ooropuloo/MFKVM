@@ -1,0 +1,180 @@
+Cold plug-in with full load on every rail (r7e analysis, REVIEW_r7d m5). r7f: the U16 eFuse as built is modelled in sim_ef().
+
+Time-domain model, 0-60 ms after a USB-C cable from a host port is plugged into J5 with nothing on the board charged:
+  host:  Vs behind the port's power switch (on-resistance R_sw, current limit I_lim), port bulk C_host (USB 2.0 7.2.4.1: >= 120 uF)
+  cable: R_cable + L_cable (as tools/hotplug.py)
+  board 5V: ceramics C60 22u + C64 1u + C32 100n (DC-bias derated) and the damping branch R68 0.15 ohm + C69 330 uF (ESR ASSUMED 25 mOhm)
+  U2  SY8089 5V->3V3: on when VIN rises above UVLO 2.5 V (max, rising; 0.2 V hysteresis) with EN = VIN above 1.5 V; soft start 1.2 ms
+      (typ, the only number given) from 0 to 3.311 V; output limited to VIN - I x (RON_P 110 mOhm + DCR 80 mOhm); PFET limit 3.5 A (min).
+      Input current = output power / 0.90 / VIN.        (SY8089 DS: VIN 2.7-5.5, ILIM >= 3.5 A, VENH 1.5 V, VUVLO 2.5 V max, TSS 1.2 ms)
+  3V3 load, full, from the moment 3V3 exists (resistive below 3.3 V): ESP32-P4 380 mA (Espressif HW Design Guidelines p10: minimum
+      supply 380 mA incl. flash/PSRAM) + ESP32-C6 Wi-Fi TX 354 mA (C6 DS v1.5 p66, 802.11b 21 dBm) + TC358743 AVDD33/VDDIO 142 mA (DS p8
+      88 mA at 1080p60, x1.5 ASSUMED: no max published) + LCD 60 mA (ASSUMED: Waveshare 1.28in wiki gives no current) + microSD 200 mA
+      (SD Physical Layer spec, high-speed class, from memory: NOT checked against a document here) + oscillator 15 mA + misc 17 mA
+      = 1.168 A; plus U15 and U4 input current below.  3V3 capacitance: C1/C2/C10 10 uF, C61/C62/C65 22 uF, 100 nF x5 at 3.3 V bias
+      (ASSUMED 65 %) + 20 uF inside the module (ASSUMED; the module schematic lists several 10 uF on ESP_3V3).
+  U15 SY8089 3V3->1V2: on when 3V3 > 2.5 V; soft start 1.2 ms to 1.2102 V; load 274 mA (TC358743 VDDC+VDD_MIPI+AVDD12 1080p60 182 mA,
+      DS p8, x1.5 ASSUMED), efficiency 0.85 (ASSUMED); V1V2 capacitance 54 uF + 3 x 4.7 uF at 1.2 V (ASSUMED 85 %).
+  U4  TLV73325 3V3->2V5: follows 3V3 less 0.2 V dropout up to 2.5 V; 19 mA.
+  CHIP_PU (ESP_EN): R11 10k from 3V3, C5 1 uF; the P4 starts when it crosses 0.75 x 3V3 (ASSUMED threshold; DS Table 2-14 asks the rails
+      to be stable 50 us before).
+Wi-Fi TX at start-up: in the full-load runs the 354 mA is drawn from t = 0 (worst for the start-up). A separate run starts from a
+settled board with the C6 receiving (80 mA, C6 DS p67) and steps to 354 mA TX; it reports the 3V3 dip with the converter's loop modelled
+as a 50 kHz crossover (ASSUMED) and the 5V droop through the cable and the port limit.
+Corners: Vs 4.75 / 5.0 / 5.25 V; cable 0.1 / 0.3 ohm, 1 uH; port: bench supply (no limit), PC port with a 1.0 A limit switch (typical
+TPS2051-class, ASSUMED), strict 0.55 A limit (USB 2.0 high-power port at its 500 mA budget). Everything ASSUMED is listed above;
+nothing here is measured.
+usage: coldstart.py [--plot out.png] [--report out.txt]
+
+Cold plug-in, full load on every rail (tools/coldstart.py; every input is listed in its docstring)
+
+port                            Vs  Rcab |  Ipk A  at us  Q10ms uC  Qexcess | Vhost min 5V max 5V min>2ms | 3V3 95% ms 2V5 ms 1V2 ms CHIP_PU ms |  Iss A 3V3 end
+--- load FULL: 3V3 1.168 A direct + 1V2 0.274 A ---
+bench supply, no limit        4.75  0.10 |  16.39      8     11243      715 |      3.80   4.69       4.56 |       1.17   0.96   2.10      14.50 |   1.05   3.311
+bench supply, no limit        4.75  0.30 |  10.08      6     11593      502 |      4.14   4.58       4.33 |       1.23   1.03   2.16      14.56 |   1.11   3.311
+bench supply, no limit        5.00  0.10 |  17.25      8     10811      853 |      4.00   4.94       4.82 |       1.17   0.96   2.09      14.50 |   1.00   3.311
+bench supply, no limit        5.00  0.30 |  10.61      6     11099      671 |      4.36   4.83       4.60 |       1.22   1.02   2.15      14.55 |   1.04   3.311
+bench supply, no limit        5.25  0.10 |  18.11      8     10435      984 |      4.21   5.19       5.08 |       1.17   0.96   2.10      14.50 |   0.94   3.311
+bench supply, no limit        5.25  0.30 |  11.14      6     10671      825 |      4.58   5.08       4.88 |       1.22   1.01   2.14      14.55 |   0.98   3.311
+PC port, 1.0 A limit          4.75  0.10 |  16.20      7     10242      241 |      1.61   3.79       2.62 |       1.72   1.52   2.65      never |   1.00   2.335
+PC port, 1.0 A limit          4.75  0.30 |  10.05      6     10218      217 |      1.88   3.78       2.62 |       1.74   1.53   2.66      never |   1.00   2.335
+PC port, 1.0 A limit          5.00  0.10 |  17.05      8     10272      271 |      1.68   3.79       2.62 |       1.69   1.48   2.62      never |   1.00   2.335
+PC port, 1.0 A limit          5.00  0.30 |  10.57      6     10247      247 |      1.95   3.78       2.62 |       1.71   1.50   2.64      never |   1.00   2.335
+PC port, 1.0 A limit          5.25  0.10 |  17.90      7     10301      301 |      1.75   3.79       2.62 |       1.66   1.45   2.59      never |   1.00   2.335
+PC port, 1.0 A limit          5.25  0.30 |  11.10      6     10277      277 |      2.02   3.78       2.62 |       1.68   1.47   2.60      never |   1.00   2.335
+strict port, 0.55 A limit     4.75  0.10 |  16.16      7      5711     -763 |      1.45   2.94       2.30 |      never   never   never      never |   0.65   2.179
+strict port, 0.55 A limit     4.75  0.30 |  10.03      6      5701     -336 |      1.62   2.94       2.30 |      never   never   never      never |   0.60   2.228
+strict port, 0.55 A limit     5.00  0.10 |  17.01      7      5744    -1072 |      1.52   2.98       2.30 |      never   never   never      never |   0.68   2.325
+strict port, 0.55 A limit     5.00  0.30 |  10.55      6      5735     -280 |      1.68   2.94       2.30 |      never   never   never      never |   0.60   2.202
+strict port, 0.55 A limit     5.25  0.10 |  17.85      7      5777     -575 |      1.59   3.13       2.30 |      never   never   never      never |   0.64   2.451
+strict port, 0.55 A limit     5.25  0.30 |  11.08      6      5771     -227 |      1.75   2.94       2.30 |      never   never   never      never |   0.60   2.181
+--- load BOOT: 3V3 0.319 A direct + 1V2 0.010 A ---
+bench supply, no limit        4.75  0.10 |  16.39      8      4184     1505 |      3.80   4.71       4.70 |       1.17   0.96   2.10      14.50 |   0.27   3.311
+bench supply, no limit        4.75  0.30 |  10.08      6      4179     1469 |      4.14   4.65       4.65 |       1.23   1.03   2.16      14.56 |   0.27   3.311
+bench supply, no limit        5.00  0.10 |  17.25      8      4140     1598 |      4.00   4.96       4.95 |       1.17   0.96   2.09      14.50 |   0.25   3.311
+bench supply, no limit        5.00  0.30 |  10.61      6      4136     1567 |      4.36   4.90       4.90 |       1.22   1.02   2.15      14.55 |   0.26   3.311
+bench supply, no limit        5.25  0.10 |  18.11      8      4109     1690 |      4.21   5.22       5.21 |       1.17   0.96   2.10      14.50 |   0.24   3.311
+bench supply, no limit        5.25  0.30 |  11.14      6      4104     1663 |      4.58   5.16       5.16 |       1.22   1.01   2.14      14.54 |   0.24   3.311
+PC port, 1.0 A limit          4.75  0.10 |  16.20      7      4073     1395 |      1.61   4.70       4.68 |       1.72   1.51   2.65      15.05 |   0.27   3.311
+PC port, 1.0 A limit          4.75  0.30 |  10.05      6      4077     1366 |      1.88   4.65       4.60 |       1.74   1.53   2.66      15.07 |   0.27   3.311
+PC port, 1.0 A limit          5.00  0.10 |  17.05      8      4057     1515 |      1.68   4.95       4.90 |       1.69   1.48   2.62      15.02 |   0.25   3.311
+PC port, 1.0 A limit          5.00  0.30 |  10.57      6      4057     1489 |      1.95   4.90       4.81 |       1.71   1.50   2.64      15.04 |   0.26   3.311
+PC port, 1.0 A limit          5.25  0.10 |  17.90      7      4054     1635 |      1.75   5.21       5.01 |       1.66   1.45   2.59      14.99 |   0.24   3.311
+PC port, 1.0 A limit          5.25  0.30 |  11.10      6      4052     1610 |      2.02   5.16       4.96 |       1.68   1.47   2.61      15.01 |   0.24   3.311
+strict port, 0.55 A limit     4.75  0.10 |  16.16      7      4139     1460 |      1.45   4.70       3.21 |       2.62   2.00   3.13      15.58 |   0.27   3.311
+strict port, 0.55 A limit     4.75  0.30 |  10.03      6      4132     1422 |      1.62   4.65       3.19 |       2.65   2.02   3.15      15.60 |   0.27   3.311
+strict port, 0.55 A limit     5.00  0.10 |  17.01      7      4177     1635 |      1.52   4.95       3.21 |       2.57   1.94   3.08      15.52 |   0.25   3.311
+strict port, 0.55 A limit     5.00  0.30 |  10.55      6      4168     1599 |      1.68   4.90       3.20 |       2.60   1.96   3.09      15.54 |   0.26   3.311
+strict port, 0.55 A limit     5.25  0.10 |  17.85      7      4223     1804 |      1.59   5.21       3.22 |       2.51   1.89   3.02      15.47 |   0.24   3.311
+strict port, 0.55 A limit     5.25  0.30 |  11.08      6      4212     1771 |      1.75   5.16       3.20 |       2.54   1.91   3.04      15.49 |   0.24   3.311
+
+Q10ms: charge into J5 in the first 10 ms; Qexcess: the same less the steady current x 10 ms (the inrush part).
+USB 2.0 7.2.4.1 attach limit for comparison: 10 uF and 50 uC. Board: 330 uF + ~14 uF ceramics on 5V -> about 1.7 mC to 5 V.
+
+Wi-Fi TX burst on a settled board (C6 80 mA RX -> 354 mA TX), 5V at J5 and 3V3 dip:
+  bench supply, no limit       Vs 4.75 Rcab 0.1: RX 4.60 V at 0.82 A, TX 4.56 V at 1.05 A; 3V3 dip about 11 mV
+  bench supply, no limit       Vs 4.75 Rcab 0.3: RX 4.43 V at 0.85 A, TX 4.33 V at 1.10 A; 3V3 dip about 11 mV
+  bench supply, no limit       Vs 5.00 Rcab 0.1: RX 4.86 V at 0.78 A, TX 4.82 V at 0.99 A; 3V3 dip about 11 mV
+  bench supply, no limit       Vs 5.00 Rcab 0.3: RX 4.69 V at 0.80 A, TX 4.61 V at 1.04 A; 3V3 dip about 11 mV
+  PC port, 1.0 A limit         Vs 4.75 Rcab 0.1: RX 4.60 V at 0.82 A, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+  PC port, 1.0 A limit         Vs 4.75 Rcab 0.3: RX 4.43 V at 0.85 A, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+  PC port, 1.0 A limit         Vs 5.00 Rcab 0.1: RX 4.86 V at 0.78 A, TX 4.82 V at 0.99 A; 3V3 dip about 11 mV
+  PC port, 1.0 A limit         Vs 5.00 Rcab 0.3: RX 4.69 V at 0.80 A, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+  strict port, 0.55 A limit    Vs 4.75 Rcab 0.1: RX needs more than the port limit: 5V collapses, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+  strict port, 0.55 A limit    Vs 4.75 Rcab 0.3: RX needs more than the port limit: 5V collapses, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+  strict port, 0.55 A limit    Vs 5.00 Rcab 0.1: RX needs more than the port limit: 5V collapses, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+  strict port, 0.55 A limit    Vs 5.00 Rcab 0.3: RX needs more than the port limit: 5V collapses, TX needs more than the port limit: 5V collapses; 3V3 dip about 11 mV
+
+Options, Vs 5.0 V, cable 0.3 ohm / 1 uH, host port bulk 120 uF (USB 2.0 minimum):
+option                                                     port                       load  |  Ipk A Vhost min charge to 5V uC | 3V3 ms 1V2 ms 3V3 end
+0 as built: R68 0.15 + C69 330 uF                          PC port, 1.0 A limit       BOOT  |  10.57      1.95            1720 |   1.71   2.64   3.311
+0 as built: R68 0.15 + C69 330 uF                          PC port, 1.0 A limit       FULL  |  10.57      1.95            1720 |   1.71   2.64   2.335
+0 as built: R68 0.15 + C69 330 uF                          strict port, 0.55 A limit  BOOT  |  10.55      1.68            1720 |   2.60   3.09   3.311
+0 as built: R68 0.15 + C69 330 uF                          strict port, 0.55 A limit  FULL  |  10.55      1.68            1720 |  never  never   2.202
+A soft-start load switch after J5, 5 ms ramp (C69 kept)    PC port, 1.0 A limit       BOOT  |   0.82      4.93            1720 |   3.73   4.66   3.311
+A soft-start load switch after J5, 5 ms ramp (C69 kept)    PC port, 1.0 A limit       FULL  |   1.19      2.92            1720 |  never   4.66   2.335
+A soft-start load switch after J5, 5 ms ramp (C69 kept)    strict port, 0.55 A limit  BOOT  |   0.65      4.44            1720 |   3.83   4.66   3.311
+A soft-start load switch after J5, 5 ms ramp (C69 kept)    strict port, 0.55 A limit  FULL  |   0.85      2.47            1720 |  never  never   2.403
+A2 same switch, 2 ms ramp                                  PC port, 1.0 A limit       BOOT  |   1.02      4.90            1720 |   2.23   3.16   3.311
+A2 same switch, 2 ms ramp                                  PC port, 1.0 A limit       FULL  |   1.13      2.92            1720 |   2.23   3.16   2.335
+A2 same switch, 2 ms ramp                                  strict port, 0.55 A limit  BOOT  |   0.74      3.63            1720 |   2.48   3.41   3.311
+A2 same switch, 2 ms ramp                                  strict port, 0.55 A limit  FULL  |   0.74      2.47            1720 |  never  never   1.236
+B C69 47 uF polymer, R68 0.33 ohm                          PC port, 1.0 A limit       BOOT  |   9.94      3.77             305 |   1.17   2.10   3.311
+B C69 47 uF polymer, R68 0.33 ohm                          PC port, 1.0 A limit       FULL  |   9.94      2.92             305 |   1.17   2.10   2.335
+B C69 47 uF polymer, R68 0.33 ohm                          strict port, 0.55 A limit  BOOT  |   9.93      3.60             305 |   1.17   2.10   3.311
+B C69 47 uF polymer, R68 0.33 ohm                          strict port, 0.55 A limit  FULL  |   9.93      2.49             305 |   1.17  never   2.587
+C no damping branch (C69/R68 off), TVS for the ring        PC port, 1.0 A limit       BOOT  |   9.40      4.49              70 |   1.17   2.09   3.311
+C no damping branch (C69/R68 off), TVS for the ring        PC port, 1.0 A limit       FULL  |   9.40      2.92              70 |   1.17   2.09   2.335
+C no damping branch (C69/R68 off), TVS for the ring        strict port, 0.55 A limit  BOOT  |   9.40      4.46              70 |   1.17   2.09   3.311
+C no damping branch (C69/R68 off), TVS for the ring        strict port, 0.55 A limit  FULL  |   9.40      2.49              70 |   1.17  never   2.283
+
+r7f AS BUILT (parts read from design.json: {'u': 'U16', 'r1': 'R71', 'r2': 'R72', 'ilm': 'R73', 'cdv': 'C71', 'cin': ['C70']}): eFuse after J5 (UVLO 3.75 V on / 3.44 V off, ILIM 1.89 A (low end), dV/dt 0.42 V/ms, turn-on delay 289 us), input capacitance 2.20 uF on VBUS_IN (1.21 uF at 5 V bias, assumed)
+Attach transient (the first 339 us, before the eFuse conducts) against the USB 2.0 7.2.4.1 reference load 10 uF || 44 ohm on the same port and cable:
+port                            Vs  Rcab | Iatt A Qatt uC Vhost min | ref Iatt ref Q uC ref Vhost | VBUS_IN max EN max
+bench supply, no limit        4.75  0.10 |   4.78     6.5      4.68 |    11.65     83.6      4.36 |        8.67   2.77 OK
+bench supply, no limit        4.75  0.30 |   4.11     7.3      4.69 |     8.25     82.9      4.47 |        7.49   2.40 OK
+bench supply, no limit        5.25  0.10 |   5.29     7.1      5.17 |    12.88     92.4      4.81 |        9.58   3.06 OK
+bench supply, no limit        5.25  0.30 |   4.55     7.9      5.18 |     9.12     91.7      4.94 |        8.28   2.65 OK
+PC port, 1.0 A limit          4.75  0.10 |   4.78     6.5      4.68 |    11.64     83.3      4.22 |        8.67   2.77 OK
+PC port, 1.0 A limit          4.75  0.30 |   4.11     7.3      4.69 |     8.24     82.8      4.38 |        7.49   2.40 OK
+PC port, 1.0 A limit          5.25  0.10 |   5.29     7.1      5.17 |    12.87     92.1      4.66 |        9.58   3.06 OK
+PC port, 1.0 A limit          5.25  0.30 |   4.55     7.9      5.18 |     9.12     91.5      4.83 |        8.28   2.65 OK
+strict port, 0.55 A limit     4.75  0.10 |   4.78     6.5      4.67 |    11.62     83.2      4.19 |        8.67   2.77 OK
+strict port, 0.55 A limit     4.75  0.30 |   4.11     7.3      4.68 |     8.23     82.6      4.35 |        7.50   2.40 OK
+strict port, 0.55 A limit     5.25  0.10 |   5.29     7.1      5.16 |    12.85     91.8      4.63 |        9.58   3.06 OK
+strict port, 0.55 A limit     5.25  0.30 |   4.55     7.9      5.18 |     9.11     91.3      4.80 |        8.28   2.65 OK
+USB-C 1.5 A source            4.75  0.10 |   4.78     6.5      4.68 |    11.64     83.5      4.25 |        8.67   2.77 OK
+USB-C 1.5 A source            4.75  0.30 |   4.11     7.3      4.69 |     8.25     82.9      4.41 |        7.49   2.40 OK
+USB-C 1.5 A source            5.25  0.10 |   5.29     7.1      5.17 |    12.87     92.2      4.69 |        9.58   3.06 OK
+USB-C 1.5 A source            5.25  0.30 |   4.55     7.9      5.18 |     9.12     91.6      4.86 |        8.28   2.65 OK
+USB-C 3.0 A source            4.75  0.10 |   4.78     6.5      4.68 |    11.66     83.6      4.31 |        8.67   2.77 OK
+USB-C 3.0 A source            4.75  0.30 |   4.11     7.3      4.69 |     8.25     82.9      4.46 |        7.49   2.40 OK
+USB-C 3.0 A source            5.25  0.10 |   5.29     7.1      5.17 |    12.89     92.3      4.76 |        9.58   3.06 OK
+USB-C 3.0 A source            5.25  0.30 |   4.55     7.9      5.18 |     9.12     91.7      4.93 |        8.28   2.65 OK
+attach transient no worse than the 10 uF / 50 uC reference in every corner: YES; VBUS_IN must stay under 20 V (IN abs max), EN under 7 V (abs max)
+
+Cold start through the eFuse (0-60 ms):
+port                         load     Vs  Rcab |  Ipk A Vhost min 5V max 5V end | 3V3 ms 1V2 ms  PU ms 3V3 end | U2 starts EN starts in ILIM ms FET Wpk FET mJ
+bench supply, no limit       BOOT   4.75  0.10 |   0.61      4.68   4.69   4.69 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.09    5.7 starts
+bench supply, no limit       BOOT   4.75  0.30 |   0.61      4.69   4.63   4.63 |   8.54   8.36  20.93   3.311 |         1         2       0.00    1.01    5.4 starts
+bench supply, no limit       BOOT   5.25  0.10 |   0.61      5.17   5.19   5.19 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.39    7.4 starts
+bench supply, no limit       BOOT   5.25  0.30 |   0.61      5.18   5.15   5.15 |   8.54   8.35  20.93   3.311 |         1         2       0.00    1.32    7.0 starts
+USB-C 3.0 A source           BOOT   4.75  0.10 |   0.61      4.68   4.69   4.69 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.09    5.7 starts
+USB-C 3.0 A source           BOOT   4.75  0.30 |   0.61      4.69   4.63   4.63 |   8.54   8.36  20.93   3.311 |         1         2       0.00    1.01    5.4 starts
+USB-C 3.0 A source           BOOT   5.25  0.10 |   0.61      5.17   5.19   5.19 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.39    7.4 starts
+USB-C 3.0 A source           BOOT   5.25  0.30 |   0.61      5.18   5.15   5.15 |   8.54   8.35  20.93   3.311 |         1         2       0.00    1.32    7.0 starts
+USB-C 1.5 A source           BOOT   4.75  0.10 |   0.61      4.68   4.69   4.69 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.09    5.7 starts
+USB-C 1.5 A source           BOOT   4.75  0.30 |   0.61      4.69   4.63   4.63 |   8.54   8.36  20.93   3.311 |         1         2       0.00    1.01    5.4 starts
+USB-C 1.5 A source           BOOT   5.25  0.10 |   0.61      5.17   5.19   5.19 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.39    7.4 starts
+USB-C 1.5 A source           BOOT   5.25  0.30 |   0.61      5.18   5.15   5.15 |   8.54   8.35  20.93   3.311 |         1         2       0.00    1.32    7.0 starts
+PC port, 1.0 A limit         BOOT   4.75  0.10 |   0.61      4.68   4.69   4.69 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.09    5.7 starts
+PC port, 1.0 A limit         BOOT   4.75  0.30 |   0.61      4.69   4.63   4.63 |   8.54   8.36  20.93   3.311 |         1         2       0.00    1.01    5.4 starts
+PC port, 1.0 A limit         BOOT   5.25  0.10 |   0.61      5.17   5.19   5.19 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.39    7.4 starts
+PC port, 1.0 A limit         BOOT   5.25  0.30 |   0.61      5.18   5.15   5.15 |   8.54   8.35  20.93   3.311 |         1         2       0.00    1.32    7.0 starts
+strict port, 0.55 A limit    BOOT   4.75  0.10 |   0.61      4.67   4.69   4.69 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.07    5.7 starts
+strict port, 0.55 A limit    BOOT   4.75  0.30 |   0.61      4.68   4.63   4.63 |   8.54   8.35  20.93   3.311 |         1         2       0.00    1.00    5.4 starts
+strict port, 0.55 A limit    BOOT   5.25  0.10 |   0.61      5.16   5.19   5.19 |   8.56   8.37  20.94   3.311 |         1         4       0.00    1.38    7.4 starts
+strict port, 0.55 A limit    BOOT   5.25  0.30 |   0.61      5.18   5.15   5.15 |   8.54   8.35  20.93   3.311 |         1         2       0.00    1.31    7.0 starts
+bench supply, no limit       FULL   4.75  0.10 |   1.51      4.63   4.51   4.51 |   8.66   8.37  20.96   3.311 |         1         4       0.00    2.06   11.1 starts
+bench supply, no limit       FULL   4.75  0.30 |   1.51      4.63   4.27   4.27 |   8.65   8.35  20.95   3.311 |         1         2       0.00    1.77    9.9 starts
+bench supply, no limit       FULL   5.25  0.10 |   1.51      5.13   5.03   5.03 |   8.66   8.37  20.96   3.311 |         1         4       0.00    2.67   14.2 starts
+bench supply, no limit       FULL   5.25  0.30 |   1.51      5.13   4.83   4.83 |   8.65   8.35  20.95   3.311 |         1         2       0.00    2.38   12.5 starts
+USB-C 3.0 A source           FULL   4.75  0.10 |   1.51      4.63   4.51   4.51 |   8.66   8.37  20.96   3.311 |         1         4       0.00    2.06   11.1 starts
+USB-C 3.0 A source           FULL   4.75  0.30 |   1.51      4.63   4.27   4.27 |   8.65   8.35  20.95   3.311 |         1         2       0.00    1.77    9.9 starts
+USB-C 3.0 A source           FULL   5.25  0.10 |   1.51      5.13   5.03   5.03 |   8.66   8.37  20.96   3.311 |         1         4       0.00    2.67   14.2 starts
+USB-C 3.0 A source           FULL   5.25  0.30 |   1.51      5.13   4.83   4.83 |   8.65   8.35  20.95   3.311 |         1         2       0.00    2.38   12.5 starts
+USB-C 1.5 A source           FULL   4.75  0.10 |   1.51      4.63   4.51   4.51 |   8.66   8.37  20.96   3.311 |         1         4       0.00    2.06   11.1 starts
+USB-C 1.5 A source           FULL   4.75  0.30 |   1.51      4.63   4.27   4.27 |   8.65   8.35  20.95   3.311 |         1         2       0.00    1.77    9.9 starts
+USB-C 1.5 A source           FULL   5.25  0.10 |   1.51      5.13   5.03   5.03 |   8.66   8.37  20.97   3.311 |         1         4       0.00    2.67   14.2 starts
+USB-C 1.5 A source           FULL   5.25  0.30 |   1.51      5.13   4.83   4.83 |   8.65   8.35  20.95   3.311 |         1         2       0.00    2.38   12.5 starts
+PC port, 1.0 A limit         FULL   4.75  0.10 |   1.25      3.57   3.14   2.40 |  never  never  never   0.000 |         7        49       0.00    1.96   16.1 DOES NOT START CLEANLY
+PC port, 1.0 A limit         FULL   4.75  0.30 |   1.22      3.80   3.09   2.40 |  never  never  never   0.000 |         7        38       0.00    1.67   13.8 DOES NOT START CLEANLY
+PC port, 1.0 A limit         FULL   5.25  0.10 |   1.31      3.57   3.23   2.40 |  never  never  never   0.000 |         7        54       0.00    2.57   22.3 DOES NOT START CLEANLY
+PC port, 1.0 A limit         FULL   5.25  0.30 |   1.28      3.82   3.18   2.40 |  never  never  never   0.000 |         7        38       0.00    2.27   19.6 DOES NOT START CLEANLY
+strict port, 0.55 A limit    FULL   4.75  0.10 |   1.21      3.55   2.85   2.40 |  never  never  never   0.001 |         8        44       0.00    1.36   10.3 DOES NOT START CLEANLY
+strict port, 0.55 A limit    FULL   4.75  0.30 |   1.17      3.79   2.83   2.40 |  never  never  never   0.000 |         8        27       0.00    1.24    9.3 DOES NOT START CLEANLY
+strict port, 0.55 A limit    FULL   5.25  0.10 |   1.21      3.55   2.90   2.40 |  never  never  never   0.027 |         8        51       0.00    1.81   13.7 DOES NOT START CLEANLY
+strict port, 0.55 A limit    FULL   5.25  0.30 |   1.21      3.77   2.88   2.40 |  never  never  never   0.003 |         8        37       0.00    1.65   12.5 DOES NOT START CLEANLY
+full load starts cleanly (one U2 start, 3V3 at 95 %, CHIP_PU released) on every >= 1.5 A source corner: YES
+full-load peak during the ramp 1.51 A; verify.py gates ILIM low end > 1.51 A x 1.1: consistent
+Hot-plug overshoot at U2 VIN (tools/hotplug.py grid, ceramics only, no TVS): 0 as built 5.34 V, B 47 uF / 0.33 6.99 V, C no damping 9.83 V; limit 5.8 V (SY8089 abs max 6 V)

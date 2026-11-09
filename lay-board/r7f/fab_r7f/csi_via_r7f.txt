@@ -1,0 +1,2 @@
+93 CSI segments, 318 vias; closest non-GND via 0.654 mm ('VDD_MIPI', 8.25, -1.686, 'CSI_CK_P')
+RESULT PASS

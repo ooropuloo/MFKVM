@@ -1,0 +1,4 @@
+{
+ "_doc": "Each KiCad ERC violation that is accepted, with the reason. tools/erc_check.py fails on any violation not listed here and on any entry that matches nothing.",
+ "waivers": []
+}

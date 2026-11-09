@@ -1,0 +1,733 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-09T16:12:58",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "key": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "key": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "key": "silk_edge_clearance"
+        },
+        {
+            "description": "Text height out of range",
+            "key": "text_height"
+        },
+        {
+            "description": "Text thickness out of range",
+            "key": "text_thickness"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint not found in libraries",
+            "key": "lib_footprint_issues"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.99.0",
+    "schematic_parity": [],
+    "source": "p4_kvm_mini.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 U4",
+                    "pos": {
+                        "x": 100.65,
+                        "y": 105.2
+                    },
+                    "uuid": "04a415e4-006c-4576-85ed-5284b6584007"
+                },
+                {
+                    "description": "封裝 C10",
+                    "pos": {
+                        "x": 99.8,
+                        "y": 107.65
+                    },
+                    "uuid": "36f8d68d-3541-4247-ae15-a9f27aac1400"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C19",
+                    "pos": {
+                        "x": 98.6,
+                        "y": 94.55
+                    },
+                    "uuid": "300b6d23-0887-4dca-b6ad-95a75d182b23"
+                },
+                {
+                    "description": "封裝 C20",
+                    "pos": {
+                        "x": 98.25,
+                        "y": 93.5
+                    },
+                    "uuid": "4dbc10e4-457a-46d1-9f2c-81a3ea41c622"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 U11",
+                    "pos": {
+                        "x": 103.4,
+                        "y": 113.6
+                    },
+                    "uuid": "31b38830-6986-403c-a6fc-3450a6b2fa88"
+                },
+                {
+                    "description": "封裝 J4",
+                    "pos": {
+                        "x": 96.3,
+                        "y": 116.9
+                    },
+                    "uuid": "b0c019dd-48ad-40c1-9126-8ab1ae094275"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R52",
+                    "pos": {
+                        "x": 98.1,
+                        "y": 111.4
+                    },
+                    "uuid": "334a05f8-7d86-4cd8-be3a-b1aba0ea9f9a"
+                },
+                {
+                    "description": "封裝 R42",
+                    "pos": {
+                        "x": 96.4,
+                        "y": 110.7
+                    },
+                    "uuid": "71b61fe3-c0e5-4ef0-9108-64bb8a4d8057"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 U8",
+                    "pos": {
+                        "x": 95.75,
+                        "y": 93.8
+                    },
+                    "uuid": "36dd2fcb-2038-4fda-9701-39c377bb4b43"
+                },
+                {
+                    "description": "封裝 C20",
+                    "pos": {
+                        "x": 98.25,
+                        "y": 93.5
+                    },
+                    "uuid": "4dbc10e4-457a-46d1-9f2c-81a3ea41c622"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C10",
+                    "pos": {
+                        "x": 99.8,
+                        "y": 107.65
+                    },
+                    "uuid": "36f8d68d-3541-4247-ae15-a9f27aac1400"
+                },
+                {
+                    "description": "封裝 Q1",
+                    "pos": {
+                        "x": 97.1,
+                        "y": 106.2
+                    },
+                    "uuid": "949f3561-0266-420f-936f-9d5515749013"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R43",
+                    "pos": {
+                        "x": 94.68,
+                        "y": 105.0
+                    },
+                    "uuid": "3b7127c6-84c5-462b-a2c2-ea7401cec18b"
+                },
+                {
+                    "description": "封裝 Q1",
+                    "pos": {
+                        "x": 97.1,
+                        "y": 106.2
+                    },
+                    "uuid": "949f3561-0266-420f-936f-9d5515749013"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R26",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 99.5
+                    },
+                    "uuid": "4e67a015-2da2-4a62-a0d7-af6116dddda9"
+                },
+                {
+                    "description": "封裝 C16",
+                    "pos": {
+                        "x": 97.4,
+                        "y": 99.1
+                    },
+                    "uuid": "c92f5b57-a913-4b06-845a-4cb8ce93a1ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R45",
+                    "pos": {
+                        "x": 94.68,
+                        "y": 107.2
+                    },
+                    "uuid": "50306fcf-c247-4095-ac0b-5aaa005db949"
+                },
+                {
+                    "description": "封裝 Q1",
+                    "pos": {
+                        "x": 97.1,
+                        "y": 106.2
+                    },
+                    "uuid": "949f3561-0266-420f-936f-9d5515749013"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C13",
+                    "pos": {
+                        "x": 98.8,
+                        "y": 99.4
+                    },
+                    "uuid": "5d86c542-cab3-4d73-806d-f6b6a5cca0cb"
+                },
+                {
+                    "description": "封裝 C22",
+                    "pos": {
+                        "x": 100.5,
+                        "y": 99.8
+                    },
+                    "uuid": "6578666b-673f-4777-a31c-8080ee81c42d"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C13",
+                    "pos": {
+                        "x": 98.8,
+                        "y": 99.4
+                    },
+                    "uuid": "5d86c542-cab3-4d73-806d-f6b6a5cca0cb"
+                },
+                {
+                    "description": "封裝 C16",
+                    "pos": {
+                        "x": 97.4,
+                        "y": 99.1
+                    },
+                    "uuid": "c92f5b57-a913-4b06-845a-4cb8ce93a1ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R53",
+                    "pos": {
+                        "x": 98.1,
+                        "y": 112.5
+                    },
+                    "uuid": "66f02d49-b667-40ab-b9e9-9abc61323899"
+                },
+                {
+                    "description": "封裝 C41",
+                    "pos": {
+                        "x": 96.4,
+                        "y": 113.0
+                    },
+                    "uuid": "8cbc5b52-1853-4a1a-b1d5-65cfbeb96ea3"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C17",
+                    "pos": {
+                        "x": 106.9,
+                        "y": 94.6
+                    },
+                    "uuid": "6a85105d-341e-4551-bd40-21af3d05661d"
+                },
+                {
+                    "description": "封裝 U7",
+                    "pos": {
+                        "x": 103.0,
+                        "y": 96.0
+                    },
+                    "uuid": "fde14afe-e4c2-474c-99cf-5c6a8280a5f4"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R25",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 98.4
+                    },
+                    "uuid": "6adf3f93-923d-4ceb-81a7-7a76ebe73fb5"
+                },
+                {
+                    "description": "封裝 C16",
+                    "pos": {
+                        "x": 97.4,
+                        "y": 99.1
+                    },
+                    "uuid": "c92f5b57-a913-4b06-845a-4cb8ce93a1ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R27",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 100.6
+                    },
+                    "uuid": "83539bf9-ad93-4bd2-b60d-087763c9babe"
+                },
+                {
+                    "description": "封裝 C16",
+                    "pos": {
+                        "x": 97.4,
+                        "y": 99.1
+                    },
+                    "uuid": "c92f5b57-a913-4b06-845a-4cb8ce93a1ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R46",
+                    "pos": {
+                        "x": 94.68,
+                        "y": 108.3
+                    },
+                    "uuid": "8bb5be62-0fbe-48a5-b1c1-ee8be23e94d8"
+                },
+                {
+                    "description": "封裝 Q1",
+                    "pos": {
+                        "x": 97.1,
+                        "y": 106.2
+                    },
+                    "uuid": "949f3561-0266-420f-936f-9d5515749013"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 L1",
+                    "pos": {
+                        "x": 113.6,
+                        "y": 113.83
+                    },
+                    "uuid": "8d22181b-f562-4e16-91a8-574d62ffffab"
+                },
+                {
+                    "description": "封裝 U2",
+                    "pos": {
+                        "x": 114.0,
+                        "y": 109.85
+                    },
+                    "uuid": "96acd914-5fb9-43a2-886c-b57d5f3a554d"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C30",
+                    "pos": {
+                        "x": 107.6,
+                        "y": 90.6
+                    },
+                    "uuid": "942cb34b-591e-44c2-acfb-50c54bec86f7"
+                },
+                {
+                    "description": "封裝 U3",
+                    "pos": {
+                        "x": 106.0,
+                        "y": 88.95
+                    },
+                    "uuid": "b96a9138-bfe3-4166-a430-7acd4f650742"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 Q1",
+                    "pos": {
+                        "x": 97.1,
+                        "y": 106.2
+                    },
+                    "uuid": "949f3561-0266-420f-936f-9d5515749013"
+                },
+                {
+                    "description": "封裝 R44",
+                    "pos": {
+                        "x": 94.68,
+                        "y": 106.1
+                    },
+                    "uuid": "ac911877-2e88-43e7-ae20-a164d830f68f"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 R81",
+                    "pos": {
+                        "x": 110.7875,
+                        "y": 113.85
+                    },
+                    "uuid": "94bdabda-aa24-494f-bb00-90c2ce1b7770"
+                },
+                {
+                    "description": "封裝 R80",
+                    "pos": {
+                        "x": 110.7875,
+                        "y": 114.85
+                    },
+                    "uuid": "aebf71a1-46e8-4466-8182-76cf645d1d6e"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 U2",
+                    "pos": {
+                        "x": 114.0,
+                        "y": 109.85
+                    },
+                    "uuid": "96acd914-5fb9-43a2-886c-b57d5f3a554d"
+                },
+                {
+                    "description": "封裝 C64",
+                    "pos": {
+                        "x": 113.95,
+                        "y": 107.8
+                    },
+                    "uuid": "c2042c8e-8156-4476-abc4-6ed560550121"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 J7",
+                    "pos": {
+                        "x": 86.2,
+                        "y": 104.1
+                    },
+                    "uuid": "b0bd784d-ef11-4f86-9f34-24a20f52b004"
+                },
+                {
+                    "description": "封裝 R78",
+                    "pos": {
+                        "x": 82.38,
+                        "y": 97.35
+                    },
+                    "uuid": "d82680ed-de17-43c6-8bae-b4a06693e9e9"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 J7",
+                    "pos": {
+                        "x": 86.2,
+                        "y": 104.1
+                    },
+                    "uuid": "b0bd784d-ef11-4f86-9f34-24a20f52b004"
+                },
+                {
+                    "description": "封裝 C40",
+                    "pos": {
+                        "x": 93.4,
+                        "y": 110.9
+                    },
+                    "uuid": "ebf37f45-4918-4bcf-93dd-44f8a1787eb1"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 J4",
+                    "pos": {
+                        "x": 96.3,
+                        "y": 116.9
+                    },
+                    "uuid": "b0c019dd-48ad-40c1-9126-8ab1ae094275"
+                },
+                {
+                    "description": "封裝 TP6",
+                    "pos": {
+                        "x": 91.24,
+                        "y": 117.2
+                    },
+                    "uuid": "d6e10c81-bd8c-4344-965f-8c97b381f927"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "封裝 C21",
+                    "pos": {
+                        "x": 101.65,
+                        "y": 92.05
+                    },
+                    "uuid": "bd9e2265-4d21-4e5b-9d24-50e06f00506b"
+                },
+                {
+                    "description": "封裝 U7",
+                    "pos": {
+                        "x": 103.0,
+                        "y": 96.0
+                    },
+                    "uuid": "fde14afe-e4c2-474c-99cf-5c6a8280a5f4"
+                }
+            ],
+            "severity": "warning",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "緩釋熱焊盤 (花焊盤) 與覆銅的連接不完整 (層 F.Cu; 覆銅 最小引線數量 2; 實際 1)",
+            "items": [
+                {
+                    "description": "區域 [GND] 在 F.Cu 上，優先權 0",
+                    "pos": {
+                        "x": 81.764,
+                        "y": 80.45
+                    },
+                    "uuid": "9200cddb-e966-4a8a-80d9-dedfa5c1d3b5"
+                },
+                {
+                    "description": "52 上 [GND] 的焊盤 U1 F.Cu",
+                    "pos": {
+                        "x": 100.5,
+                        "y": 92.9
+                    },
+                    "uuid": "1988384b-2a8a-4853-9c57-bb733988a257"
+                }
+            ],
+            "severity": "warning",
+            "type": "starved_thermal"
+        },
+        {
+            "description": "緩釋熱焊盤 (花焊盤) 與覆銅的連接不完整 (層 F.Cu; 覆銅 最小引線數量 2; 實際 1)",
+            "items": [
+                {
+                    "description": "區域 [GND] 在 F.Cu 上，優先權 0",
+                    "pos": {
+                        "x": 81.764,
+                        "y": 80.45
+                    },
+                    "uuid": "9200cddb-e966-4a8a-80d9-dedfa5c1d3b5"
+                },
+                {
+                    "description": "B1A12 上 [GND] 的焊盤 J5 F.Cu",
+                    "pos": {
+                        "x": 111.598,
+                        "y": 99.3
+                    },
+                    "uuid": "8ad9dd19-ff02-4e70-9903-5267abaad778"
+                }
+            ],
+            "severity": "warning",
+            "type": "starved_thermal"
+        },
+        {
+            "description": "緩釋熱焊盤 (花焊盤) 與覆銅的連接不完整 (層 B.Cu; 覆銅 最小引線數量 2; 實際 1)",
+            "items": [
+                {
+                    "description": "區域 [GND] 在 B.Cu 上，優先權 0",
+                    "pos": {
+                        "x": 81.764,
+                        "y": 80.45
+                    },
+                    "uuid": "e78e6c1e-afee-40b8-8196-fa9a06f4ef0c"
+                },
+                {
+                    "description": "2 上 [GND] 的焊盤 C14 B.Cu",
+                    "pos": {
+                        "x": 98.3,
+                        "y": 101.12
+                    },
+                    "uuid": "9815c31d-8e37-4a05-bee9-ebdbbb0ec61c"
+                }
+            ],
+            "severity": "warning",
+            "type": "starved_thermal"
+        },
+        {
+            "description": "緩釋熱焊盤 (花焊盤) 與覆銅的連接不完整 (層 B.Cu; 覆銅 最小引線數量 2; 實際 1)",
+            "items": [
+                {
+                    "description": "區域 [GND] 在 B.Cu 上，優先權 0",
+                    "pos": {
+                        "x": 81.764,
+                        "y": 80.45
+                    },
+                    "uuid": "e78e6c1e-afee-40b8-8196-fa9a06f4ef0c"
+                },
+                {
+                    "description": "1 上 [GND] 的焊盤 R21 B.Cu",
+                    "pos": {
+                        "x": 100.7,
+                        "y": 92.28
+                    },
+                    "uuid": "fc17382f-5546-458f-b867-074f15a9c3d9"
+                }
+            ],
+            "severity": "warning",
+            "type": "starved_thermal"
+        }
+    ]
+}

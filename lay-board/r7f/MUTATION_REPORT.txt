@@ -1,0 +1,130 @@
+mutation run on D:\git\p4-kvm-box\v2_r7f\out
+ok  | verify   | control | control passes | 
+ok  | verify   | U6.5 TCA9517A EN back on 3V3 (the r6 bug) | caught | FAIL  U6.5    3V3        static level of 3V3 3.185-3.440 V against VIH 3.850 V  [TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3 VIH EN 0.7 x VCCB, max 5.5] / FAIL 
+ok  | verify   | R50 and R51 swapped (3V3 divider) | caught | FAIL  U1.85   3V3        supply 3.0-3.6 V: 3V3 0.7139-0.7519 V  [Waveshare ESP32-P4-Module wiki: 3.3 V supply; 3.0-3.6 is the P4 VDDPST range, ESP32-P4 datashee
+ok  | verify   | R51 33.2k -> 30k (3V3 rises to 3.7 V) | caught | FAIL  U1.85   3V3        supply 3.0-3.6 V: 3V3 3.4624-3.7414 V  [Waveshare ESP32-P4-Module wiki: 3.3 V supply; 3.0-3.6 is the P4 VDDPST range, ESP32-P4 datashee
+ok  | verify   | R62 and R63 swapped (1.2 V divider) | caught | FAIL  U7.B2   AVDD12     supply 1.15-1.25 V: AVDD12 69.7247-72.8883 V (after AVDD12 drop 21.5 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD12] /  
+ok  | verify   | R61-R63 at 5% instead of 0.1% | caught | FAIL  U7.B2   AVDD12     supply 1.15-1.25 V: AVDD12 1.1059-1.3017 V (after AVDD12 drop 21.5 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD12] /   F
+ok  | verify   | HPDO tied to CSI clock+ (two outputs on one net) | caught | FAIL no net has two push-pull or power outputs (pin types from data/pin_types.json) {'CSI_CK_P': ['U7.C8 output', 'U7.H1 output']} / FAIL HDMI connector to TC35
+ok  | verify   | Y1 load cap C30 47 pF fitted | caught | FAIL  Y1.3    OSC_OUT    output load 53.6 pF (fitted [('C30', 47.0)] + 6.6 trace/pad/input estimate) against 15 pF  [YXC YSO110TR (LCSC C725995) datasheet, data
+ok  | verify   | HPDI straight onto HDMI +5V | caught | FAIL HDMI +5V reaches HPDI only through a series resistor []: back-feed into an unpowered bridge at most 5300.00 mA (limit 0.5 mA ASSUMED) / FAIL no net has onl
+ok  | verify   | VDDIO2 on its own unpowered net | caught | FAIL  U7.H7   VDDIO2_X   supply pin on VDDIO2_X, which has no derived supply (unpowered)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDIO2] /   FAIL  U7
+ok  | verify   | TEST ball tied to 3V3 | caught | FAIL  U7.E5   3V3        must be low: 3V3 3.440 V against VIL 0.955 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 TEST "0: Normal mode", p16 VIL 0.3 VDDIO] /
+ok  | verify   | REXT 2.2k instead of 2k | caught | FAIL  U7.A1   TC_REXT    2000 ohm +-1% to 3V3: [('R20', 2178, 2222)]  [Toshiba TC358743XBG datasheet 2014-05-16 p11 REXT "connect to AVDD33 with a 2K ohm resist
+ok  | verify   | VBUS divider R10 100k (GPIO3 below VIH) | caught | FAIL  U1.18   HOST_VBUS_DIV static level of HOST_VBUS_DIV 2.349-2.780 V against VIH 2.580 V  [Espressif ESP32-P4 datasheet v0.7 p89 VIH 0.75 VDD, max VDD+0.3] /
+ok  | verify   | HDMI D0+ and D0- swapped at the bridge | caught | FAIL HDMI connector to TC358743 by function: TMDS, CEC, DDC via TCA9517A B to A side, HPD from HPDO through a resistor [('D0+', 'HDMID0P'), ('D0-', 'HDMID0N')]
+ok  | verify   | CSI D0+ and D1+ swapped at the bridge | caught | FAIL CSI-2: 2 lanes and clock, module pin to TC358743 ball by name, P to P and N to N [('CSI_DATAP0', 'CSID0P'), ('CSI_DATAP1', 'CSID1P')]
+ok  | verify   | host VBUS joined to box 5V | caught | FAIL  U1.18   HOST_VBUS_DIV static level of HOST_VBUS_DIV 0.000-0.008 V against VIH 2.580 V  [Espressif ESP32-P4 datasheet v0.7 p89 VIH 0.75 VDD, max VDD+0.3] /
+ok  | verify   | R67 not fitted (HPDI floating) | caught | FAIL  U7.H2   HPDI       static level of HPDI unknown against VIH 2.408 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 HPDI on VDDIO1, p11 Note1 5 V tolerant,
+ok  | verify   | U2 EN tied to GND | caught | FAIL  U2.1    GND        static level of GND 0.000-0.000 V against VIH 1.500 V  [Silergy AN_SY8089/A Rev 0.9A p4 VENH 1.5, p2 EN abs VIN+0.6, "do not float"] / 
+ok  | verify   | U4 TLV73325 replaced by TLV73312 (C2871228) | caught | FAIL every part on the board has its pins in data/pin_types.json ['U4'] /   FAIL  U7.B5   AVDD25     supply pin on AVDD25, which has no derived supply (unpowere
+ok  | verify   | I2C SDA moved from GPIO7 to GPIO6 | caught | FAIL firmware sdkconfig.v2r7_rev3: I2C 7/8, bridge reset 23, LCD 9-13, SD 39-45, ATX 2/4/5 each reach the vendor pin they drive [('CONFIG_KVM_I2C_SDA_GPIO', '7'
+ok  | verify   | LCD DIN and CLK swapped at J6 | caught | FAIL firmware sdkconfig.v2r7_rev3: I2C 7/8, bridge reset 23, LCD 9-13, SD 39-45, ATX 2/4/5 each reach the vendor pin they drive [('CONFIG_KVM_DISP_MOSI_GPIO', '
+ok  | verify   | R41 fitted as well as R42 (3V3 onto VO4) | caught | FAIL SD switch source fed from the module 3.3 V rail, not from ESP_LDO_VO4 (reached through links: ['3V3', 'LDO_VO4', 'OSC_VDD', 'SD_SRC', 'SW'])
+ok  | verify   | Q1 gate pull-down R40 not fitted | caught | FAIL  Q1.1    SD_PWR_N   |VGS| at most 3.44 V against 12 V; gate level with the GPIO released: None V (must be defined)  [AOS AO3401A Rev 3.1 p1 VGS +-12 V; a f
+ok  | verify   | DDC B-side pull-up R27 to 3V3 instead of 5V | caught | FAIL  U6.7    DDC_SCL    pull-up from DDC_SCL to 5V (pin 8): []  [TI TCA9517A SCPS245E (rev. Oct 2025) p4] / FAIL electrical rule table: 69 rules from data/pin_
+ok  | verify   | USB D+ and D- swapped at the host connector | caught | FAIL USB-C: A/B sides joined, Rd 5.1k +-20% on each CC, host port on USB_DP/DM, power port on GPIO25/24 (Waveshare alt names) ['host port to USB_DP/DM']
+ok  | verify   | CC pull-down R1 10k instead of 5.1k | caught | FAIL USB-C: A/B sides joined, Rd 5.1k +-20% on each CC, host port on USB_DP/DM, power port on GPIO25/24 (Waveshare alt names) [('J3', 'A5', 'Rd', [('R1', 9900.0
+ok  | verify   | ESD channel taken off D1- | caught | FAIL every TMDS and USB data line has a TPD4E05U06 channel on it ['J2.6']
+ok  | verify   | TC358743 VSS ball A2 left open | caught | FAIL every ground pin named in the vendor tables is on board ground (net of J5 GND) [('U7.A2', 'VSS', 'unconnected-(U7-PadA2)')]
+ok  | verify   | VDDC bead FB5 not fitted | caught | FAIL  U7.C3   VDDC       supply pin on VDDC, which has no derived supply (unpowered)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC] /   FAIL  U7.F5   
+ok  | verify   | ATX PWR opto cathode lifted off GND | caught | FAIL firmware sdkconfig.v2r7_rev3: I2C 7/8, bridge reset 23, LCD 9-13, SD 39-45, ATX 2/4/5 each reach the vendor pin they drive [('CONFIG_KVM_ATX_PWR_GPIO', '4'
+ok  | verify   | board changed, design.json not regenerated | caught | FAIL design.json and the board agree pin for pin (557 pads) ['R11.1'] /   FAIL  U1.87   ESP_EN     pulled high: ESP_EN static None V, VIH_nRST 0.75 x VDD = 2.58
+ok  | verify   | 5 mm stub added to CK_P (skew budget) | caught | FAIL worst P/N length difference 4.90 mm is within 3.0 mm (about 33 ps; one bit at 972 Mbit/s is 1029 ps) / FAIL CSI, TMDS and USB lines have GND under them (In
+ok  | verify   | one D1_P segment widened 0.127 -> 0.2 mm | caught | FAIL differential pairs: gap to the partner keeps Zdiff within +-10% on all 16 lines (CSI/TMDS 100, USB 90 ohm) [('D1_P', 4, (-4.73, -4.46, 0.162, 'width 0.2 no
+ok  | verify   | CSI_CK_P 0.3 mm longer than CSI_CK_N (Espressif 10 mil) | caught | FAIL CSI within each pair: worst 0.209 mm against 0.15 mm (Espressif 10 mil = 0.254 mm) / FAIL differential pairs: gap to the partner keeps Zdiff within +-10% o
+ok  | verify   | CSI D0 pair 0.9 mm longer than the others (Espressif 30 mil) | caught | FAIL CSI between pairs: CSI D0 11.00, CSI D1 10.11, CSI C 10.20 mm, spread 0.898 mm against 0.762 mm (Espressif 30 mil); about 6 ps
+ok  | verify   | In1 ground fill missing under the CSI lines | caught | FAIL filled GND on In1 and In4 read back from the saved board (zones refilled) / FAIL CSI, TMDS and USB lines have GND under them (In1 under F.Cu, In4 under B.C
+ok  | verify   | TC358743 IR (B4) tied to 3V3 instead of GND | caught | FAIL  U7.B4   3V3        must be low: 3V3 3.440 V against VIL 0.955 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 IR, Sch input with no pull and no "when not
+ok  | erc      | control | control passes | 
+ok  | erc      | HPDO output tied to CSI clock+ output | caught | ERC error pin_to_pin: Symbol U7 接腳 C8 [C8, Output, Line] || Symbol U7 接腳 H1 [H1, Output, Line] / ERC warning single_global_label: 全域標籤 'TC_HPDO'
+ok  | erc      | VDDIO2 on its own unpowered net | caught | ERC error power_pin_not_driven: Symbol U7 接腳 H7 [H7, Power input, Line] / ERC warning single_global_label: 全域標籤 'VDDIO2_X'
+ok  | erc      | U4 LDO output onto the 3V3 buck rail | caught | ERC error power_pin_not_driven: Symbol U7 接腳 B5 [B5, Power input, Line] / ERC error pin_to_pin: Symbol #FLG01 接腳 1 [pwr, Power output, Line] || Symbol U4 接腳 5 [
+ok  | erc      | L1 not fitted (3V3 has no source) | caught | ERC error power_pin_not_driven: Symbol U1 接腳 84 [84, Power input, Line] / ERC error power_pin_not_driven: Symbol Y1 接腳 4 [4, Power input, Line]
+ok  | erc      | TC358743 GND ball on a floating net | caught | ERC error power_pin_not_driven: Symbol U7 接腳 A2 [A2, Power input, Line] / ERC warning single_global_label: 全域標籤 'GND_X'
+ok  | erc      | REFCLK input left open | caught | U7.H5 (REFCLK, input) is open and pin_types.json open_ok gives no reason
+ok  | erc      | Y1 OE input left open | caught | Y1.1 (OE, input) is open and pin_types.json open_ok gives no reason
+ok  | erc      | schematic written the r7b way (every pin passive) | caught | schematic pin types differ from data/pin_types.json (553 in file, 553 expected): ['U1.1 file passive data power_in', 'U1.3 file passive data power_in', 'U1.4 fi
+ok  | erc      | TC358743 IR (B4) left open again | caught | U7.B4 (IR, input) is open and pin_types.json open_ok gives no reason
+ok  | drc      | control | control passes | 
+ok  | drc      | new courtyard overlap C32 + C33 (accepted type, new instance) | caught | warning courtyards_overlap C33 + R43 (not in data/drc_accepted.json) / warning courtyards_overlap C32 + C33 (not in data/drc_accepted.json)
+ok  | drc      | new starved thermal at C10.2 (accepted type, new instance; injected into the DRC result) | caught | warning starved_thermal C10.2 + zone GND B.Cu (not in data/drc_accepted.json)
+ok  | drc      | LCD_DIN track across D2_P | caught | error clearance @-2.85,-6.19 + U8.4 / error tracks_crossing @-2.85,-6.19 + @-3.25,-7.25
+ok  | drc      | track 0.095 mm from D2_P (netclass clearance 0.1) | caught | error clearance @-3.46,-6.49 + U8.6 / error clearance @-3.25,-7.25 + @-3.46,-6.49
+ok  | drc      | second via, holes 0.15 mm apart | caught | error hole_to_hole zone 3V3 F.Cu + zone 3V3 F.Cu
+ok  | drc      | track 0.05 mm from the board edge | caught | error copper_edge_clearance @-18.50,-20.00 + @0.00,-19.90 / unconnected  @0.00,-19.90 + zone GND F.Cu
+ok  | drc      | one LCD_CS segment deleted (open net) | caught | unconnected  @10.31,12.80 + @11.90,12.80
+ok  | drc      | GND via 0.23 mm (hole to hole) from the J5 shell slot | caught | error hole_to_hole J5 + zone GND F.Cu
+ok  | mask     | control | control passes | mask bridge minimum 0.1088 mm, 0 under 0.1, 3 under 0.13 (black/white only); opening to other-net conductor minimum 0.1007 mm, 0 under 0.09; 0 openings merged a
+ok  | mask     | mask expansion 0.05 mm on every pad | caught | mask bridge minimum 0.0088 mm, 37 under 0.1, 91 under 0.13 (black/white only); opening to other-net conductor minimum 0.0507 mm, 661 under 0.09; 0 openings merg
+ok  | hole     | control | control passes | 0 under limit; VIA outer min 0.2 (limit 0.2), VIA inner min 0.2012 (limit 0.2), NPTH outer min none near (limit 0.2), NPTH inner min none near (limit 0.2), PTH 
+ok  | hole     | GND via drilled 0.15 mm from a D2_P track | caught | 8 under limit; VIA outer min -0.1 (limit 0.2), VIA inner min -0.1 (limit 0.2), NPTH outer min none near (limit 0.2), NPTH inner min none near (limit 0.2), PTH o
+ok  | hole     | GND via 0.23 mm (hole to hole) from the J5 shell slot, verify.py | caught | FAIL HOLECHECK 1 under limit; VIA outer min 0.2 (limit 0.2), VIA inner min -0.1 (limit 0.2), NPTH outer min none near (limit 0.2), NPTH inner min none near (lim
+ok  | body     | control | control passes | 129 parts, 4908 same-side pairs, 0 overlaps, 0 worst-case warnings, smallest nominal gap 0.350 mm
+ok  | body     | U6 moved 0.35 mm toward R28 | caught | 129 parts, 4908 same-side pairs, 1 overlaps, 0 worst-case warnings, smallest nominal gap 0.137 mm U6/R28       B  nom  0.137 (area  0.00)  max  0.037  worst -0.
+ok  | body     | J6 moved 0.8 mm on the board only (design.json stale) | caught | 128 parts, 4873 same-side pairs, 0 overlaps, 0 worst-case warnings, smallest nominal gap 0.350 mm PROBLEMS J6: design.json and the board disagree on position
+ok  | body     | C20 moved 0.025 mm back toward C19 (margin 0.05) | caught | 129 parts, 4908 same-side pairs, 1 overlaps, 0 worst-case warnings, smallest nominal gap 0.350 mm C19/C20      B  nom  0.375 (area  0.00)  max  0.225  worst  0.
+ok  | hotplug  | control | control passes | damping) while the eFuse is off /   worst VBUS_IN peak 10.258 V at Vs 5.25 L 1.5 uH R 30 mOhm C 1.10 uF; 72 cases (limit 18 V, IN abs max 20 V)
+ok  | hotplug  | R72 (EN divider bottom) not fitted: EN sees the VBUS_IN ring | caught | ) while the eFuse is off /   worst VBUS_IN peak 10.258 V at Vs 5.25 L 1.5 uH R 30 mOhm C 1.10 uF; 72 cases (limit 18 V, IN abs max 20 V)
+ok  | hotplug  | R71 and R72 swapped (EN at 68 % of VBUS_IN) | caught | ) while the eFuse is off /   worst VBUS_IN peak 10.258 V at Vs 5.25 L 1.5 uH R 30 mOhm C 1.10 uF; 72 cases (limit 18 V, IN abs max 20 V)
+ok  | imp      | control | control passes | 102.8 /   er 3.8: 101.8
+ok  | imp      | outer prepreg 0.0994 -> 0.12 mm in the board stackup | caught | v2_r7f\tools\r7\impedance_r7.py", line 30, in <module> /     assert (h_outer, er_outer, t_outer) == (S.H_PP, S.ER_PP, S.T_OUT) == (L['dielectric 5'][1], L['diel
+ok  | fabpack  | verify.out reports a failure | caught | FAIL verify ALL PASS / FAIL verify ran the mask check
+ok  | fabpack  | erc_check.out reports a failure | caught | FAIL ERC check (typed pins) passed / FAIL 5V hot-plug simulation OK on this design
+ok  | fabpack  | schematic edited after erc_check ran | caught | FAIL ERC check ran on this exact schematic / FAIL 5V hot-plug simulation OK on this design
+ok  | fabpack  | hotplug.out reports a peak over 5.8 V | caught | FAIL 5V hot-plug simulation OK on this design / REFUSED: nothing written
+ok  | fabpack  | hotplug.out (eFuse form) reports EN over its limit | caught | FAIL 5V hot-plug simulation OK on this design / REFUSED: nothing written
+ok  | r7e      | control (verify after a zone refill) | control passes | 
+ok  | r7e      | 3V3 via 0.4 mm beside HDMI CK_N (TMDS plane gap, REVIEW injection 6) | caught | FAIL CSI, TMDS and USB lines have GND under them (In1 under F.Cu, In4 under B.Cu, line +0.03 mm each side) [('CK_N', 'B.Cu', 0.0019)]
+ok  | r7e      | 3V3 via 0.4 mm beside CSI_CK_N on F.Cu (CSI plane gap, injection 5) | caught | FAIL CSI, TMDS and USB lines have GND under them (In1 under F.Cu, In4 under B.Cu, line +0.03 mm each side) [('CSI_CK_N', 'F.Cu', 0.0019)]
+ok  | r7e      | control (r7d_csi_ref.py exit code) | control passes | exit 0 RESULT PASS
+ok  | r7e      | r7d_csi_ref.py on the CSI plane-gap via: must exit non-zero | caught | exit 1 FAIL CSI_CK_N  F.Cu gap 0.0019 mm2 at (7.316, -3.367); other-net vias within 0.8 mm: [(0.31, 'CSI_D1_N')] / RESULT FAIL
+ok  | r7e      | control (pairgap) | control passes | 
+ok  | r7e      | TMDS D2_N segment 0.12 mm closer to D2_P (gap 0.198 -> 0.078) | caught | FAIL D2_P: impedance outside 100 ohm +-10% at 67 samples (gap to D2_N), first [(-2.97, -5.0, 0.108, 88.0), (-3.12, -4.99, 0.097, 86.3), (-2.32, -5.0, 0.108, 88.
+ok  | r7e      | USB_DN segment 0.2 mm closer to USB_DP (gap 0.32 -> 0.12, 78 ohm) | caught | FAIL USB_DP: impedance outside 90 ohm +-10% at 86 samples (gap to USB_DN), first [(8.97, -10.55, 0.12, 77.8), (8.92, -10.55, 0.12, 77.8), (8.88, -10.55, 0.12, 7
+ok  | r7e      | GND via put back in the middle of C21.2 (via in pad, REVIEW m2) | caught | FAIL no via drill inside a pasted pad, 524 pads checked [('C21.2', 'GND', (1.65, -8.43))]
+ok  | r7e      | C69 reversed: + on GND, - on 5V_DAMP (REVIEW injection 3), verify | caught | FAIL polarized capacitors: + (pin 1) on the supply side, - (pin 2) on GND [('C69', '+ GND', '- 5V_DAMP')]
+ok  | r7e      | control (CPL written as fab_pack does, cpl_pin1) | control passes | 
+ok  | r7e      | C69 reversed, cpl_pin1 | caught | FAIL C69: polarized capacitor pin 1 (+) on GND, pin 2 on 5V_DAMP: + must reach a supply (['ATX_LED', 'EF_EN', 'EF_ILM', 'FB_1V2', 'FB_3V3', 'GND', 'HDMI_HPD', '
+ok  | r7e      | U2 CPL angle 180 degrees off (SY8089 on the bottom) | caught | FAIL U2: FAIL: CPL 90, KiCad 0 + verified offset 270 = 270
+ok  | r7e      | U4 footprint pin 1 moved (pads 1 and 3 swapped) | caught | FAIL SOT-23-5: pin 1 in the footprint frame differs between [('U4', (0.95, 1.138)), ('U2', (-0.95, 1.137)), ('U15', (-0.95, 1.138))] (rotation convention or foo
+ok  | case     | control | control passes | 
+ok  | case     | J6 moved 0.8 mm / 3.6 mm toward the M2 screw | caught | FAIL  M2 shank clears the J6 envelope  [-0.36 mm (x gap alone -0.78 mm)] / FAIL  plate clears every top-side part (J6 through its cut-out)  [[('J6', 2.5)]]
+ok  | r7f      | control (verify) | control passes | 
+ok  | r7f      | J5 VBUS wired straight to 5V (eFuse bypassed) | caught | FAIL  U16.3   VBUS_IN    supply pin on VBUS_IN, which has no derived supply (unpowered)  [TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p5 7.3 VI
+ok  | r7f      | D1 (CEC ESD) not fitted | caught | FAIL r7f: HDMI CEC (HDMI_CEC) has a TPD1E10B06 clamp to GND []
+ok  | r7f      | R80 (LCD DIN series) 330 ohm instead of 33 | caught | FAIL firmware sdkconfig.v2r7_rev3: I2C 7/8, bridge reset 23, LCD 9-13, SD 39-45, ATX 2/4/5 each reach the vendor pin they drive [('CONFIG_KVM_DISP_MOSI_GPIO', '
+ok  | r7f      | R76 (SD D0 series) 220 ohm instead of 22 | caught | FAIL firmware sdkconfig.v2r7_rev3: I2C 7/8, bridge reset 23, LCD 9-13, SD 39-45, ATX 2/4/5 each reach the vendor pin they drive [('CONFIG_KVM_SD_D0_GPIO', '39',
+ok  | r7f      | 0 ohm 5V(pin 1) -> VBUS_IN(pin 2) across the eFuse | caught | FAIL r7f: nothing bypasses the eFuse U16 between VBUS_IN and 5V (any part, either pin order) ['C70']
+ok  | r7f      | 0 ohm VBUS_IN(pin 1) -> 5V(pin 2) across the eFuse | caught | FAIL r7f: J5 VBUS reaches 5V only through the eFuse ['U16'] (IN VBUS_IN, OUT 5V) / FAIL r7f: nothing bypasses the eFuse U16 between VBUS_IN and 5V (any part, ei
+ok  | r7f      | R73 (ILIM) 10k instead of 1k | caught | FAIL r7f: U16 ILM (EF_ILM) has one resistor to GND within 487-5000 ohm (SLVSE57C 7.3), current limit 0.24-0.24 A (Eq. 4) [('R73', '1')] [('R73', 'EF_ILM', 'GND'
+ok  | r7f      | R73 (ILIM) not fitted | caught | FAIL r7f: U16 ILM (EF_ILM) has one resistor to GND within 487-5000 ohm (SLVSE57C 7.3), current limit n/a (Eq. 4) [] [] / FAIL r7f: U16 ILIM at its low end 0.00 
+ok  | r7f      | R73 (ILIM) 2.2k (C25879, ILIM about 0.95 A, below the full load) | caught | FAIL r7f: U16 ILIM at its low end 0.87 A carries the full load 1.51 A x 1.1 = 1.66 A (Eq. 4 at R max, ILIM -7.5 %)
+ok  | r7f      | C71 (dVdt) 2.2 uF (C385032, ramp about 260 ms) | caught | FAIL r7f: U16 dVdt ramp to 5 V 288.4 ms at CdVdt +10 % within the 30 ms start-up budget (Eq. 3; CdVdt 2200.0 nF)
+ok  | r7f      | U16 EP paste windows removed | caught | FAIL r7f: U16 EP paste: two B.Paste windows on the EP, 0.0 % of it (80-95 %, TI DSG0008A stencil), EP pad itself without paste (0 windows, inside True)
+ok  | r7f      | H1 copper ring back to 3.1 mm (0.218 mm to the board edge) | caught | FAIL r7f: mounting hole copper ring <= 2.9 mm or copper to the board edge >= 0.3 mm (REVIEW_r7f fix kept) [('H1.1', 3.1, 0.218), ('H2.1', 2.9, 0.318), ('H3.1', 
+ok  | r7f      | C71 and R73 swapped (dVdt on 1k, ILM on 100 nF) | caught | FAIL r7f: U16 ILM (EF_ILM) has one resistor to GND within 487-5000 ohm (SLVSE57C 7.3), current limit n/a (Eq. 4) [('C71', '2')] [] / FAIL r7f: U16 ILIM at its l
+ok  | r7f      | R71 (EN top) not fitted | caught | FAIL r7f: U16 EN/UVLO divider from VBUS_IN and to GND, UVLO rising None V within 3.0-4.6 V (VUVLO(R) 1.13-1.27 V, SLVSE57C 7.5) [('R72', '2')]
+ok  | r7f      | C71 (dVdt) not fitted | caught | FAIL r7f: U16 dVdt (EF_DVDT) has one capacitor to GND of at least 3300 pF (SLVSE57C 7.3) [] / FAIL r7f: U16 dVdt ramp to 5 V None ms at CdVdt +10 % within the 3
+ok  | r7f      | U16 IN and OUT swapped (must FAIL by name, not crash) | caught | FAIL  Q1.1    SD_PWR_N   |VGS| at most 0.00 V against 12 V; gate level with the GPIO released: 0.0 V (must be defined)  [AOS AO3401A Rev 3.1 p1 VGS +-12 V; a fl
+ok  | r7f      | H1 mounting hole pad off GND | caught | FAIL r7f: every mounting hole is a plated pad on GND (lid and plate ground through the posts) [('H1.1', ''), ('H2.1', 'GND'), ('H3.1', 'GND'), ('H4.1', 'GND')] 
+ok  | r7f      | control (csi_via) | control passes | RESULT PASS
+ok  | r7f      | 3V3 via 0.5 mm from CSI_D1_P | caught | FAIL via ('3V3', 4.841, -4.623, 'CSI_D0_N', 0.057) / RESULT FAIL
+ok  | r7f      | VDD_MIPI via back at its r7d place (0.585 mm from CSI_CK_P) | caught | FAIL via ('VDD_MIPI', 8.18, -1.686, 'CSI_CK_P', 0.585) / RESULT FAIL
+ok  | r7f      | control (hand_solder_gap) | control passes | RESULT PASS
+ok  | r7f      | R80 0.25 mm toward U1 (pad 0.137 mm from U1.24) | caught | FAIL R80.1 is 0.137 mm from U1.24 (limit 0.2) / FAIL R80.2 is 0.137 mm from U1.24 (limit 0.2)
+ok  | r7f      | R81 0.08 mm toward R80 (pads 0.08 mm apart) | caught | FAIL R80 to R81 0.07999999999998408 mm (limit 0.15) / RESULT FAIL
+ok  | r7f      | R79 (SD_D3, 0402) 0.75 mm toward U1.70/71 (0.14 mm) | caught | FAIL R79.1 is 0.140 mm from U1.70 (limit 0.2) / FAIL R79.2 is 0.140 mm from U1.71 (limit 0.2)
+ok  | r7f      | C3 0.5 mm toward U1.79/80 (0.14 mm) | caught | FAIL C3.1 is 0.140 mm from U1.80 (limit 0.2) / FAIL C3.2 is 0.140 mm from U1.79 (limit 0.2)
+ok  | r7f      | control (case with plate, vents, gap filler) | control passes | 
+ok  | r7f      | spreader plate file missing | caught | FAIL  r7f plate, gap filler and case_spec files exist / RESULT FAIL: 72 passed, 1 failed, case files C:\Users\IIIT\AppData\Local\Temp\mutate_muxe9l_r\r7f_118\st
+ok  | r7f      | tray material PLA | caught | FAIL  lid is aluminium, black anodized; tray is heat resistant (not PLA)  [lid Al 6061-T6, black anodized (emissivity ~0.85) except the masked contact faces (ba
+ok  | r7f      | lid material plastic | caught | FAIL  lid is aluminium, black anodized; tray is heat resistant (not PLA)  [lid PETG, printed; tray ASA (or ABS / PC / PA12; heat deflection above 90 C; not PLA)
+ok  | r7f      | post end faces not masked (anodized: no ground contact) | caught | FAIL  every lid contact face that carries ground is masked from the anodize  [masked ['lid_rim', 'post_bore', 'post_shoulder']; missing ['post_end']] / RESULT F
+ok  | r7f      | ground resistance acceptance test dropped | caught | FAIL  lid-to-GND and plate-to-GND < 1 ohm are assembly acceptance tests  [[]] / RESULT FAIL: 98 passed, 1 failed, case files C:\Users\IIIT\AppData\Local\Temp\mu
+ok  | r7f      | fan spec says powered from the board | caught | FAIL  the fan is powered from its own USB supply, not from the board  [30 x 30 mm 5 V fan powered from the board 5V] / RESULT FAIL: 98 passed, 1 failed, case fi
+ok  | r7f      | fan duct file missing | caught | FAIL  fan duct files exist / RESULT FAIL: 91 passed, 1 failed, case files C:\Users\IIIT\AppData\Local\Temp\mutate_muxe9l_r\r7f_124\stl
+ok  | r7f      | H2 mounting hole pad off GND (case grounding check) | caught | FAIL  four mounting holes are plated and on GND  [[(18, 23, 'thru_hole', 2.9, 'GND'), (-18, -18, 'thru_hole', 2.9, None), (18, -18, 'thru_hole', 2.9, 'GND'), (-
+
+126 runs, 0 bad
+MUTATION ALL CAUGHT

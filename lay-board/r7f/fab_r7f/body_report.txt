@@ -1,0 +1,84 @@
+Real outline check. mm. See tools/bodycheck.py for what each gap means.
+ASSUMPTION: worst = max less +-0.1 mm placement on each part, in x and y. JLC publishes no number.
+flash = worst, with TI DBV0005A note 4 at its 0.25 mm per side limit. Reported, not used to refuse.
+Height is not considered.
+
+RESULT PASS 129 parts, 4908 same-side pairs, 0 overlaps, 0 worst-case warnings, smallest nominal gap 0.350 mm
+
+Overlaps (refused):
+  none
+
+Worst-case warnings (nominal and max both clear):
+  none
+
+Closest 40 pairs:
+  C19/C20      B  nom  0.400 (area  0.00)  max  0.250  worst  0.050  flash       -  body-to-land  0.325
+  C6/R79       F  nom  0.350 (area  0.00)  max  0.250  worst  0.050  flash       -  body-to-land  0.290
+  U7/C17       B  nom  0.400 (area  0.00)  max  0.250  worst  0.050  flash       -  body-to-land  0.140
+  C61/C62      B  nom  0.650 (area  0.00)  max  0.250  worst  0.050  flash       -  body-to-land  0.600
+  U7/C24       B  nom  0.410 (area  0.00)  max  0.260  worst  0.060  flash       -  body-to-land  0.350
+  R76/R77      B  nom  0.360 (area  0.00)  max  0.260  worst  0.060  flash       -  body-to-land  0.300
+  L1/C61       B  nom  0.675 (area  0.00)  max  0.275  worst  0.075  flash       -  body-to-land  0.625
+  U6/R28       B  nom  0.429 (area  0.00)  max  0.284  worst  0.080  flash       -  body-to-land  0.320
+  R60/U7       B  nom  0.430 (area  0.00)  max  0.280  worst  0.080  flash       -  body-to-land  0.370
+  U2/L1        B  nom  0.555 (area  0.00)  max  0.280  worst  0.080  flash       -  body-to-land  0.180
+  L1/U12       B  nom  0.690 (area  0.00)  max  0.290  worst  0.090  flash       -  body-to-land  0.840
+  C10/Q1       B  nom  0.595 (area  0.00)  max  0.375  worst  0.094  flash       -  body-to-land  0.330
+  R61/C68      F  nom  0.400 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.340
+  R11/C5       F  nom  0.500 (area  0.00)  max  0.335  worst  0.100  flash       -  body-to-land  0.342
+  R61/R63      F  nom  0.400 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.340
+  C16/R25      B  nom  0.500 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.240
+  C16/R26      B  nom  0.500 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.240
+  C11/U10      B  nom  0.600 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.525
+  U8/C20       B  nom  0.450 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.070
+  Q1/R45       B  nom  0.471 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.204
+  U7/C21       B  nom  0.450 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.190
+  Q1/R44       B  nom  0.460 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.200
+  Q1/R43       B  nom  0.549 (area  0.00)  max  0.361  worst  0.100  flash       -  body-to-land  0.312
+  R72/R71      B  nom  0.400 (area  0.00)  max  0.300  worst  0.100  flash       -  body-to-land  0.340
+  FB2/FB3      B  nom  0.710 (area  0.00)  max  0.310  worst  0.110  flash       -  body-to-land  0.660
+  C16/R27      B  nom  0.673 (area  0.00)  max  0.424  worst  0.141  flash       -  body-to-land  0.431
+  C10/U10      B  nom  0.849 (area  0.00)  max  0.424  worst  0.141  flash       -  body-to-land  0.569
+  C64/U2       B  nom  0.467 (area  0.00)  max  0.350  worst  0.150  flash       -  body-to-land  0.350
+  C66/C67      F  nom  0.750 (area  0.00)  max  0.350  worst  0.150  flash       -  body-to-land  0.700
+  FB3/FB4      B  nom  0.750 (area  0.00)  max  0.350  worst  0.150  flash       -  body-to-land  0.700
+  U7/C15       B  nom  0.500 (area  0.00)  max  0.350  worst  0.150  flash       -  body-to-land  0.240
+  C21/R21      B  nom  0.450 (area  0.00)  max  0.350  worst  0.150  flash       -  body-to-land  0.390
+  C13/C16      B  nom  0.500 (area  0.00)  max  0.350  worst  0.150  flash       -  body-to-land  0.240
+  R80/R81      F  nom  0.400 (area  0.00)  max  0.370  worst  0.170  flash       -  body-to-land  0.280
+  U7/C22       B  nom  0.550 (area  0.00)  max  0.400  worst  0.200  flash       -  body-to-land  0.490
+  U7/C23       B  nom  0.550 (area  0.00)  max  0.400  worst  0.200  flash       -  body-to-land  0.490
+  U7/C31       B  nom  0.550 (area  0.00)  max  0.400  worst  0.200  flash       -  body-to-land  0.490  not fitted
+  U7/C18       B  nom  0.600 (area  0.00)  max  0.400  worst  0.200  flash       -  body-to-land  0.220
+  J7/R78       B  nom  0.545 (area  0.00)  max  0.420  worst  0.220  flash       -  body-to-land  0.367
+  U16/C71      B  nom  0.550 (area  0.00)  max  0.450  worst  0.250  flash       -  body-to-land  0.290
+
+Sources, one line per outline used:
+  U1: Waveshare wiki ESP32-P4-Module, Dimensions drawing: 25.00 x 25.00, H 3.30 + 0.80. Tolerance not published, +-0.15 ASSUMED
+  J8: Hirose U.FL catalogue p3: 3.0 x 2.6 body, 3.1 over the tabs, centred on the mating axis. Tolerance not listed, +-0.1 ASSUMED
+  J3,J5: HX TYPE-C 16P L8.35: JLC lists no drawing. Outline from the footprint model, UNVERIFIED. +-0.1 ASSUMED
+  U3,U14,U8,U9: TI DQA0010A (TPD4E05U06 p28): 2.4-2.6 x 0.9-1.1, no leads
+  R1,R2,R3,R4,R60,R9,R10,R11,R12,R13,R20,R21,R22,R23,R24,R25,R26,R27,R28,R30,R31,R32,R40,R41,R42,R43,R44,R45,R46,R47,R50,R51,R52,R53,R54,R55,R61,R62,R63,R65,R66,R67,R72,R71,R73,R76,R77,R78,R74,R75,R79: UNI-ROYAL 0402 p4: 1.0+-0.10 x 0.5+-0.05
+  C50,C3,C4,C5,C6,C13,C15,C17,C19,C21,C22,C23,C24,C25,C26,C27,C29,C30,C31,C32,C33,C41,C64,C63,C68,C70,C71: Samsung CL05 p6 / FH 0402B: 1.0+-0.05 x 0.5+-0.05
+  J6: JST eSH p1,p3: B 10, depth 4.25, tails 0.7, height 2.9. Housing +-0.1, tail width 0.3 and tab size inside its land are ASSUMED
+  C1,C2,C10,C11,C12,C14,C16,C18,C20,C40: Samsung CL10 p6: 1.6+-0.1 x 0.8+-0.1
+  J2: XUNPU HDMI-001S drawing: width 14.95. Depth from the existing footprint model, not re-measured. +-0.1 ASSUMED
+  U7: TC358743XBG, P-VFBGA64-0606: 6.0 square. Tolerance +-0.1 ASSUMED
+  U4: TI DBV0005A (TLV733 SBVS235 p36): 2.75-3.05 x 1.45-1.75, span 2.6-3.0, lead 0.3-0.5. Note 4: up to 0.25 flash per side not included
+  FB2,FB4: Sunlord GZ series: 2.0+-0.2 x 1.25+-0.2 (EIA 0805, LCSC scan not read at table level)
+  FB3,FB5: Murata BLM21 series (JENF243A-0005Y-01): 2.0+-0.2 x 1.25+-0.2, EIA 0805
+  Y1: YXC YSO110TR p3: 3.2+-0.1 x 2.5+-0.1, H 1.2 max
+  FB6: Murata BLM18AG JENF243A p4: 1.6+-0.15 x 0.8+-0.15
+  U6: TI DGK0008A (TCA9517A SCPS245E p22): 2.9-3.1 square, span 4.75-5.05, lead 0.25-0.38. Notes 3, 4: up to 0.15 mold flash and 0.25 interlead flash not included
+  J7: Molex SD-104031-001 rev B2 sheet 1: 11.95+-0.15 x 11.40+-0.15, H 1.42+-0.15
+  Q1: NOT THE MAKER'S DRAWING: AOS AO3401A Rev 3.1 has no outline and none was found. Stand-in TI DBZ0003A (JEDEC TO-236): 2.80-3.04 x 1.2-1.4, span 2.10-2.64, lead 0.3-0.5
+  C60,C61,C62,C65,C66,C67: Samsung CL series p6, 0805: 2.00+-0.20 x 1.25+-0.20 at most
+  U2,U15: Silergy SY8089 AN Rev 0.9A p9: 2.80-3.10 x 1.50-1.70, span 2.70-3.00, lead 0.30-0.50
+  L1,L2: Sunlord SWPA series catalogue, SWPA4020S row: 4.0+-0.2 square, H 2.0 max
+  J4: JST eSH p1,p3: B 8, depth 4.25, tails 0.7, height 2.9. Housing +-0.1, tail width 0.3 and tab size inside its land are ASSUMED
+  U10,U11,U12: Everlight EL3H7-G DPC-0000031 rev 7 p7: 4.40+-0.2 x 2.70+-0.2, span 7.00+-0.3, lead 0.40+-0.1, pitch 1.27, H 2.0 max
+  C69: Panasonic 10TPE330M: 7.3 x 4.3 per LCSC listing; Panasonic drawing not obtained, so EIA 7343 +-0.3 x +-0.3 ASSUMED
+  R68: UNI-ROYAL 0805W8F: EIA 0805 2.0+-0.15 x 1.25+-0.15 (UNI-ROYAL thick film series table, not re-read for r7c)
+  U16: TI DSG0008A (TPS2595 SLVSE57C p45): 2.0+-0.1 square, no leads (pads under the body)
+  D1: TI DPY0002A (TPD1E10B06 SLLSEB1G p19): 1.0+-0.05 x 0.6+-0.05, H 0.45 max
+  R80,R81: UNI-ROYAL RC-01W 0201 (LCSC listing): 0.60+-0.03 x 0.30+-0.03; maker drawing not read, EIA 0201 ASSUMED

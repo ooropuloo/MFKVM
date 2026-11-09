@@ -1,0 +1,8 @@
+(version 1)
+(rule "LNA_OUT clearance"
+  (layer outer)
+  (condition "A.NetName == 'LNA_OUT'")
+  (constraint clearance (min 0.25mm)))
+(rule "component hole to any hole"
+  (condition "A.Type == 'Pad' || B.Type == 'Pad'")
+  (constraint hole_to_hole (min 0.45mm)))

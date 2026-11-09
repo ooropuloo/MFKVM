@@ -1,0 +1,8 @@
+(footprint "CP_7343" (version 20241229) (generator "p4mini") (generator_version "9.0") (layer "B.Cu") (uuid "8f05036d-8659-4876-b3d6-b7d28281b5fe") 
+    (property "Reference" "REF**" (at -4.375 -2.550) (layer "B.Fab") (uuid "642675b8-4377-41f9-8c29-a7fef137b9bf") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "Value" "POSCAP 10TPE330M 330uF 10V polymer" (at 0 0) (layer "B.Fab") (hide yes) (uuid "766c62c2-cec0-434c-9b0f-e5f5915584f2") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "LCSC" "C347552" (at 0 0) (layer "B.Fab") (hide yes) (uuid "33e7a0ee-7350-427e-9c68-f29797ca4d20") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+        (attr smd)
+    (fp_rect (start -4.375 -2.250) (end 4.375 2.250) (stroke (width 0.05) (type default)) (fill no) (layer "B.CrtYd") (uuid "809bc709-fbe4-421b-9138-e41b30851958"))
+    (pad "1" smd rect (at 3.1000 0.0000) (size 2.35 2.45) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "19ca3758-1d1d-46d6-9b83-a75a5ab22159")) (pad "2" smd rect (at -3.1000 0.0000) (size 2.35 2.45) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "2a9a86e2-c795-4675-9294-c726ac661efd"))
+  )

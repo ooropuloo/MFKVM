@@ -1,0 +1,11 @@
+warn CSI_CK_N  F.Cu gap 0.0017 mm2 within 0.1 mm at (5.167, -3.132); other-net vias within 0.8 mm: [(0.31, 'CSI_D1_N')]
+warn CSI_CK_N  B.Cu gap 0.0009 mm2 within 0.1 mm at (4.745, -3.119); other-net vias within 0.8 mm: [(0.31, 'CSI_D1_N'), (0.5, 'GND'), (0.61, 'GND')]
+warn CSI_CK_P  B.Cu gap 0.0021 mm2 within 0.1 mm at (5.200, -3.167); other-net vias within 0.8 mm: [(0.31, 'CSI_D1_N')]
+warn D0_N      B.Cu gap 0.0128 mm2 within 0.1 mm at (-7.388, -3.983); other-net vias within 0.8 mm: [(0.29, 'VDDC')]
+warn D1_N      B.Cu gap 0.0101 mm2 within 0.1 mm at (-5.393, -4.636); other-net vias within 0.8 mm: [(0.29, 'DDC_SCL')]
+warn CK_N      B.Cu gap 0.0021 mm2 within 0.1 mm at (1.450, -2.883); other-net vias within 0.8 mm: [(0.31, 'VDDC')]
+warn CK_P      B.Cu gap 0.0060 mm2 within 0.1 mm at (-7.689, -4.261); other-net vias within 0.8 mm: [(0.3, 'VDDC')]
+warn USB_DN    B.Cu gap 0.0187 mm2 within 0.1 mm at (4.662, -9.215); other-net vias within 0.8 mm: [(0.28, 'USB2_DN'), (0.73, 'GND'), (0.79, 'GND')]
+warn USB_DN    B.Cu gap 0.0062 mm2 within 0.1 mm at (4.729, -9.429); other-net vias within 0.8 mm: [(0.3, 'USB2_DN')]
+csi tmds usb: 0 gaps within 0.03 mm of the lines (FAIL), 9 within 0.1 mm (listed), 0.0607 mm2
+RESULT PASS

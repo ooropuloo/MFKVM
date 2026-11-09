@@ -1,0 +1,157 @@
+pads with nets read back 557
+PASS every part on the board has its pins in data/pin_types.json 
+PASS design.json and the board agree pin for pin (557 pads) 
+PASS r7f: every mounting hole is a plated pad on GND (lid and plate ground through the posts) [('H1.1', 'GND'), ('H2.1', 'GND'), ('H3.1', 'GND'), ('H4.1', 'GND')]
+PASS r7f: mounting hole copper ring <= 2.9 mm or copper to the board edge >= 0.3 mm (REVIEW_r7f fix kept) [('H1.1', 2.9, 0.318), ('H2.1', 2.9, 0.318), ('H3.1', 2.9, 0.318), ('H4.1', 2.9, 0.318)]
+PASS every fitted resistor has a value and a tolerance decoded from its part number 
+RAILS (derived, V)
+  VBUS_IN    4.7500 - 5.5000   J5.A4B9: USB Type-C vSafe5V 4.75-5.5 V (box power input; Rd only, so no higher voltage is negotiated)
+  HOST_VBUS  4.7500 - 5.5000   J3.A4B9: USB Type-C vSafe5V 4.75-5.5 V (host port VBUS, used for sensing only)
+  5V         4.7500 - 5.5000   U16 eFuse output from VBUS_IN: TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p7 VCLAMP 5.2-5.7 V (TPS25953x), output follows IN below VOVC 5.5-5.9 V
+  5V_DAMP    4.7500 - 5.5000   5V through R68 (drop not included here; see the drop terms in the supply rules)
+  HDMI_5V    4.7000 - 5.3000   J2.18: HDMI 1.4 +5V Power from the source, 4.7-5.3 V (as used in R7B_REPORT M5; spec not re-read for r7c)
+  3V3        3.1846 - 3.4405   U2 via L1: FB network R50, R51, VREF [0.588, 0.612], IFB +-50 nA
+  OSC_VDD    3.1846 - 3.4405   3V3 through FB6 (drop not included here; see the drop terms in the supply rules)
+  SD_SRC     3.1846 - 3.4405   3V3 through R42 (drop not included here; see the drop terms in the supply rules)
+  SD1_VDD    3.1846 - 3.4405   SD_SRC through Q1 (drop not included here; see the drop terms in the supply rules)
+  V2V5       2.4650 - 2.5350   U4 fixed output: TI TLV733P SBVS235C p6 DC output accuracy +-1.4% over temperature
+  AVDD25     2.4650 - 2.5350   V2V5 through FB2 (drop not included here; see the drop terms in the supply rules)
+  V1V2       1.1831 - 1.2373   U15 via L2: FB network R61, R63, R62, R65, R66, VREF [0.588, 0.612], IFB +-50 nA
+  AVDD12     1.1831 - 1.2373   V1V2 through FB3 (drop not included here; see the drop terms in the supply rules)
+  VDD_MIPI   1.1831 - 1.2373   V1V2 through FB4 (drop not included here; see the drop terms in the supply rules)
+  VDDC       1.1831 - 1.2373   V1V2 through FB5 (drop not included here; see the drop terms in the supply rules)
+  V1V2_SNS   1.1831 - 1.2373   V1V2 through R65 (drop not included here; see the drop terms in the supply rules)
+  GND        0.0000 - 0.0000   J5.A1B12: USB-C GND: the board ground is the 5 V source return
+ELECTRICAL RULES (pin, net found, rule, source)
+  ok   Q1.1    SD_PWR_N   |VGS| at most 3.44 V against 12 V; gate level with the GPIO released: 0.0 V (must be defined)  [AOS AO3401A Rev 3.1 p1 VGS +-12 V; a floating gate leaves the SD supply undefined while GPIO45 is high-Z after reset]
+  ok   U1.85   3V3        supply 3.0-3.6 V: 3V3 3.1846-3.4405 V  [Waveshare ESP32-P4-Module wiki: 3.3 V supply; 3.0-3.6 is the P4 VDDPST range, ESP32-P4 datasheet v0.7 p32 (not re-read for r7c)]
+  ok   U1.86   3V3        supply 3.0-3.6 V: 3V3 3.1846-3.4405 V  [as 85]
+  ok   U1.84   3V3        supply 3.0-3.6 V: 3V3 3.1846-3.4405 V  [as 85]
+  ok   U1.87   ESP_EN     pulled high: ESP_EN static (3.184, 3.44) V, VIH_nRST 0.75 x VDD = 2.58 V  [Espressif ESP32-P4 datasheet v0.7 p34 CHIP_PU: do not leave floating; p90 VIH_nRST 0.75 VDD]
+  ok   U1.18   HOST_VBUS_DIV static level of HOST_VBUS_DIV 2.824-3.329 V against VIH 2.580 V  [Espressif ESP32-P4 datasheet v0.7 p89 VIH 0.75 VDD, max VDD+0.3]
+  ok   U1.18   HOST_VBUS_DIV highest voltage on HOST_VBUS_DIV 3.329 V (static 3.329, drivers none) against 3.485 V (3V3 at its minimum + 0.3)  [Espressif ESP32-P4 datasheet v0.7 p89 VIH 0.75 VDD, max VDD+0.3]
+  ok   U14.1   USB2_DP    highest voltage on USB2_DP 3.440 V (static None, drivers ['U1.51 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U14.2   USB2_DN    highest voltage on USB2_DN 3.440 V (static None, drivers ['U1.50 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U15.4   3V3        supply 2.7-5.5 V: 3V3 3.1846-3.4405 V  [Silergy AN_SY8089/A Rev 0.9A p4 VIN 2.7-5.5, p2 abs 6.0]
+  ok   U15.4   3V3        absolute max 6.0 V: 3.440 V  [Silergy AN_SY8089/A Rev 0.9A p4 VIN 2.7-5.5, p2 abs 6.0]
+  ok   U15.1   3V3        static level of 3V3 3.185-3.440 V against VIH 1.500 V  [Silergy AN_SY8089/A Rev 0.9A p4 VENH 1.5, p2 EN abs VIN+0.6, "do not float"]
+  ok   U15.1   3V3        highest voltage on 3V3 3.440 V (static 3.44, drivers none) against 4.04 V (3V3 + 0.6 (same rail, same instant))  [Silergy AN_SY8089/A Rev 0.9A p4 VENH 1.5, p2 EN abs VIN+0.6, "do not float"]
+  ok   U16.3   VBUS_IN    supply 2.7-18.0 V: VBUS_IN 4.7500-5.5000 V  [TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p5 7.3 VIN 2.7-18 V, 7.1 abs 20 V]
+  ok   U16.3   VBUS_IN    absolute max 20.0 V: 5.500 V  [TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p5 7.3 VIN 2.7-18 V, 7.1 abs 20 V]
+  ok   U16.2   EF_EN      highest voltage on EF_EN 1.783 V (static 1.783, drivers none) against 6.0 V (absolute)  [TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p5 7.3 VEN 0-6 V (7.1 abs 7 V)]
+  ok   U2.4    5V         supply 2.7-5.5 V: 5V 4.7500-5.5000 V  [Silergy AN_SY8089/A Rev 0.9A p4 VIN 2.7-5.5, p2 abs 6.0]
+  ok   U2.4    5V         absolute max 6.0 V: 5.500 V  [Silergy AN_SY8089/A Rev 0.9A p4 VIN 2.7-5.5, p2 abs 6.0]
+  ok   U2.1    5V         static level of 5V 4.750-5.500 V against VIH 1.500 V  [Silergy AN_SY8089/A Rev 0.9A p4 VENH 1.5, p2 EN abs VIN+0.6, "do not float"]
+  ok   U2.1    5V         highest voltage on 5V 5.500 V (static 5.5, drivers none) against 6.1 V (5V + 0.6 (same rail, same instant))  [Silergy AN_SY8089/A Rev 0.9A p4 VENH 1.5, p2 EN abs VIN+0.6, "do not float"]
+  ok   U3.1    USB_DN     highest voltage on USB_DN 3.440 V (static None, drivers ['U1.48 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U3.2    USB_DP     highest voltage on USB_DP 3.440 V (static 0.05, drivers ['U1.49 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U4.1    3V3        supply 1.4-5.5 V: 3V3 3.1846-3.4405 V  [TI TLV733P SBVS235C p5 6.3]
+  ok   U4.3    3V3        static level of 3V3 3.185-3.440 V against VIH 0.900 V  [TI TLV733P SBVS235C p6 VEN(HI) 0.9, p5 VEN abs VIN+0.3]
+  ok   U4.3    3V3        highest voltage on 3V3 3.440 V (static 3.44, drivers none) against 3.74 V (3V3 + 0.3 (same rail, same instant))  [TI TLV733P SBVS235C p6 VEN(HI) 0.9, p5 VEN abs VIN+0.3]
+  ok   U6.1    3V3        supply 0.9-5.5 V: 3V3 3.1846-3.4405 V  [TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3]
+  ok   U6.8    5V         supply 2.7-5.5 V: 5V 4.7500-5.5000 V  [TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3]
+  ok   U6.5    5V         static level of 5V 4.750-5.500 V against VIH 3.850 V  [TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3 VIH EN 0.7 x VCCB, max 5.5]
+  ok   U6.5    5V         highest voltage on 5V 5.500 V (static 5.5, drivers none) against 5.5 V (absolute)  [TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3 VIH EN 0.7 x VCCB, max 5.5]
+  ok   U6.2    DDC3_SCL   pull-up from DDC3_SCL to 3V3 (pin 1): ['R25']  [TI TCA9517A SCPS245E (rev. Oct 2025) p4: A side "connect to VCCA through a pull-up resistor"]
+  ok   U6.3    DDC3_SDA   pull-up from DDC3_SDA to 3V3 (pin 1): ['R26']  [TI TCA9517A SCPS245E (rev. Oct 2025) p4]
+  ok   U6.6    DDC_SDA    pull-up from DDC_SDA to 5V (pin 8): ['R28']  [TI TCA9517A SCPS245E (rev. Oct 2025) p4: B side "connect to VCCB through a pull-up resistor"]
+  ok   U6.7    DDC_SCL    pull-up from DDC_SCL to 5V (pin 8): ['R27']  [TI TCA9517A SCPS245E (rev. Oct 2025) p4]
+  ok   U7.B1   3V3        supply 3.135-3.465 V: 3V3 3.1846-3.4405 V  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD33]
+  ok   U7.F3   3V3        supply 3.135-3.465 V: 3V3 3.1846-3.4405 V  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD33]
+  ok   U7.B2   AVDD12     supply 1.15-1.25 V: AVDD12 1.1616-1.2373 V (after AVDD12 drop 21.5 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD12]
+  ok   U7.D3   AVDD12     supply 1.15-1.25 V: AVDD12 1.1616-1.2373 V (after AVDD12 drop 21.5 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD12]
+  ok   U7.B5   AVDD25     supply 2.25-2.75 V: AVDD25 2.4650-2.5350 V  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD25]
+  ok   U7.C3   VDDC       supply 1.1-1.3 V: VDDC 1.1331-1.2373 V (after BEAD drop 50.0 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC]
+  ok   U7.F5   VDDC       supply 1.1-1.3 V: VDDC 1.1331-1.2373 V (after BEAD drop 50.0 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC]
+  ok   U7.G2   VDDC       supply 1.1-1.3 V: VDDC 1.1331-1.2373 V (after BEAD drop 50.0 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC]
+  ok   U7.C6   VDD_MIPI   supply 1.1-1.3 V: VDD_MIPI 1.1331-1.2373 V (after BEAD drop 50.0 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDD_MIPI]
+  ok   U7.F6   VDD_MIPI   supply 1.1-1.3 V: VDD_MIPI 1.1331-1.2373 V (after BEAD drop 50.0 mV)  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDD_MIPI]
+  ok   U7.F4   3V3        supply 3.0-3.6 V: 3V3 3.1846-3.4405 V  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDIO1]
+  ok   U7.H7   3V3        supply 1.65-3.6 V: 3V3 3.1846-3.4405 V  [Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDIO2]
+  ok   U7.E5   GND        must be low: GND 0.000 V against VIL 0.955 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 TEST "0: Normal mode", p16 VIL 0.3 VDDIO]
+  ok   U7.A3   GND        must be low: GND 0.000 V against VIL 0.0 V  [Toshiba TC358743XBG datasheet 2014-05-16 p11 VPGM "please tie to ground"]
+  ok   U7.B4   GND        must be low: GND 0.000 V against VIL 0.955 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 IR, Sch input with no pull and no "when not used" rule: r7c ties it low (VIL 0.3 VDDIO, p16) so it cannot float]
+  ok   U7.H5   TC_REFCLK  driven by Y1.3: VOH 0.9 x OSC_VDD >= 2.866 V against VIH 2.408 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 REFCLK on VDDIO2, p16 VIH 0.7 VDDIO, p15 VIN_IO max VDDIO+0.3; YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 VOH 90% VDD, load 15 pF max]
+  ok   U7.H5   TC_REFCLK  highest voltage on TC_REFCLK 3.440 V (static None, drivers ['Y1.3 on OSC_VDD']) against 3.485 V (3V3 at its minimum + 0.3)  [Toshiba TC358743XBG datasheet 2014-05-16 p10 REFCLK on VDDIO2, p16 VIH 0.7 VDDIO, p15 VIN_IO max VDDIO+0.3]
+  ok   U7.G5   TC_RST     highest voltage on TC_RST 3.440 V (static 0.102, drivers ['U1.32 on 3V3']) against 3.485 V (3V3 at its minimum + 0.3)  [Toshiba TC358743XBG datasheet 2014-05-16 p10 RESETN on VDDIO2, p15 VIN_IO]
+  ok   U7.G4   I2C_SDA    highest voltage on I2C_SDA 3.440 V (static 3.44, drivers ['U1.22 on 3V3']) against 3.74 V (3V3 + 0.3 (same rail, same instant))  [Toshiba TC358743XBG datasheet 2014-05-16 p10 I2C on VDDIO2, p15 VIN_IO]
+  ok   U7.H4   I2C_SCL    highest voltage on I2C_SCL 3.440 V (static 3.44, drivers ['U1.23 on 3V3']) against 3.74 V (3V3 + 0.3 (same rail, same instant))  [Toshiba TC358743XBG datasheet 2014-05-16 p10 I2C on VDDIO2, p15 VIN_IO]
+  ok   U7.G3   DDC3_SDA   highest voltage on DDC3_SDA 3.440 V (static 3.44, drivers ['U6.3 on 3V3']) against 5.5 V (absolute)  [Toshiba TC358743XBG datasheet 2014-05-16 p10 DDC on VDDIO1, p11 Note1 "5V tolerant" (5.5 V ASSUMED as the meaning of 5 V tolerant)]
+  ok   U7.H3   DDC3_SCL   highest voltage on DDC3_SCL 3.440 V (static 3.44, drivers ['U6.2 on 3V3']) against 5.5 V (absolute)  [Toshiba TC358743XBG datasheet 2014-05-16 p10, p11 Note1]
+  ok   U7.H2   HPDI       static level of HPDI 4.185-5.300 V against VIH 2.408 V  [Toshiba TC358743XBG datasheet 2014-05-16 p10 HPDI on VDDIO1, p11 Note1 5 V tolerant, p16 VIH 0.7 VDDIO, IILH 10 uA]
+  ok   U7.H2   HPDI       highest voltage on HPDI 5.300 V (static 5.3, drivers none) against 5.5 V (absolute)  [Toshiba TC358743XBG datasheet 2014-05-16 p10 HPDI on VDDIO1, p11 Note1 5 V tolerant, p16 VIH 0.7 VDDIO, IILH 10 uA]
+  ok   U7.A1   TC_REXT    2000 ohm +-1% to 3V3: [('R20', 1980, 2020)]  [Toshiba TC358743XBG datasheet 2014-05-16 p11 REXT "connect to AVDD33 with a 2K ohm resistor (+-1%)"]
+  ok   U8.1    D1_N       highest voltage on D1_N 3.440 V (static None, drivers ['U7.E2 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U8.2    D1_P       highest voltage on D1_P 3.440 V (static None, drivers ['U7.E1 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U8.4    D2_N       highest voltage on D2_N 3.440 V (static None, drivers ['U7.F2 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U8.5    D2_P       highest voltage on D2_P 3.440 V (static None, drivers ['U7.F1 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U9.1    CK_N       highest voltage on CK_N 3.440 V (static None, drivers ['U7.C2 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U9.2    CK_P       highest voltage on CK_P 3.440 V (static None, drivers ['U7.C1 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U9.4    D0_N       highest voltage on D0_N 3.440 V (static None, drivers ['U7.D2 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  ok   U9.5    D0_P       highest voltage on D0_P 3.440 V (static None, drivers ['U7.D1 on 3V3']) against 5.5 V (absolute)  [TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V]
+  WARN  Y1.4    OSC_VDD    supply 1.8-3.3 V: OSC_VDD 3.1846-3.4405 V  [YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 supply 1.8-3.3 V (listed values, no tolerance given)]
+  ok   Y1.1    OSC_VDD    static level of OSC_VDD 3.185-3.440 V against VIH 2.408 V  [YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 tri-state high 70% VDD]
+  ok   Y1.3    OSC_OUT    output load 6.6 pF (fitted none + 6.6 trace/pad/input estimate) against 15 pF  [YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 VOH 90% VDD, load 15 pF max]
+PASS electrical rule table: 69 rules from data/pin_types.json, 0 failed 
+WARN Y1.4: supply 1.8-3.3 V: OSC_VDD 3.1846-3.4405 V [YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 supply 1.8-3.3 V (listed values, no tolerance given)]
+PASS every fitted IC, transistor and oscillator is a known part with its own limit table 
+PASS no net has two push-pull or power outputs (pin types from data/pin_types.json) 
+PASS every ground pin named in the vendor tables is on board ground (net of J5 GND) 
+PASS firmware sdkconfig.v2r7_rev3: I2C 7/8, bridge reset 23, LCD 9-13, SD 39-45, ATX 2/4/5 each reach the vendor pin they drive 
+PASS r7f: J5 VBUS reaches 5V only through the eFuse ['U16'] (IN VBUS_IN, OUT 5V)
+PASS r7f: nothing bypasses the eFuse U16 between VBUS_IN and 5V (any part, either pin order) 
+PASS r7f: U16 ILM (EF_ILM) has one resistor to GND within 487-5000 ohm (SLVSE57C 7.3), current limit 2.02-2.06 A (Eq. 4) [('R73', '1')] [('R73', 'EF_ILM', 'GND', 990.0, 1010.0)]
+PASS r7f: U16 ILIM at its low end 1.87 A carries the full load 1.51 A x 1.1 = 1.66 A (Eq. 4 at R max, ILIM -7.5 %)
+PASS r7f: U16 dVdt (EF_DVDT) has one capacitor to GND of at least 3300 pF (SLVSE57C 7.3) [('C71', '2')]
+PASS r7f: U16 dVdt ramp to 5 V 13.4 ms at CdVdt +10 % within the 30 ms start-up budget (Eq. 3; CdVdt 100.0 nF)
+PASS r7f: U16 EP paste: two B.Paste windows on the EP, 87.5 % of it (80-95 %, TI DSG0008A stencil), EP pad itself without paste (2 windows, inside True)
+PASS r7f: U16 EN/UVLO divider from VBUS_IN and to GND, UVLO rising (3.49, 4.03) V within 3.0-4.6 V (VUVLO(R) 1.13-1.27 V, SLVSE57C 7.5) [('R72', '2'), ('R71', '2')]
+PASS r7f: HDMI CEC (HDMI_CEC) has a TPD1E10B06 clamp to GND ['D1']
+PASS TC358743 INT is open, as the firmware expects (CONFIG_KVM_BRIDGE_INT_GPIO=-1)
+PASS ATX PWR and RST opto transistors appear across J4 1-2 and 3-4 (collector, emitter)
+PASS CSI-2: 2 lanes and clock, module pin to TC358743 ball by name, P to P and N to N 
+PASS HDMI connector to TC358743 by function: TMDS, CEC, DDC via TCA9517A B to A side, HPD from HPDO through a resistor 
+PASS every TMDS and USB data line has a TPD4E05U06 channel on it 
+PASS USB-C: A/B sides joined, Rd 5.1k +-20% on each CC, host port on USB_DP/DM, power port on GPIO25/24 (Waveshare alt names) 
+PASS host VBUS and box 5 V are separate nets with no link: neither can feed the other (box: ['5V', 'VBUS_IN'])
+PASS antenna: module LNA_OUT (pin 2) to the U.FL signal contact
+PASS microSD: VDD from Q1 drain, CMD and DAT0-3 pulled up to ESP_LDO_VO4 
+PASS SD switch source fed from the module 3.3 V rail, not from ESP_LDO_VO4 (reached through links: ['3V3', 'OSC_VDD', 'SD_SRC', 'SW'])
+PASS USB_DP has a high-value pull-down to GND (pinout audit F4, chip rev < 3)
+PASS HDMI +5V reaches HPDI only through a series resistor [('R67', 50490.0)]: back-feed into an unpowered bridge at most 0.10 mA (limit 0.5 mA ASSUMED)
+PASS CONFIG_KVM_ATX_PWR_GPIO through 465 ohm: IF 2.47 mA, opto sinks 4.44 mA at CTR min; header pull-up current ASSUMED under 1 mA (ATX front-panel switch inputs are pulled up through kilo-ohms; motherboard specs vary)
+PASS CONFIG_KVM_ATX_RST_GPIO through 465 ohm: IF 2.47 mA, opto sinks 4.44 mA at CTR min; header pull-up current ASSUMED under 1 mA (ATX front-panel switch inputs are pulled up through kilo-ohms; motherboard specs vary)
+PASS routed tracks were read back from the saved board (1506 segments on 108 nets)
+pair            P mm    N mm   skew   vias P/N
+HDMI D2         8.94    8.93   0.00   0/0
+HDMI D1        10.75   11.08   0.33   0/0
+HDMI D0        13.37   13.37   0.00   0/0
+HDMI C         15.43   15.52   0.10   0/0
+CSI D0         10.10   10.10   0.00   1/1
+CSI D1         10.06   10.15   0.09   1/1
+CSI C          10.16   10.25   0.09   1/1
+USB             9.67    9.50   0.17   3/3
+PASS every high speed line has routed length, shortest 8.93 mm
+PASS worst P/N length difference 0.33 mm is within 3.0 mm (about 2 ps; one bit at 972 Mbit/s is 1029 ps)
+PASS CSI within each pair: worst 0.091 mm against 0.15 mm (Espressif 10 mil = 0.254 mm)
+PASS CSI between pairs: CSI D0 10.10, CSI D1 10.11, CSI C 10.20 mm, spread 0.099 mm against 0.762 mm (Espressif 30 mil); about 1 ps
+PASS CSI between pairs within the project aim of 0.5 mm: spread 0.099 mm
+PASS filled GND on In1 and In4 read back from the saved board (zones refilled)
+PASS CSI, TMDS and USB lines have GND under them (In1 under F.Cu, In4 under B.Cu, line +0.03 mm each side) 
+PASS differential pairs: gap to the partner keeps Zdiff within +-10% on all 16 lines (CSI/TMDS 100, USB 90 ohm) 
+WARN reference plane within 0.1 mm of the pair lines: 9 spots at foreign-via antipad edges, 0.0607 mm2 ['CK_N', 'CK_P', 'CSI_CK_N', 'CSI_CK_P', 'D0_N', 'D1_N', 'USB_DN']
+PASS controlled-impedance nets use only the width impedance_r7.py solved for (TMDS/CSI 0.127, USB HS 0.18, LNA_OUT 0.15) 
+PASS no via hole touches a BGA ball pad, 318 vias checked 
+PASS polarized capacitors: + (pin 1) on the supply side, - (pin 2) on GND 
+PASS no via drill inside a pasted pad, 524 pads checked 
+PASS every pin level could be bounded (resistor networks small enough to solve at the tolerance corners) 
+PASS no net has only one pin 
+PASS every part number decodes to its stated value 
+PASS every fitted part is stocked at JLC 
+PASS MASKCHECK mask bridge minimum 0.1088 mm, 0 under 0.1, 3 under 0.13 (black/white only); opening to other-net conductor minimum 0.1007 mm, 0 under 0.09; 0 openings merged across nets; openings {'F': {'openings': 213, 'copper': 977, 'not_on_a_pad': 0}, 'B': {'openings': 360, 'copper': 1491, 'not_on_a_pad': 0}}
+PASS HOLECHECK 0 under limit; VIA outer min 0.2 (limit 0.2), VIA inner min 0.2012 (limit 0.2), NPTH outer min none near (limit 0.2), NPTH inner min none near (limit 0.2), PTH outer min 0.3017 (limit 0.28), PTH inner min 0.32 (limit 0.3); holes {'VIA': 318, 'PTH': 16, 'NPTH': 0} on 6 copper layers
+PASS component hole to any hole at least 0.45 mm edge to edge (JLC pad hole-to-hole, applied to vias too); under it: [] (gap, x, y, component hole, other hole)
+PASS BODYCHECK 129 parts, 4908 same-side pairs, 0 overlaps, 0 worst-case warnings, smallest nominal gap 0.350 mm
+BOARD sha256 9233a26ad1a1a5a4264edf774e52bf83be37c0ba679b807c393bb46f27976c97
+WARNINGS 2
+RESULT ALL PASS

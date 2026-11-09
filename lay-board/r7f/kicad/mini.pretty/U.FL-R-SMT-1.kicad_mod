@@ -1,0 +1,8 @@
+(footprint "U.FL-R-SMT-1" (version 20241229) (generator "p4mini") (generator_version "9.0") (layer "B.Cu") (uuid "900305eb-1e20-4945-af1b-282f81a3a79c") 
+    (property "Reference" "REF**" (at -2.100 -1.950) (layer "B.Fab") (uuid "cde02b0a-5c53-4c0b-b41b-d0b85a66943e") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "Value" "U.FL-R-SMT-1(10) antenna" (at 0 0) (layer "B.Fab") (hide yes) (uuid "20aa38ac-6dee-49ae-a147-e1e62c9fcc36") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+    (property "LCSC" "C88373" (at 0 0) (layer "B.Fab") (hide yes) (uuid "1414c424-146f-4268-ac1e-d2c299d39f01") (effects (font (size 0.5 0.5) (thickness 0.08)) (justify mirror)))
+        (attr smd)
+    (fp_rect (start -2.100 -1.650) (end 2.100 2.150) (stroke (width 0.05) (type default)) (fill no) (layer "B.CrtYd") (uuid "b24726ad-2d38-437b-9c42-cfeae5ba9185"))
+    (pad "1" smd rect (at 0.0000 1.5250) (size 1 1.05) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "d721a465-0b13-4c4e-ba8c-f369f8a6ede6")) (pad "2" smd rect (at 1.4750 0.0000) (size 1.05 2.2) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "d4416a58-2b9f-48d4-8ece-e1b523dfa0ac")) (pad "3" smd rect (at -1.4750 0.0000) (size 1.05 2.2) (layers "B.Cu" "B.Paste" "B.Mask") (uuid "059692f4-1091-49a3-a81c-dd098d33c3d7"))
+  )

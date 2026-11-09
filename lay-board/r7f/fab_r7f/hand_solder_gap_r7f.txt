@@ -1,0 +1,26 @@
+board out/p4_kvm_mini.kicad_pcb; pad_to_mask_clearance 0.0
+C3.1 (-17.200, 7.780): nearest U1 pad U1.80 0.640 mm, mask web 0.640 mm
+C3.2 (-17.200, 6.820): nearest U1 pad U1.79 0.640 mm, mask web 0.640 mm
+J2.20 (-15.250, -9.880): nearest U1 pad U1.66 0.988 mm, mask web 0.988 mm
+J2.21 (-0.750, -9.880): nearest U1 pad U1.53 0.280 mm, mask web 0.280 mm
+J5.A1B12 (11.598, 5.700): nearest U1 pad U1.33 0.623 mm, mask web 0.623 mm
+J5.A4B9 (11.598, 4.900): nearest U1 pad U1.34 0.623 mm, mask web 0.623 mm
+J5.A5 (11.598, 3.750): nearest U1 pad U1.35 0.623 mm, mask web 0.623 mm
+J5.A6 (11.598, 2.750): nearest U1 pad U1.36 0.623 mm, mask web 0.623 mm
+J5.A7 (11.598, 2.250): nearest U1 pad U1.37 0.623 mm, mask web 0.623 mm
+J5.A8 (11.598, 1.250): nearest U1 pad U1.38 0.623 mm, mask web 0.623 mm
+J5.B1A12 (11.598, -0.700): nearest U1 pad U1.39 0.623 mm, mask web 0.623 mm
+J5.B4A9 (11.598, 0.100): nearest U1 pad U1.39 0.623 mm, mask web 0.623 mm
+J5.B5 (11.598, 0.750): nearest U1 pad U1.38 0.623 mm, mask web 0.623 mm
+J5.B6 (11.598, 1.750): nearest U1 pad U1.37 0.623 mm, mask web 0.623 mm
+J5.B7 (11.598, 3.250): nearest U1 pad U1.36 0.623 mm, mask web 0.623 mm
+J5.B8 (11.598, 4.250): nearest U1 pad U1.35 0.623 mm, mask web 0.623 mm
+R79.1 (-17.450, -1.480): nearest U1 pad U1.70 0.890 mm, mask web 0.890 mm
+R79.2 (-17.450, -0.520): nearest U1 pad U1.71 0.890 mm, mask web 0.890 mm
+R80.1 (10.787, 14.580): nearest U1 pad U1.24 0.387 mm, mask web 0.387 mm
+R80.2 (10.787, 15.120): nearest U1 pad U1.24 0.387 mm, mask web 0.387 mm
+R81.1 (10.787, 13.580): nearest U1 pad U1.25 0.387 mm, mask web 0.387 mm
+R81.2 (10.787, 14.120): nearest U1 pad U1.25 0.387 mm, mask web 0.387 mm
+22 top-side pads within 1 mm of a U1 pad checked
+R80 to R81 pad to pad 0.160 mm
+RESULT PASS

@@ -1,0 +1,30 @@
+warning  courtyards_overlap C10 + U4
+warning  courtyards_overlap C19 + C20
+warning  courtyards_overlap J4 + U11
+warning  courtyards_overlap R42 + R52
+warning  courtyards_overlap C20 + U8
+warning  courtyards_overlap C10 + Q1
+warning  courtyards_overlap Q1 + R43
+warning  courtyards_overlap C16 + R26
+warning  courtyards_overlap Q1 + R45
+warning  courtyards_overlap C13 + C22
+warning  courtyards_overlap C13 + C16
+warning  courtyards_overlap C41 + R53
+warning  courtyards_overlap C17 + U7
+warning  courtyards_overlap C16 + R25
+warning  courtyards_overlap C16 + R27
+warning  courtyards_overlap Q1 + R46
+warning  courtyards_overlap L1 + U2
+warning  courtyards_overlap C30 + U3
+warning  courtyards_overlap Q1 + R44
+warning  courtyards_overlap R80 + R81
+warning  courtyards_overlap C64 + U2
+warning  courtyards_overlap J7 + R78
+warning  courtyards_overlap C40 + J7
+warning  courtyards_overlap J4 + TP6
+warning  courtyards_overlap C21 + U7
+warning  starved_thermal U1.52 + zone GND F.Cu
+warning  starved_thermal J5.B1A12 + zone GND F.Cu
+warning  starved_thermal C14.2 + zone GND B.Cu
+warning  starved_thermal R21.1 + zone GND B.Cu
+DRC ACCEPT PASS

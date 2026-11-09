@@ -1,0 +1,68 @@
+﻿MF KVM v2 r7f PCB 交付資料（2026-11-09）
+設計資料夾：D:/git/p4-kvm-box/v2_r7f
+Gerber：v2_r7f/fab_r7f/p4_kvm_mini_gerber.zip
+  sha256 5edbd11614de56c81819c0f49b667f6346e41d8fef006e6f3f2256d9243e99f7
+板檔 sha256：9233a26ad1a1a5a4264edf774e52bf83be37c0ba679b807c393bb46f27976c97（v2_r7f/out/ 和 v2_r7f/kicad/ 同一份）
+認新版的方法：正面絲印 R7F；每張圖的 footer 都寫「r7f」和「Gerber 5edbd116」。
+
+★ 為什麼 sha 和之前看到的不一樣：每次 release 都會重新產生板檔（零件 UUID 隨機、KiCad 存檔順序跟著變），每個 Gerber 也有建立時間，所以即使設計沒改，zip 的 sha 也會變。
+  02b51106 和 5edbd116 幾何上完全相同（銅、防焊、錫膏 10 層對稱差 0.000000 mm²，見驗證報告附錄 1）。02b51106 這個檔案作廢，以 5edbd116 為準。
+
+★ 額定環境溫度 25 °C，要附導管式外接風扇。不加風扇不符合額定（見 r7f_熱分析報告.pdf 附錄 A）。
+★ 沒有打過板、沒有焊過、沒有上過電。要看哪些事沒驗證，看 r7f_驗證報告.pdf 第 2 節。
+
+== r7f/  圖面（今天從 r7f 板檔重新產生）==
+r7f_PCB佈局圖.pdf             9 頁。直接從 v2_r7f/out/p4_kvm_mini.kicad_pcb 畫出走線、零件位置和焊盤腳號（1506 段走線、318 個過孔、141 個封裝，含 4 個安裝孔等非 BOM 項目）
+r7f_接線圖_方塊與腳位.pdf     5 頁。第 1 頁是系統方塊圖（含 U16 eFuse），後面是每顆零件的腳位表（U16、D1 在最前面）、R68–R81 和 C69–C71 在被動元件頁；和板檔逐腳比對 553 腳，0 不符
+r7f_電路圖_有線.pdf           7 頁。從網路表自動畫出有連線的電路圖，487 支接線腳都在圖上，少一支就會停下來
+r7f_KiCad原始電路圖.pdf       1 頁。用 kicad-cli 從 v2_r7f/kicad/p4_kvm_mini.kicad_sch 匯出，footer 是匯出後另外加上去的
+
+注意：板上沒有 R69、R70。r7f 新增的是 R71–R81、C70、C71、U16、D1；R68、C69（5V 阻尼）是 r7b 之後的改版加的。
+
+== r7f/  報告（Markdown 或文字檔轉成 PDF，內容沒有改，只在每頁加了 footer）==
+r7f_設計報告.pdf              R7F_REPORT.md：r7f 改了什麼、檢查結果、還要你決定的事
+r7f_獨立複審報告.pdf          REVIEW_r7f/REVIEW_r7f.md：對 r7f 的獨立複審
+r7f_差異複審報告.pdf          REVIEW_r7f/DELTA_r7f.md：對第二輪修改的差異複審。它審的是 02b51106，頁首有註明
+r7f_SI通道報告.pdf            analysis_r7f/si/SI_REPORT.md（本文是 r7d 板的分析，檔案沒有改寫），附錄是 R7F_REPORT 第 5 節的 r7f 串聯電阻結果
+r7f_熱分析報告.pdf            analysis_r7f/thermal/THERMAL_REPORT.md（本文是 r7d 板的分析，檔案沒有改寫），附錄 A 是額定環境溫度 25 °C，附錄 B 是 R7F_REPORT 第 6 節的 r7f 實作和風扇 g1／g2
+r7f_CPL第1腳檢查表.pdf        fab_r7f/CPL_pin1_check.md：有極性的零件在 JLC 預覽裡第 1 腳應該在哪裡（原文英文）。U16 的貼片角度只能在預覽裡確認
+r7f_CPL極性與第1腳_閘門輸出.pdf  fab_r7f/CPL_polarity_pin1_r7f.md：cpl_pin1 檢查的輸出（原文英文）
+r7f_電流預算.pdf              tools/r7/budget_r7.py 對 r7f 板檔重跑的輸出（原文英文）。沒有把 U16 算進去，頁首有註明
+r7f_供電要求.pdf              README.md 的「供電要求」和「1.2 V（r7）」兩節，加上 R7F_REPORT 第 4 節的冷啟動。README 沒有隨 r7f 改寫，頁首有註明
+r7f_驗證報告.pdf              第 1 頁起是所有 release 閘門的總表，接著是「沒有驗證的項目」，後面附錄是原始輸出（fab_r7f 的 txt／md、MUTATION_REPORT、幾何比對）
+
+== 外殼/ ==
+00_外殼說明.txt               額定環境溫度、風扇要求、材質和接地驗收
+mf_kvm_lid.stl／.step         鋁上蓋（黑色陽極處理，接觸面遮蔽）
+mf_kvm_tray.stl／.step        耐熱塑膠底殼
+mf_kvm_plate.stl／.step       0.8 mm 鋁散熱板
+mf_kvm_gapfill.step           P4 12×12、C6 7×7 導熱填充（只有 STEP）
+mf_kvm_fanduct.stl／.step     導管（新增，列印件，VHB 貼在上蓋頂面）
+case_spec.json                材質、遮蔽面、驗收、風扇規格（機器讀的）
+
+== 天線選項.pdf ==
+天線方案比較，沿用 pdf_r7b_20261108 的版本
+
+== 規格書/ ==
+沿用 pdf_r7b_20261108/規格書，再加上：
+TPS2595_eFuse_U16_SLVSE57C.pdf         新增。U16 eFuse（TI SLVSE57C，LCSC C2155674）
+TPD1E10B06_CEC_ESD_D1.pdf              新增。D1 CEC ESD（TI，LCSC C48260）
+TPD4E05U06_ESD_U3_U8_U9_U14.pdf        補上。r7b 那包沒放（TI SLVSBO7O）
+ESP32-P4_硬體設計指南.pdf              補上。冷啟動分析引用的 P4 最低供電 380 mA 出處
+
+沒有取得的規格書：
+  GRM155R61E225KE11D（C70，LCSC C385032）：Murata 官網和 LCSC 的直連都拿不到 PDF。5 V 偏壓曲線因此沒有讀到，分析用 55 % 假設
+  10TPE330M POSCAP（C69，LCSC C347552）：Panasonic 連結下載到的是網頁，不是 PDF
+  沿用 r7b 的缺口：GZ2012 磁珠（FB2、FB4，LCSC C98485）、SWPA4020S2R2MT 電感（L1、L2，LCSC C83423）、EL3H7 光耦（U10–U12，LCSC C92243）
+  一般晶片電阻沒有去找規格書：RC-01W 0201（R80、R81，LCSC C320843）、0805W8F150LT5E（R68，LCSC C247444）
+
+== 怎麼重新產生的（給之後的人看）==
+佈局圖、接線圖、有線電路圖用的是 r7b 那次改過的 layout_pdf.py、connection_pdf.py、wired_schematic.py 暫存複本，再改成 r7f 的內容。v2_r7f 底下的設計檔和工具一個都沒改，Gerber sha 維持 5edbd116：
+  - footer 改成 r7f，hash 改成 5edbd116
+  - 電源方塊圖加上 U16 eFuse：J5 → VBUS_IN → U16 → 5V，R68 + C69 阻尼
+  - 接線圖、有線電路圖加入 U16、D1、R68、R71–R81、C69–C71
+  - SD 6 條線改成經 R74–R79、LCD 的 DIN／CLK 改成經 R80／R81；U6 的文字改成 TCA9517A
+  - 走線數和過孔數改成和板檔文字逐一比對，不再寫死
+每條連線照樣用網路表 assert 檢查，只要有一條不符就會停下來。有線電路圖只要有一支接線腳不在圖上也會停下來。
+KiCad 原始電路圖是把 v2_r7f/kicad 複製到暫存資料夾再用 kicad-cli 匯出。報告用 pandoc + Chrome 無頭模式轉 PDF，再用 PyMuPDF 加 footer、子集化字型。
+電流預算是用 python tools/r7/budget_r7.py out/p4_kvm_mini.kicad_pcb 重跑，輸出放暫存資料夾，沒有寫回 v2_r7f。

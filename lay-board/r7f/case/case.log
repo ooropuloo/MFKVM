@@ -1,0 +1,7 @@
+duct valid True vol 1672.7 fan centre y 32.2 duct y 17.2 .. 47.2
+plate valid True vol 1593.4 ; gap filler vol 147.5 mm3
+materials {'lid': 'Al 6061-T6, black anodized (emissivity ~0.85) except the masked contact faces (bare Al or conductive chromate conversion)', 'plate': 'Al 5052 or 6061, 0.8 mm, bare (no anodize, no paint); no thermal paste on any contact face (posts, shoulders, rim)', 'tray': 'ASA (or ABS / PC / PA12; heat deflection above 90 C; not PLA)', 'gapfill': 'dispensed gap filler, low modulus, about 3 W/mK'}
+tray valid True vol 5645.6 solids 1
+lid  valid True vol 3095.9 solids 1
+case outside 44 x 49 x 20 mm, y -22..27; holes [(-18.0, -18.0), (18.0, -18.0), (-18.0, 23.0), (18.0, 23.0)]
+world: J2 HDMI x 8.0  J3 USB x -8.75  J5 y 2.5  J7 y 4.1  J4 x 3.7  J6 corner (-18.0, 23.0)

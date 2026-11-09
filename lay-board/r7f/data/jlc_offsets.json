@@ -1,0 +1,90 @@
+{
+ "_doc": "JLC placement-angle offsets, per LCSC part and side: CPL rotation = (KiCad rotation + offset) mod 360. Only parts a person saw right in JLC placement preview (2026-11-07, r7b M2) are here; every other polarized part is UNKNOWN (not 0) and must be checked in the preview. pin1_local is pin 1 in the footprint frame (rotation and bottom mirror undone) of the verified part: a footprint whose pin 1 moves no longer matches. tools/fab_pack.py writes the CPL from this file, tools/cpl_pin1.py checks the CPL against it.",
+ "verified": {
+  "U2": {
+   "lcsc": "C78988",
+   "lib": "SOT-23-5",
+   "side": "B",
+   "offset": 270,
+   "kicad_r_at_check": 0,
+   "pin1_local": [
+    -0.95,
+    1.137
+   ]
+  },
+  "U4": {
+   "lcsc": "C882825",
+   "lib": "SOT-23-5",
+   "side": "B",
+   "offset": 270,
+   "kicad_r_at_check": 0,
+   "pin1_local": [
+    -0.95,
+    1.138
+   ]
+  },
+  "Q1": {
+   "lcsc": "C15127",
+   "lib": "SOT-23",
+   "side": "B",
+   "offset": 270,
+   "kicad_r_at_check": 0,
+   "pin1_local": [
+    -0.95,
+    0.938
+   ]
+  },
+  "U10": {
+   "lcsc": "C92243",
+   "lib": "SSOP-4_1.27",
+   "side": "B",
+   "offset": 270,
+   "kicad_r_at_check": 0,
+   "pin1_local": [
+    -3.175,
+    -0.635
+   ]
+  },
+  "U11": {
+   "lcsc": "C92243",
+   "lib": "SSOP-4_1.27",
+   "side": "B",
+   "offset": 270,
+   "kicad_r_at_check": 0,
+   "pin1_local": [
+    -3.175,
+    -0.635
+   ]
+  },
+  "U12": {
+   "lcsc": "C92243",
+   "lib": "SSOP-4_1.27",
+   "side": "B",
+   "offset": 270,
+   "kicad_r_at_check": 0,
+   "pin1_local": [
+    -3.175,
+    -0.635
+   ]
+  },
+  "J7": {
+   "lcsc": "C585350",
+   "lib": "microSD_Molex_104031-0811",
+   "side": "B",
+   "offset": 180,
+   "kicad_r_at_check": 270,
+   "pin1_local": [
+    -3.105,
+    -5.45
+   ]
+  }
+ },
+ "unverified_assumption": {
+  "U15": {
+   "lcsc": "C78988",
+   "side": "F",
+   "offset": 270,
+   "why": "same LCSC part as U2 (verified on the bottom) but on the top side; JLC top/bottom angle conventions differ per part, so NOT verified. r7 wrote CPL 0 for it."
+  }
+ }
+}

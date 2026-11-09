@@ -1,0 +1,127 @@
+{
+ "materials": {
+  "lid": "Al 6061-T6, black anodized (emissivity ~0.85) except the masked contact faces (bare Al or conductive chromate conversion)",
+  "plate": "Al 5052 or 6061, 0.8 mm, bare (no anodize, no paint); no thermal paste on any contact face (posts, shoulders, rim)",
+  "tray": "ASA (or ABS / PC / PA12; heat deflection above 90 C; not PLA)",
+  "gapfill": "dispensed gap filler, low modulus, about 3 W/mK"
+ },
+ "masked": {
+  "post_end": "lid post end faces that bear on the PCB GND rings (H1-H4; the J6-corner post end face too, it bears on the plate area only via its shoulder)",
+  "post_shoulder": "post shoulders (5.5 mm) that clamp the plate",
+  "lid_rim": "lid rim face (z 14.6) that sits on the plate",
+  "post_bore": "M2 pilot bores (thread contact to the screw)"
+ },
+ "acceptance": [
+  "lid to board GND (J5 USB-C shell) < 1 ohm, measured after assembly with a 4-wire or low-range ohmmeter",
+  "plate to board GND < 1 ohm, measured the same way"
+ ],
+ "fan": {
+  "fan": "30 x 30 mm 5 V axial fan, suction, on the duct top; powered from its own USB-A/USB-C 5 V supply, NOT from the board (board 5V budget unchanged)",
+  "flow_lps_assumed": 0.15,
+  "duct": {
+   "x0": -16.5,
+   "x1": 16.5,
+   "y0": 17.2,
+   "y1": 47.2,
+   "z0": 20.0,
+   "z1": 25.0
+  },
+  "inlets": "tray vents: 9 in the -x wall, 4 in the back wall (unchanged)",
+  "outlets": "12 lid slots under the duct",
+  "mount": "duct on the lid top with VHB tape; fan screwed to the duct (4 x M3 self-tapping, 24 mm pitch)",
+  "material": "duct printed in ASA / ABS / PC / PA12, as the tray"
+ },
+ "plate_t": 0.8,
+ "split": 13.8,
+ "lid_z0": 14.600000000000001,
+ "vents": [
+  [
+   -2.75,
+   22.0,
+   5.0,
+   1.2
+  ],
+  [
+   2.75,
+   22.0,
+   5.0,
+   1.2
+  ],
+  [
+   -2.75,
+   24.0,
+   5.0,
+   1.2
+  ],
+  [
+   2.75,
+   24.0,
+   5.0,
+   1.2
+  ],
+  [
+   -14.5,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   -12.6,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   -10.7,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   -8.8,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   8.8,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   10.7,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   12.6,
+   22.6,
+   1.2,
+   5.0
+  ],
+  [
+   14.5,
+   22.6,
+   1.2,
+   5.0
+  ]
+ ],
+ "pads": {
+  "P4": [
+   -3.0,
+   5.4,
+   12.0
+  ],
+  "C6": [
+   -10.0,
+   12.4,
+   7.0
+  ]
+ },
+ "shield_z": 13.01,
+ "post_d": 3.8,
+ "shoulder_d": 5.5,
+ "plate_hole_d": 4.2
+}

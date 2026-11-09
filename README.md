@@ -4,6 +4,8 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 
 **狀態：兩個設計都沒有做出實品，也沒有任何一項在硬體上驗證過。** 目前通過的都是檔案層級的檢查（ERC、DRC、阻焊、孔距、零件本體、外殼幾何）和韌體編譯。
 
+**客製板目前的版本是 [`lay-board/r7f/`](lay-board/r7f/README.md)**：已送 JLC 審核、尚未付款。下表和 `lay-board/fab_r5/` 是較舊的 r5，那張單已經取消，留著當紀錄。
+
 尚未選擇授權，保留所有權利。第三方內容見 [THIRD_PARTY.md](THIRD_PARTY.md)。
 
 ## 兩個設計比較
