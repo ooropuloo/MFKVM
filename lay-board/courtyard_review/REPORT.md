@@ -25,7 +25,7 @@
 
 ## 10 對總表
 
-全部都在 B 面，同面才有相撞問題。單位 mm。放置誤差假設每顆 ±0.10，**這是假設**，JLC 沒有公布數字。「最壞」是兩顆都取最大實體尺寸，再扣兩顆的放置誤差；負值代表公差內會碰。JLC 門檻來自 [Minimum Spacing for SMD Components](https://jlcpcb.com/help/article/minimum-spacing-for-smd-components)，是建議最小值。[量法](sources/jlc_spacing_measure.png)：沿引腳方向量焊盤到焊盤，其他方向量本體到本體。
+全部都在 B 面，同面才有相撞問題。單位 mm。放置誤差假設每顆 ±0.10，**這是假設**，JLC 沒有公布數字。「最壞」是兩顆都取最大實體尺寸，再扣兩顆的放置誤差；負值代表公差內會碰。JLC 門檻來自 [Minimum Spacing for SMD Components](https://jlcpcb.com/help/article/minimum-spacing-for-smd-components)，是建議最小值。量法：沿引腳方向量焊盤到焊盤，其他方向量本體到本體。
 
 | 對 | courtyard 重疊 | 本體間隙 | 本體或腳到對方的金屬間隙 | 最壞 | 不同網路焊盤間隙 | JLC 門檻 | 判定 | 實際會出什麼事 |
 |---|---|---|---|---|---|---|---|---|
@@ -128,18 +128,18 @@ A1B12（GND，F.Cu）在 (111.5975, 105.7)：
 
 | 零件 | LCSC → MPN | 來源 | 用到的值 |
 |---|---|---|---|
-| J4 | C160405 → SM06B-SRSS-TB(LF)(SN) | [JST eSH](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) p1、p3（[land](sources/jst_eSH_p1_land.png)、[header](sources/jst_eSH_p3_header.png)）；[KiCad 官方](https://gitlab.com/kicad/libraries/kicad-footprints/-/raw/master/Connector_JST.pretty/JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal.kicad_mod) F.Fab | 8.0 x 4.25 x 2.9，腳 0.7 |
-| 插頭 | SHR-06V-S(-B) | [eSH p2](sources/jst_eSH_p2_plug.png) | 7.0 或 9.0 x 5 x 2.8 |
-| U10-12 | C119091 → LTV-357T-C | [LCSC 本 p2](https://datasheet.lcsc.com/datasheet/pdf/19537dc919c84021962b2f5e5f031337.pdf)（[圖](sources/liteon_ltv357t_p2.png)）、[新版](https://cdn.eicom.ru/media/PDF/5723357.pdf) 第 2 頁（[圖](sources/liteon_ltv357t_newer_p2.png)）、[建議焊盤 p11](sources/liteon_ltv357t_p11_land.png) | 4.40±0.2 x 3.85±0.3 x 2.00±0.2，跨距 7.00 +0.2/-0.7，pitch 2.54±0.25 |
-| J7 | C585350 → 1040310811 | [Molex](https://datasheet.lcsc.com/datasheet/pdf/541e9f28cb856b9ee4390625509ae3af.pdf) sheet 1（[圖](sources/molex_SD-104031-001_sheet1.png)） | 見上 |
-| Y1 | C725995 → OT322527MJBA4SL | [YXC YSO110TR](https://datasheet.lcsc.com/datasheet/pdf/b336a5b52993e15e0134a8f3d7decec7.pdf) p3（[圖](sources/yxc_yso110tr_p3.png)） | 3.2±0.1 x 2.5±0.1 x 1.2 max |
-| U4、U5 | C882825、C2871228 → TLV73325PDBVR、TLV73312PDBVT | [TI DBV0005A](https://www.ti.com/lit/ds/symlink/tlv733p.pdf) PDF p35（[圖](sources/ti_dbv0005a.png)） | L 2.75-3.05，W 1.45-1.75，跨距 2.6-3.0，溢膠 ≤ 0.25 |
+| J4 | C160405 → SM06B-SRSS-TB(LF)(SN) | [JST eSH](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) p1、p3；[KiCad 官方](https://gitlab.com/kicad/libraries/kicad-footprints/-/raw/master/Connector_JST.pretty/JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal.kicad_mod) F.Fab | 8.0 x 4.25 x 2.9，腳 0.7 |
+| 插頭 | SHR-06V-S(-B) | eSH p2 | 7.0 或 9.0 x 5 x 2.8 |
+| U10-12 | C119091 → LTV-357T-C | [LCSC 本 p2](https://datasheet.lcsc.com/datasheet/pdf/19537dc919c84021962b2f5e5f031337.pdf)、[新版](https://cdn.eicom.ru/media/PDF/5723357.pdf) 第 2 頁、建議焊盤 p11 | 4.40±0.2 x 3.85±0.3 x 2.00±0.2，跨距 7.00 +0.2/-0.7，pitch 2.54±0.25 |
+| J7 | C585350 → 1040310811 | [Molex](https://datasheet.lcsc.com/datasheet/pdf/541e9f28cb856b9ee4390625509ae3af.pdf) sheet 1 | 見上 |
+| Y1 | C725995 → OT322527MJBA4SL | [YXC YSO110TR](https://datasheet.lcsc.com/datasheet/pdf/b336a5b52993e15e0134a8f3d7decec7.pdf) p3 | 3.2±0.1 x 2.5±0.1 x 1.2 max |
+| U4、U5 | C882825、C2871228 → TLV73325PDBVR、TLV73312PDBVT | [TI DBV0005A](https://www.ti.com/lit/ds/symlink/tlv733p.pdf) PDF p35 | L 2.75-3.05，W 1.45-1.75，跨距 2.6-3.0，溢膠 ≤ 0.25 |
 | R22/23/42/52/53 | C25879、C17168、C25117 → 0402WGF… | [UNI-ROYAL](https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf) p4 | 1.00±0.10 x 0.50±0.05 x 0.35±0.05 |
 | C17、C19 | C1537 → 0402B471K500NT | [FH](https://datasheet.lcsc.com/datasheet/pdf/09fe2daf22580a99fa7fea93ccb20fb7.pdf) 第 3 頁（PDF p5）CA 列 | 1.00±0.05 x 0.50±0.05 x 0.50±0.05 |
 | C41 | C1525 → CL05B104KO5NNNC | [Samsung](https://datasheet.lcsc.com/datasheet/pdf/02336ea48ea44ca18c72517dd3cb7b47.pdf) p6 | 0402 |
 | C10、C11、C40 | C19702 → CL10A106KP8NNNC | 同上 | 1.60 x 0.80 x 0.80，±0.10 |
-| L1 | C83423 → SWPA4020S2R2MT | [Sunlord SWPA 系列](https://static.chipdip.ru/lib/172/DOC013172777.pdf) p2（不在 sources/） | 4.0±0.2 x 4.0±0.2 x 2.0 max，系列表，非單一料號頁 |
-| 修法 A | C92243 → EL3H7(C)(TA)-G | [EL3H7-G](https://datasheet.chipsmall.com/EL3H7-VG/600647.pdf)（[圖](sources/everlight_el3h7g_pkg.png)）、[JLC](https://jlcpcb.com/partdetail/EverlightElec-EL3H7_C_TA_G/C92243) | 見修法 A |
+| L1 | C83423 → SWPA4020S2R2MT | [Sunlord SWPA 系列](https://static.chipdip.ru/lib/172/DOC013172777.pdf) p2 | 4.0±0.2 x 4.0±0.2 x 2.0 max，系列表，非單一料號頁 |
+| 修法 A | C92243 → EL3H7(C)(TA)-G | [EL3H7-G](https://datasheet.chipsmall.com/EL3H7-VG/600647.pdf)、[JLC](https://jlcpcb.com/partdetail/EverlightElec-EL3H7_C_TA_G/C92243) | 見修法 A |
 | JLC 規則 | | [spacing](https://jlcpcb.com/help/article/minimum-spacing-for-smd-components)、[capabilities](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) | 表內門檻；放置精度沒有公布 |
 
 **找不到，用標準值或假設（都有標示）：**

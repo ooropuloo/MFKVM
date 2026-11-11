@@ -50,3 +50,9 @@ off-the-shelf/fab_atx/
 *JLC*screenshot*
 *.env
 .env*
+
+# made from vendor CAD or datasheets; regenerate locally, do not commit (THIRD_PARTY.md)
+off-the-shelf/case/j1_section.png
+off-the-shelf/case/sections/
+off-the-shelf/case/handedness/official_vs_page.png
+lay-board/courtyard_review/sources/

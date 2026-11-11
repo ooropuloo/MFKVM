@@ -298,6 +298,59 @@ def jst_svg(n):
     return svg(320, 164, b)
 
 
+def photo_note(b, w, h, lines):
+    """Vendor photos are not redistributed: an own drawing plus where to see the real part."""
+    y = h - 14 - 20 * (len(lines) - 1)
+    for i, s in enumerate(lines):
+        b += text(16, y + 20 * i, s, 14, fill='#4a555b')
+    return svg(w, h, b)
+
+
+def p4_svg():
+    b = '<rect x="70" y="16" width="180" height="150" rx="4" fill="#1f5c3a" stroke="#14402a" stroke-width="2"/>'
+    for i in range(14):
+        b += f'<circle cx="{82 + i * 12}" cy="166" r="3.2" fill="#d8ab3f"/><circle cx="{82 + i * 12}" cy="16" r="3.2" fill="#d8ab3f"/>'
+    b += '<rect x="96" y="40" width="128" height="104" rx="3" fill="#c9cfd2" stroke="#6c777d" stroke-width="2"/>'
+    b += text(160, 88, 'ESP32-P4', 18, 'middle', 700) + text(160, 112, '屏蔽罩', 14, 'middle')
+    b += '<circle cx="84" cy="32" r="7" fill="#e3c26a" stroke="#8d6d1e" stroke-width="2"/>' + text(30, 36, 'IPEX', 13)
+    return photo_note(b, 320, 236, ['Waveshare ESP32-P4-Module 16MB -U', '示意圖；實物照片見 SOURCES.md 的商品頁'])
+
+
+def lcd128_svg():
+    b = '<rect x="92" y="14" width="136" height="148" rx="10" fill="#1d2a3a" stroke="#0f1620" stroke-width="2"/>'
+    b += '<circle cx="160" cy="84" r="62" fill="#16233a" stroke="#6c777d" stroke-width="3"/><circle cx="160" cy="84" r="54" fill="#244d7a"/>'
+    b += text(160, 82, '1.28 吋', 16, 'middle', 700, '#fff') + text(160, 102, '240 × 240', 13, 'middle', 400, '#dde6ef')
+    b += '<rect x="138" y="162" width="44" height="10" fill="#efe6cf" stroke="#8d7f58"/>'
+    return photo_note(b, 320, 236, ['微雪 1.28 吋圓形 LCD（SKU 19192）', '示意圖；實物照片見 SOURCES.md 的商品頁'])
+
+
+def fb_svg():
+    b = '<rect x="20" y="30" width="280" height="110" rx="8" fill="#2a2f6b" stroke="#181b45" stroke-width="2"/>'
+    for i in range(20):
+        b += f'<circle cx="{40 + i * 12.6}" cy="40" r="3" fill="#d8ab3f"/><circle cx="{40 + i * 12.6}" cy="130" r="3" fill="#d8ab3f"/>'
+    b += '<rect x="8" y="70" width="26" height="30" rx="4" fill="#c9cfd2" stroke="#6c777d" stroke-width="2"/>' + text(46, 90, 'USB-C', 13, fill='#fff')
+    b += '<rect x="140" y="58" width="56" height="56" rx="3" fill="#39424a"/>' + text(168, 91, 'P4', 15, 'middle', 700, '#fff')
+    b += text(296, 116, 'FireBeetle 2', 14, 'end', 700, '#fff')
+    return photo_note(b, 320, 200, ['DFRobot FireBeetle 2 ESP32-P4（DFR1172）', '示意圖；實物照片見 SOURCES.md 的商品頁'])
+
+
+def c790_svg():
+    b = '<rect x="20" y="24" width="220" height="80" rx="6" fill="#1f5c3a" stroke="#14402a" stroke-width="2"/>'
+    b += '<path d="M8 44h40v40H8z" fill="#c9cfd2" stroke="#6c777d" stroke-width="2"/>' + text(28, 120, 'HDMI', 13, 'middle')
+    b += '<rect x="120" y="44" width="40" height="40" rx="2" fill="#39424a"/>' + text(140, 69, 'TC358743', 9, 'middle', 400, '#fff')
+    b += '<rect x="232" y="46" width="12" height="36" fill="#efe6cf" stroke="#8d7f58"/>'
+    b += '<path d="M244 52h44M244 76h44" stroke="#c08e27" stroke-width="2"/><rect x="244" y="52" width="50" height="24" fill="#f1f1ec" stroke="#8a9398"/>' + text(268, 98, '15P FFC', 12, 'middle')
+    return photo_note(b, 320, 176, ['Geekworm C790 HDMI 轉 CSI，附排線', '示意圖；實物照片見 SOURCES.md 的商品頁'])
+
+
+def lcd19_svg():
+    b = '<rect x="30" y="20" width="250" height="118" rx="6" fill="#1d2a3a" stroke="#0f1620" stroke-width="2"/>'
+    b += '<rect x="44" y="34" width="222" height="90" rx="3" fill="#244d7a" stroke="#6c777d" stroke-width="2"/>'
+    b += text(155, 76, '1.9 吋', 17, 'middle', 700, '#fff') + text(155, 98, '320 × 170', 13, 'middle', 400, '#dde6ef')
+    b += '<rect x="280" y="62" width="10" height="34" fill="#efe6cf" stroke="#8d7f58"/>'
+    return photo_note(b, 320, 196, ['微雪 1.9 吋 LCD（SKU 23822）', '示意圖；實物照片見 SOURCES.md 的商品頁'])
+
+
 # ---------- the two sets ----------
 
 ILL = '示意'
@@ -307,21 +360,21 @@ BOARD = 'KiCad 板圖'
 
 ITEMS = {
     'v3': [
-        ('fb', 'dl', 'dfr.jpg', 'FireBeetle 2 ESP32-P4 核心板（DFR1172）實物照片', VENDOR, 'https://www.dfrobot.com/product-2915.html (DFR1172_Main_01.jpg)'),
-        ('c790', 'dl', 'c790.jpg', 'Geekworm C790 HDMI 轉 CSI 板，附排線，實物照片', VENDOR, 'https://geekworm.com/products/c790 (C790-IMG-4494.jpg)'),
+        ('fb', 'svg', fb_svg(), 'FireBeetle 2 ESP32-P4 核心板（DFR1172）示意圖', ILL, '實物照片見原廠商品頁：https://www.dfrobot.com/product-2915.html'),
+        ('c790', 'svg', c790_svg(), 'Geekworm C790 HDMI 轉 CSI 板，附排線，示意圖', ILL, '實物照片見原廠商品頁：https://geekworm.com/products/c790'),
         ('ffc_opp', 'svg', ffc_svg(False), 'Würth 686715050001 排線示意圖，兩端接點不同面', ILL, 'DigiKey、Würth、RS 都回 403，改畫示意。接點面依 DigiKey 列表「Top on One Side, Bottom on Other」'),
         ('ffc_same', 'svg', ffc_svg(True), 'Würth 686615050001 排線示意圖，兩端接點同一面', ILL, 'DigiKey、Würth、RS 都回 403，改畫示意。接點面依 DigiKey 列表「Top on Both Sides」'),
         ('power', 'svg', power_svg(), '5 V USB-C 電源示意圖', ILL, '通用料，沒有指定產品'),
         ('usb_a', 'svg', usb_a_svg(), 'USB-A 頭示意圖：插入端朝上看接點面，左起第 1 腳是 VBUS，貼 Kapton 只蓋這一腳', ILL, '腳位：accesscomms.com.au/usb-pinouts-wiring（看接點時 plug 由左到右 1-2-3-4）與 KiCad USB_A_PCB_traces_small 足印，兩者一致'),
-        ('lcd19', 'dl', 'lcd19_l.jpg', '微雪 1.9 吋 LCD 模組（SKU 23822）實物照片', VENDOR + '（經銷商頁面）', 'waveshare.com 回 403，取自 Pi Shop US 的 23822 商品頁：https://www.pishop.us/product/1-9inch-lcd-display-module-170-320-resolution-spi-interface-ips-262k-colors/'),
+        ('lcd19', 'svg', lcd19_svg(), '微雪 1.9 吋 LCD 模組（SKU 23822）示意圖', ILL, '實物照片見經銷商商品頁：https://www.pishop.us/product/1-9inch-lcd-display-module-170-320-resolution-spi-interface-ips-262k-colors/'),
         ('wire', 'svg', wire_svg(), 'Ø0.64 mm 鍍錫單芯線，五段各約 10 mm，示意圖', ILL, '通用料，沒有指定產品'),
         ('jst6', 'svg', jst_svg(6), 'JST SH 1.0 六腳外殼示意圖', ILL, 'DigiKey 回 403、Future Electronics 連線被重設，改畫示意'),
         ('screws', 'svg', screws_svg(), '七支自攻螺絲示意圖：M1.6×5 兩支、M2×8 兩支、M2.5×6、×8、×10 各一支，長度等比例', ILL, '通用料；長度和直徑依表內規格等比例，頭型是示意'),
     ],
     'v2': [
-        ('p4', 'dl', 'p4.webp', 'Waveshare ESP32-P4-Module 16MB -U 版實物照片，左上角是 IPEX 座', VENDOR + '（經銷商頁面）', 'waveshare.com 回 403，取自 OpenELAB 商品頁（global-waveshare-esp32-p4-module-02.webp）：https://openelab.io/products/waveshare-esp32-p4-module-core-board-wifi-bluetooth 。照片上印 Flash 16MB、-U，有 IPEX 座'),
+        ('p4', 'svg', p4_svg(), 'Waveshare ESP32-P4-Module 16MB -U 版示意圖，左上角是 IPEX 座', ILL, '實物照片見經銷商商品頁：https://openelab.io/products/waveshare-esp32-p4-module-core-board-wifi-bluetooth'),
         ('ant', 'svg', antenna_svg(), '2.4 GHz IPEX FPC 天線示意圖', ILL, '通用料，沒有指定產品'),
-        ('lcd128', 'dl', 'lcd128_l.jpg', '微雪 1.28 吋圓形 LCD 模組（SKU 19192）實物照片', VENDOR + '（經銷商頁面）', 'waveshare.com 回 403，取自 PiShop.ca 的 19192 商品頁：https://pishop.ca/product/240x240-general-1-28inch-round-lcd-display-module-65k-rgb'),
+        ('lcd128', 'svg', lcd128_svg(), '微雪 1.28 吋圓形 LCD 模組（SKU 19192）示意圖', ILL, '實物照片見經銷商商品頁：https://pishop.ca/product/240x240-general-1-28inch-round-lcd-display-module-65k-rgb'),
         ('jst8', 'svg', jst_svg(8), 'JST SH 1.0 八腳外殼示意圖', ILL, 'DigiKey 回 403、Future Electronics 連線被重設，改畫示意'),
         ('jst6', 'svg', jst_svg(6), 'JST SH 1.0 六腳外殼示意圖', ILL, 'DigiKey 回 403、Future Electronics 連線被重設，改畫示意'),
         ('m2', 'svg', m2_svg(), 'M2 × 16 螺絲示意圖', ILL, '通用料；長度和直徑依規格等比例，頭型是示意'),
@@ -395,11 +448,12 @@ def main():
         rows.append((key + '.png', '自行渲染', f'{DIRS[ver]}/{rel}，裁到板子範圍'))
         json.dump(man, open(os.path.join(base, 'manifest.json'), 'w', encoding='utf-8', newline='\n'), ensure_ascii=False, indent=1)
         with open(os.path.join(base, 'SOURCES.md'), 'w', encoding='utf-8', newline='\n') as f:
-            f.write(f'# 料件圖來源（{DATE} 取得）\n\n廠商照片版權屬原廠，僅供辨識料件。由 `off-the-shelf/parts_img/make_parts_img.py` 產生。\n\n| 檔案（src/） | 類型 | 來源 |\n|---|---|---|\n')
+            f.write(f'# 料件圖來源（{DATE} 取得）\n\n全部是自繪示意或由本 repo 的檔案算繪；廠商照片不放進 repo，只留商品頁連結。由 `off-the-shelf/parts_img/make_parts_img.py` 產生。\n\n| 檔案（src/） | 類型 | 來源 |\n|---|---|---|\n')
             for a, b, c in rows:
                 f.write(f'| {a} | {b} | {c} |\n')
         total = sum(os.path.getsize(os.path.join(thumb, m['file'])) for m in man.values())
         print(ver, len(man), 'items', total, 'bytes; largest', max((os.path.getsize(os.path.join(thumb, m['file'])), k) for k, m in man.items()))
 
 
-main()
+if __name__ == '__main__':
+    main()

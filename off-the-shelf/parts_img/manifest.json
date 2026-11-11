@@ -1,17 +1,19 @@
 {
  "fb": {
-  "file": "fb.webp",
-  "w": 480,
-  "h": 388,
-  "alt": "FireBeetle 2 ESP32-P4 核心板（DFR1172）實物照片",
-  "kind": "廠商照片"
+  "file": "fb.svg",
+  "w": 320,
+  "h": 200,
+  "alt": "FireBeetle 2 ESP32-P4 核心板（DFR1172）示意圖",
+  "kind": "示意",
+  "cap": "示意"
  },
  "c790": {
-  "file": "c790.webp",
-  "w": 480,
-  "h": 198,
-  "alt": "Geekworm C790 HDMI 轉 CSI 板，附排線，實物照片",
-  "kind": "廠商照片"
+  "file": "c790.svg",
+  "w": 320,
+  "h": 176,
+  "alt": "Geekworm C790 HDMI 轉 CSI 板，附排線，示意圖",
+  "kind": "示意",
+  "cap": "示意"
  },
  "ffc_opp": {
   "file": "ffc_opp.svg",
@@ -46,11 +48,12 @@
   "cap": "示意"
  },
  "lcd19": {
-  "file": "lcd19.webp",
-  "w": 480,
-  "h": 279,
-  "alt": "微雪 1.9 吋 LCD 模組（SKU 23822）實物照片",
-  "kind": "廠商照片（經銷商頁面）"
+  "file": "lcd19.svg",
+  "w": 320,
+  "h": 196,
+  "alt": "微雪 1.9 吋 LCD 模組（SKU 23822）示意圖",
+  "kind": "示意",
+  "cap": "示意"
  },
  "wire": {
   "file": "wire.svg",

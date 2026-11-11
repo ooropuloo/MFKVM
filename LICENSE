@@ -1,0 +1,25 @@
+MF KVM
+Copyright 2026 MF KVM contributors
+Source location: https://github.com/ooropuloo/MFKVM
+
+MF KVM is licensed in three parts. Content from third parties keeps its own
+terms; it is listed in THIRD_PARTY.md, and those terms take precedence for
+those files.
+
+Hardware design files: CERN Open Hardware Licence Version 2 - Permissive
+(CERN-OHL-P-2.0), full text in LICENSES/CERN-OHL-P-2.0.txt.
+  Board, schematic and footprint data, KiCad files, Gerber, drill, BOM and
+  placement files, case models (STL, STEP, 3MF) and the data files that the
+  generators read.
+
+Software: Apache License 2.0 (Apache-2.0), full text in
+LICENSES/Apache-2.0.txt.
+  Python, shell and PowerShell scripts, the HTML and JavaScript pages, the
+  firmware patches and the build configuration.
+
+Documentation: Creative Commons Attribution 4.0 International (CC-BY-4.0),
+full text in LICENSES/CC-BY-4.0.txt.
+  Markdown and text documents, PDF reports, images and renders.
+
+When a file could fit more than one part, the part named for its kind above
+applies: a generator script is software, the board file it writes is hardware.

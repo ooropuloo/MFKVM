@@ -6,7 +6,7 @@ MF KVM is a small KVM-over-IP box built around the ESP32-P4 and running the [ESP
 
 **Status: no unit has been built yet.** The current revision, r7f, is in fabrication review at JLCPCB, unpaid. Everything that has passed is a file-level or model-level check. Nothing has been verified on hardware.
 
-No license has been chosen; all rights reserved. Third-party content is listed in [THIRD_PARTY.md](THIRD_PARTY.md).
+Licensed under [LICENSE](LICENSE): hardware CERN-OHL-P-2.0, software Apache-2.0, documentation CC-BY-4.0. Third-party content keeps its own terms; see [THIRD_PARTY.md](THIRD_PARTY.md).
 
 ## Current revision: r7f
 

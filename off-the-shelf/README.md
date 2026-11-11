@@ -18,7 +18,7 @@ FireBeetle 2 ESP32-P4（DFR1172）核心板、Geekworm C790、Waveshare 1.9 吋 
 
 ### 買料和到貨驗證
 - [ ] **買料：** 依下面的 BOM。Würth 排線查到的交期是 14 週，先確認庫存或用 GCT 替代料。接點異面和同面各買一條。
-- [ ] **FPC 接點面：** J1 的接點方向只看過原廠 STEP 剖面（`case/j1_section.png`），不是實物。實物接點在 +x 就改用同面線。
+- [ ] **FPC 接點面：** J1 的接點方向只看過原廠 STEP 剖面（`case/j1_section.png`，含原廠模型，已撤下，見 THIRD_PARTY.md），不是實物。實物接點在 +x 就改用同面線。
 - [ ] **pin 1 導通：** 插之前目視，插之後用電錶量上電檢查第 1 到 4 項。接反是 3V3 對 GND。C790 pin 1 的依據只是照片上的三角形。
 - [ ] **C790 高度：** HDMI、J2、J3、J5 都是估計，總高取上限 11 mm。卡尺量完再對 `case/gen_case.py` 的尺寸，太高就要改殼。
 - [ ] **針孔配合：** Ø0.64 銅線對 Ø0.9 孔，孔徑取自 STEP，實板沒量。
@@ -94,7 +94,7 @@ FireBeetle 的 OTG VBUS 直接接板上 5 V，中間沒有隔離。接普通的�
 - **要買接點異面的線。** 異面線的 pin 1 會接到 pin 1。推導見 `layout_study.md`。
 - **J1（FireBeetle）：** 直立式。接點面朝 -x，也就是朝 DSI 接頭。補強（藍色）朝 +x，也就是朝黑色滑扣。pin 1 在靠 P4 那端，有白點。
 - **J2（C790）：** 接點面朝 PCB，補強朝上。pin 1 在靠 I2S 接頭那端。
-- **J1 的接點方向來自原廠 3D 模型的剖面（`case/j1_section.png`），不是實物。** 如果實物接點在 +x，擺法不變，改用同面的線。插之前先用眼睛確認。
+- **J1 的接點方向來自原廠 3D 模型的剖面（`case/j1_section.png`，含原廠模型，已撤下，見 THIRD_PARTY.md），不是實物。** 如果實物接點在 +x，擺法不變，改用同面的線。插之前先用眼睛確認。
 - **不要把線對折壓死。** 斜捲處用 `former` 撐住，半徑 3 mm。
 
 ## 接線
@@ -228,7 +228,7 @@ python atx/fab_atx.py atx/out fab_atx_b               # 任何檢查沒過就不
 python case/gen_case.py <fb.step> <bb.json>           # 殼、組裝、全部碰撞檢查
 python case/insert_path.py <bb.json>                  # 焊好 ATX 的核心板能不能放進底殼
 python case/export_core.py <fb.step>                  # 頁面用的核心板模型
-python case/sections.py                               # 剖面圖，case/sections/
+python case/sections.py                               # 剖面圖，case/sections/（要先用原廠 STEP 跑 case/export_core.py，見 THIRD_PARTY.md）
 python build_page.py                                  # v3.html，檢查沒過就不出檔
 node case/page_top.cjs v3.html case/handedness <playwright-core>      # 從上方看頁面的真實網格
 python case/test_handedness.py <bb.json> <fb.step> <layout.png> <C790 圖> <lcd.stp> case/handedness/page_top.json case/handedness/page_top.png

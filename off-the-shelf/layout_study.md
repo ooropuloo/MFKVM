@@ -48,7 +48,7 @@ The frame is carried from C790 to J1 in code, `transport()`. Conductor 1 lies on
 |---|---|---|
 | C790 J2 pin 1 | low Y_c, contacts toward the PCB | [P] triangle in the photo, [V] G6 for contact direction |
 | J1 pin 1 | high y (toward the P4), white dot | [V] DFRobot pinout figure |
-| J1 contact | spring contact on the -x side of the slot, slider on the +x side | [V] section of the official STEP at y 11.9, `case/j1_section.png`. A vendor model, not the part in hand [U] |
+| J1 contact | spring contact on the -x side of the slot, slider on the +x side | [V] section of the official STEP at y 11.9, `case/j1_section.png` (made from the vendor model, not in the repo; see THIRD_PARTY.md). A vendor model, not the part in hand [U] |
 
 For D, C790 face up with its FPC edge toward -y: t = -y, n = +z, so conductor 1 is on -x. The roll takes it to t = +x, n = -z, conductor 1 on +y. The final bend gives t = -z, n = -x, conductor 1 on +y.
 

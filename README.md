@@ -6,7 +6,7 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 
 **狀態：還沒有做出實品。** 目前版本 r7f 已送 JLC 審核、尚未付款。通過的都是檔案和模型層級的檢查，沒有任何一項在硬體上驗證過。
 
-尚未選擇授權，保留所有權利。第三方內容見 [THIRD_PARTY.md](THIRD_PARTY.md)。
+授權見 [LICENSE](LICENSE)：硬體 CERN-OHL-P-2.0、程式 Apache-2.0、文件 CC-BY-4.0。第三方內容另依原本的條款，見 [THIRD_PARTY.md](THIRD_PARTY.md)。
 
 ## 目前版本：r7f
 

@@ -1,10 +1,11 @@
 {
  "p4": {
-  "file": "p4.webp",
-  "w": 349,
-  "h": 341,
-  "alt": "Waveshare ESP32-P4-Module 16MB -U 版實物照片，左上角是 IPEX 座",
-  "kind": "廠商照片（經銷商頁面）"
+  "file": "p4.svg",
+  "w": 320,
+  "h": 236,
+  "alt": "Waveshare ESP32-P4-Module 16MB -U 版示意圖，左上角是 IPEX 座",
+  "kind": "示意",
+  "cap": "示意"
  },
  "ant": {
   "file": "ant.svg",
@@ -15,11 +16,12 @@
   "cap": "示意"
  },
  "lcd128": {
-  "file": "lcd128.webp",
-  "w": 476,
-  "h": 480,
-  "alt": "微雪 1.28 吋圓形 LCD 模組（SKU 19192）實物照片",
-  "kind": "廠商照片（經銷商頁面）"
+  "file": "lcd128.svg",
+  "w": 320,
+  "h": 236,
+  "alt": "微雪 1.28 吋圓形 LCD 模組（SKU 19192）示意圖",
+  "kind": "示意",
+  "cap": "示意"
  },
  "jst8": {
   "file": "jst8.svg",

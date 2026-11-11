@@ -1,16 +1,16 @@
 # 料件圖來源（2026-11-06 取得）
 
-廠商照片版權屬原廠，僅供辨識料件。由 `off-the-shelf/parts_img/make_parts_img.py` 產生。
+全部是自繪示意或由本 repo 的檔案算繪；廠商照片不放進 repo，只留商品頁連結。由 `off-the-shelf/parts_img/make_parts_img.py` 產生。
 
 | 檔案（src/） | 類型 | 來源 |
 |---|---|---|
-| fb.jpg | 廠商照片 | https://www.dfrobot.com/product-2915.html (DFR1172_Main_01.jpg) |
-| c790.jpg | 廠商照片 | https://geekworm.com/products/c790 (C790-IMG-4494.jpg) |
+| fb.svg | 自繪示意 | 實物照片見原廠商品頁：https://www.dfrobot.com/product-2915.html |
+| c790.svg | 自繪示意 | 實物照片見原廠商品頁：https://geekworm.com/products/c790 |
 | ffc_opp.svg | 自繪示意 | DigiKey、Würth、RS 都回 403，改畫示意。接點面依 DigiKey 列表「Top on One Side, Bottom on Other」 |
 | ffc_same.svg | 自繪示意 | DigiKey、Würth、RS 都回 403，改畫示意。接點面依 DigiKey 列表「Top on Both Sides」 |
 | power.svg | 自繪示意 | 通用料，沒有指定產品 |
 | usb_a.svg | 自繪示意 | 腳位：accesscomms.com.au/usb-pinouts-wiring（看接點時 plug 由左到右 1-2-3-4）與 KiCad USB_A_PCB_traces_small 足印，兩者一致 |
-| lcd19.jpg | 廠商照片（經銷商頁面） | waveshare.com 回 403，取自 Pi Shop US 的 23822 商品頁：https://www.pishop.us/product/1-9inch-lcd-display-module-170-320-resolution-spi-interface-ips-262k-colors/ |
+| lcd19.svg | 自繪示意 | 實物照片見經銷商商品頁：https://www.pishop.us/product/1-9inch-lcd-display-module-170-320-resolution-spi-interface-ips-262k-colors/ |
 | wire.svg | 自繪示意 | 通用料，沒有指定產品 |
 | jst6.svg | 自繪示意 | DigiKey 回 403、Future Electronics 連線被重設，改畫示意 |
 | screws.svg | 自繪示意 | 通用料；長度和直徑依表內規格等比例，頭型是示意 |
