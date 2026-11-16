@@ -12,6 +12,12 @@ Licensed under [LICENSE](LICENSE): hardware CERN-OHL-P-2.0, software Apache-2.0,
 
 One 6-layer board, 40 × 40 mm, with parts on both sides. The controller is an ESP32-P4-Module (U1, hand-soldered after assembly) and video goes through a TC358743 (U7, BGA). The case is all aluminium with no fan, 42 × 42 × 23 mm, and the Wi-Fi antenna is external.
 
+| Case and size | Next to an AA battery |
+|---|---|
+| ![r8b case illustration with 42 × 42 × 23 mm dimensions](lay-board/r8b/images/case_size.jpg) | ![r8b case illustration beside one AA battery](lay-board/r8b/images/case_battery.jpg) |
+
+**These two pictures and the exploded view below are AI-generated illustrations, not photos. Nothing has been built yet.** They were redrawn from the engineering renders of the case, so the outline, the openings and the labels follow the engineering drawings, and the dimension lines were drawn on afterwards by a script. The screen content, the small parts on the board, the materials and the lighting are illustrative; for detail rely on [`case/stl/`](lay-board/r8b/case/stl/) and the Gerbers. The engineering renders are in the [r8b notes](lay-board/r8b/README.md).
+
 | Top | Bottom |
 |---|---|
 | ![r8b board top render](lay-board/r8b/images/board_top.png) | ![r8b board bottom render](lay-board/r8b/images/board_bottom.png) |
@@ -54,11 +60,11 @@ Resistors and most capacitors are not listed; see [`BOM_JLC.csv`](lay-board/r8b/
 
 </details>
 
-| Case assembled | Exploded |
-|---|---|
-| ![r8b case assembled render](lay-board/r8b/images/render_assembled.png) | ![r8b case exploded render](lay-board/r8b/images/render_exploded.png) |
+The two board pictures are rendered from the board file, not photos. The board file has no 3D models, so parts are boxes drawn from their real outlines and heights.
 
-These are renders, not photos. The board file has no 3D models, so parts are boxes drawn from their real outlines and heights.
+![r8b exploded illustration: lid, round display, heat spreader plate, circuit board, tray](lay-board/r8b/images/case_exploded.jpg)
+
+Exploded illustration (AI-generated). From top to bottom: lid, round LCD, aluminium heat spreader plate, circuit board, tray. The display cable passes through the rectangular cut-out in the plate to J6 at the corner of the board.
 
 | Item | Specification |
 |---|---|

@@ -12,6 +12,12 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 
 6 層單片板，40 × 40 mm，雙面放零件。主控是 ESP32-P4-Module（U1，組裝後手焊），影像用 TC358743（U7，BGA）。外殼是全鋁、無風扇，42 × 42 × 23 mm，Wi-Fi 天線外接。
 
+| 外殼和尺寸 | 和 AA 電池比大小 |
+|---|---|
+| ![r8b 外殼示意圖，標註 42 × 42 × 23 mm](lay-board/r8b/images/case_size.jpg) | ![r8b 外殼和一顆 AA 電池並排的示意圖](lay-board/r8b/images/case_battery.jpg) |
+
+**上面兩張和下面的爆炸圖是 AI 生成的示意圖，不是照片，東西還沒有做出來。** 它們是拿外殼的工程算繪當底圖重畫的，外形、開孔位置和標籤照著工程圖，尺寸標註是另外用程式畫上去的。螢幕畫面、板子上的小零件、材質和光影都是示意，細節以 [`case/stl/`](lay-board/r8b/case/stl/) 和 Gerber 為準。工程算繪在 [r8b 說明](lay-board/r8b/README.md)。
+
 | 正面 | 背面 |
 |---|---|
 | ![r8b 板子正面算繪圖](lay-board/r8b/images/board_top.png) | ![r8b 板子背面算繪圖](lay-board/r8b/images/board_bottom.png) |
@@ -54,11 +60,11 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 
 </details>
 
-| 外殼組裝 | 爆炸圖 |
-|---|---|
-| ![r8b 外殼組裝算繪圖](lay-board/r8b/images/render_assembled.png) | ![r8b 外殼爆炸算繪圖](lay-board/r8b/images/render_exploded.png) |
+板子的兩張圖是從板檔算繪的，不是照片。板檔沒有 3D 模型，零件是依外形和高度畫的方塊。
 
-以上都是電腦算繪，不是照片。板檔沒有 3D 模型，零件是依外形和高度畫的方塊。
+![r8b 爆炸示意圖：上蓋、圓形螢幕、散熱板、電路板、底殼](lay-board/r8b/images/case_exploded.jpg)
+
+爆炸示意圖（AI 生成）。由上到下是上蓋、圓形 LCD、鋁散熱板、電路板、底殼。螢幕的線穿過散熱板的方孔接到板子角落的 J6。
 
 | 項目 | 規格 |
 |---|---|
