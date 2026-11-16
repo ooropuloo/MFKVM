@@ -121,12 +121,6 @@ TMDS、CSI、USB 的走線和 r7f 相同；r8 → r8b 零件位置、BOM、CPL �
 
 每個設計的 README 都有 **「還缺什麼」** 清單，列出下單前和實機要做的事：[off-the-shelf](off-the-shelf/README.md#還缺什麼)、[lay-board](lay-board/README.md#還缺什麼)。
 
-## 當時的建議順序（r5 時期）
-
-1. 買 `off-the-shelf` 的料，先用線接起來跑通影像、USB、Wi-Fi，不用打板也不用列印。
-2. 拿實測影格率決定 `off-the-shelf` 能不能接受，同時驗證 `lay-board` 也會用到的韌體路徑。
-3. `lay-board` 依 CAM 回覆決定要不要修，審查通過也先不付款，全部驗證過才打板。
-
 ## 3D 頁面
 
 每個資料夾裡有一份 HTML，下載後用瀏覽器開就能看（3D 需要連上網路載入 three.js）：
