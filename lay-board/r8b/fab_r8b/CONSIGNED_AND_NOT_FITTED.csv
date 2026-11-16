@@ -1,0 +1,6 @@
+﻿Ref,Value,Handling,Mid X,Mid Y,Layer,Rotation
+U1,"ESP32-P4-Module 28101 base, R99 fitted, consigned","Not in BOM, not placed by JLC: the customer solders it by hand after assembly (pads keep solder paste). Waveshare ESP32-P4-Module base, SKU 28101; R99 on the module must stay fitted",97.000mm,-105.400mm,Top,90
+C30,47pF 0402,Do not fit (no paste on its pads),107.600mm,-90.600mm,Bottom,0
+C31,47pF 0402,Do not fit (no paste on its pads),105.600mm,-92.200mm,Bottom,0
+R31,0R 0402,Do not fit (no paste on its pads),82.800mm,-93.800mm,Bottom,90
+R41,0R 0402,Do not fit (no paste on its pads),96.400mm,-109.600mm,Bottom,0

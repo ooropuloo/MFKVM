@@ -1,0 +1,70 @@
+Copper per net, old against new. Segments and vias match only if every coordinate, width and layer match, to 0.1 um.
+  CHANGED 5V: segments -3 +1 of 43, vias -0 +0 of 8
+  CHANGED 5V_DAMP: segments -1 +2 of 1, vias -0 +0 of 0
+  CHANGED GND: segments -2 +3 of 134, vias -6 +1 of 123
+3 of 108 routed nets changed
+unchanged routed nets (105): 3V3 ATX_LED ATX_PWR ATX_RST AVDD12 AVDD25 BOOT C6_IO8 C6_IO9 C6_RXD C6_TXD CK_N CK_P CSI_CK_N CSI_CK_P CSI_D0_N CSI_D0_P CSI_D1_N CSI_D1_P D0_N D0_P D1_N D1_P D2_N D2_P DDC3_SCL DDC3_SDA DDC_SCL DDC_SDA EF_DVDT EF_EN EF_ILM ESP_EN FB_1V2 FB_3V3 FB_MID GPIO36 HDMI_5V HDMI_CEC HDMI_HPD HOST_CC1 HOST_CC2 HOST_VBUS HOST_VBUS_DIV HPDI I2C_SCL I2C_SDA LCD_CLK LCD_CLK_J LCD_CS LCD_DC LCD_DIN LCD_DIN_J LCD_RST LDO_VO4 LED_A LED_IN LED_K LNA_OUT OSC_OUT OSC_VDD PWR_C PWR_CC1 PWR_CC2 PWR_E PWR_LED RST_C RST_E RST_LED SD1_VDD SD_CLK SD_CLK_C SD_CMD SD_CMD_C SD_D0 SD_D0_C SD_D1 SD_D1_C SD_D2 SD_D2_C SD_D3 SD_D3_C SD_PWR_N SD_SRC SW SW_1V2 TC_BIASDA TC_HPDO TC_PCKIN TC_PFIL TC_REFCLK TC_REXT TC_RST U0_RX U0_TX USB2_DN USB2_DP USB_DN USB_DP V1V2 V1V2_SNS V2V5 VBUS_IN VDDC VDD_MIPI
+pads 557 then 558; net changed or new or gone: {'C69.1': ('5V_DAMP', None), 'C69.2': ('GND', None), 'C72.1': (None, 'GND'), 'C72.2': (None, '5V_DAMP'), 'C73.1': (None, 'GND'), 'C73.2': (None, '5V_DAMP'), 'H4.1': ('GND', None), 'R68.1': ('5V', '5V_DAMP'), 'R68.2': ('5V_DAMP', '5V')}
+
+High-speed nets:
+  identical D2_P       21 segments, 0 vias
+  identical D2_N       6 segments, 0 vias
+  identical D1_P       13 segments, 0 vias
+  identical D1_N       6 segments, 0 vias
+  identical D0_P       13 segments, 0 vias
+  identical D0_N       6 segments, 0 vias
+  identical CK_P       13 segments, 0 vias
+  identical CK_N       6 segments, 0 vias
+  identical CSI_D0_P   12 segments, 1 vias
+  identical CSI_D0_N   6 segments, 1 vias
+  identical CSI_D1_P   16 segments, 1 vias
+  identical CSI_D1_N   23 segments, 1 vias
+  identical CSI_CK_P   20 segments, 1 vias
+  identical CSI_CK_N   16 segments, 1 vias
+  identical USB_DP     7 segments, 3 vias
+  identical USB_DN     6 segments, 3 vias
+  identical USB2_DP    21 segments, 3 vias
+  identical USB2_DN    18 segments, 4 vias
+  identical DDC_SCL    19 segments, 4 vias
+  identical DDC_SDA    7 segments, 0 vias
+  identical DDC3_SCL   44 segments, 3 vias
+  identical DDC3_SDA   19 segments, 2 vias
+  identical TC_REFCLK  6 segments, 0 vias
+  identical OSC_OUT    3 segments, 0 vias
+
+Gerber XOR per layer, mm2. Areas are design coordinates, x right and y down:
+  p4_kvm_mini-B_Cu.gbr: 193.4558 in 27 pieces
+      extent x -19.55..19.55, y 12.30..24.55
+  p4_kvm_mini-B_Mask.gbr: 40.1170 in 13 pieces
+      extent x -19.45..19.45, y 12.44..24.45
+  p4_kvm_mini-B_Paste.gbr: 20.3094 in 10 pieces
+      extent x 4.03..18.52, y 12.44..23.62
+  p4_kvm_mini-B_Silkscreen.gbr: 0.2414 in 1 pieces
+      extent x 10.94..11.86, y 20.07..20.98
+  p4_kvm_mini-Edge_Cuts.gbr: 4.6171 in 2 pieces
+      extent x -20.03..20.03, y 18.49..25.03
+  p4_kvm_mini-F_Cu.gbr: 195.6271 in 1 pieces
+      extent x -19.55..19.55, y 18.21..24.55
+  p4_kvm_mini-F_Mask.gbr: 19.8076 in 3 pieces
+      extent x -19.45..19.45, y 16.55..24.45
+  p4_kvm_mini-F_Paste.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Silkscreen.gbr: 2.0456 in 17 pieces
+      extent x -17.35..3.78, y -17.44..18.20
+  p4_kvm_mini-In1_Cu.gbr: 195.6271 in 1 pieces
+      extent x -19.55..19.55, y 18.21..24.55
+  p4_kvm_mini-In2_Cu.gbr: 20.6869 in 10 pieces
+      extent x -19.45..19.45, y 16.55..24.45
+  p4_kvm_mini-In3_Cu.gbr: 193.5837 in 10 pieces
+      extent x -19.55..19.55, y 16.43..24.55
+  p4_kvm_mini-In4_Cu.gbr: 195.6271 in 1 pieces
+      extent x -19.55..19.55, y 18.21..24.55
+  p4_kvm_mini-NPTH-drl_map.gbr: 17.2154 in 24 pieces
+      extent x -20.03..20.03, y 18.49..28.91
+  p4_kvm_mini-PTH-drl_map.gbr: 195.1367 in 559 pieces
+      extent x -22.12..44.59, y 16.79..43.76
+
+Drill files:
+  p4_kvm_mini-PTH.drl: 334 holes, then 328; removed ['X102.5Y-124.05', 'X103.55Y-121.8', 'X103.55Y-123.0', 'X115.5Y-124.05', 'X118.0Y-123.0', 'X82.0Y-123.0', 'X84.5Y-124.05', 'X88.5Y-124.05'], added ['X119.0Y-118.75', 'X82.0Y-118.0']
+  p4_kvm_mini-NPTH.drl: 0 holes, then 0; removed [], added []
+
+RESULT high-speed nets identical

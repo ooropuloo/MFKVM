@@ -1,0 +1,119 @@
+{
+ "materials": {
+  "tray": "Al 6061-T6, CNC, black anodized all over, inside faces included (emissivity ~0.85; insulation toward the board edge) except the masked contact faces (bare Al or conductive chromate conversion)",
+  "lid": "Al 6061-T6, CNC, black anodized (emissivity ~0.85) except the masked contact faces (bare Al or conductive chromate conversion)",
+  "plate": "Al 5052 or 6061, 0.8 mm, bare (no anodize, no paint); no thermal paste on any contact face (posts, shoulders, rims)",
+  "gapfill": "dispensed gap filler, low modulus, about 3 W/mK",
+  "boss_pad": "gap pad 5.6 x 5.6 x 0.5 mm, soft (Shore 00 below 40), about 3 W/mK, between the U7 package and the tray boss",
+  "washer": "closed-cell silicone or urethane (PORON type) foam washer, OD 3.6 x ID 2.2 x 1.5 mm free, one on each screw between the PCB top and the lid post end; not conductive",
+  "pigtail": "U.FL (I-PEX MHF1) plug to SMA bulkhead jack, 1.13 mm cable, 100 mm; 1/4-36 UNS thread, 8 mm rear hex, nut and lock washer outside; external 2.4 GHz antenna, SMA plug"
+ },
+ "masked": {
+  "post_shoulder": "lid post shoulders (5.5 mm) that clamp the plate",
+  "lid_rim": "lid rim face that sits on the plate",
+  "post_bore": "lid M2 tapped bores (thread contact to the screw)",
+  "tray_post_end": "tray post necked end faces that bear on the PCB bottom GND rings",
+  "tray_rim": "tray rim face under the plate"
+ },
+ "acceptance": [
+  "lid to board GND (J5 USB-C shell) < 1 ohm, measured after assembly with a 4-wire or low-range ohmmeter",
+  "plate to board GND < 1 ohm, measured the same way",
+  "tray to board GND < 1 ohm, measured the same way"
+ ],
+ "lid_hold": "three M2 screws only. The board has no hole in the fourth corner (design (18, 18)), so nothing can pass it to a screw; that corner holds C72/C73 underneath and the J6 plug and wires on top. The lid is a rigid aluminium cup and its fourth corner rests on the plate and the tray rim, so it cannot be pushed in; three clamped corners fix its plane. A lip into the tray is not possible because the plate lies across the split.",
+ "envelope": [
+  42.0,
+  42.0,
+  23.0
+ ],
+ "wall": 0.75,
+ "floor": 4.2,
+ "corner_r": [
+  0.8,
+  0.5
+ ],
+ "stack": {
+  "z_bot": 11.5,
+  "z_top": 12.7,
+  "split": 16.799999999999997,
+  "lid_z0": 17.599999999999998
+ },
+ "plate_t": 0.8,
+ "split": 16.799999999999997,
+ "lid_z0": 17.599999999999998,
+ "pads": {
+  "P4": [
+   -3.0,
+   5.4,
+   12.0
+  ],
+  "C6": [
+   -10.0,
+   12.4,
+   7.0
+  ]
+ },
+ "shield_z": 16.009999999999998,
+ "post_d": 3.8,
+ "shoulder_d": 5.5,
+ "plate_hole_d": 4.2,
+ "tray_post_d": 4.0,
+ "neck": {
+  "d": 3.2,
+  "tray_h": 0.5,
+  "lid_h": 1.3
+ },
+ "screws": "3 x M2 x 16 from the bottom, head seat z 1.8, tapped M2 in the lid posts",
+ "boss": {
+  "ref": "U7",
+  "centre": [
+   -3.0,
+   -4.0
+  ],
+  "size": 5.6,
+  "top_z": 9.8,
+  "gap": 0.5,
+  "package_h": 1.2
+ },
+ "j4_opening": {
+  "x0": -0.8999999999999995,
+  "x1": 8.3,
+  "z0": 6.9,
+  "z1": 11.45
+ },
+ "antenna": {
+  "wall": "-x",
+  "y": -10.0,
+  "z": 6.0,
+  "hole": 6.5,
+  "hex_af": 8.0,
+  "hex_t": 2.5,
+  "sleeve_d": 5.0,
+  "sleeve_l": 10.0
+ },
+ "sma_pocket": {
+  "x0": -20.25,
+  "x1": -7.25,
+  "y0": -14.9,
+  "y1": -5.1,
+  "z0": 1.0
+ },
+ "sd_relief": 1.5499999999999998,
+ "compliant": {
+  "slot_gap": 0.9,
+  "washer": {
+   "od": 3.6,
+   "id": 2.2,
+   "t": 1.5
+  },
+  "note": "the only rigid seat is lid rim / plate / tray rim; the lid posts do not touch the PCB"
+ },
+ "panel": "no V-cut on any edge; routed outline with mouse-bite tabs set inside the outline or filed flush after break-out: nothing may stand proud of the 40.00 mm outline",
+ "assembly": [
+  "SMA jack through the -x wall hole from inside, lock washer and nut outside, before the PCB goes in",
+  "U.FL plug onto J8 (board underside), cable laid on the floor clear of the U7 boss",
+  "PCB onto the three tray posts",
+  "one foam washer over each screw hole on the PCB top",
+  "gap filler on the module shield, plate, lid; three M2 x 16 from below"
+ ]
+}

@@ -1,0 +1,10 @@
+design out/design.json sha256 657fe276be2825ba1be47f9568e83eeaad98d94b0a373bf9872c5758bbe12bf0
+5V ceramics straight across 5V: C32 0.1 uF, C60 22 uF, C64 1 uF
+damping branch: R68 0.47 ohm in series with C72 22 uF + C73 22 uF
+damping capacitance / direct 5V ceramics = 1.90 (at least 1.5)
+source impedance against the converter input resistance, 648 corners:
+  worst |Zs|max / |Rin| = 0.141 (limit 0.25): |Zs| 0.65 ohm at 18.7 kHz against Rin 4.59 ohm; Vs 4.75 V, cable 3 uH / 0.03 ohm, 22 uF bias x0.6, damping 0.465 ohm / 17.6 uF
+  for reference, the same board without the damping branch: 1.020
+Wi-Fi TX burst train (3V3 80 -> 354 mA, 250 Hz): 5V min 4.372 V (need > 3.60 V) at Vs 4.75 L 3 uH R 0.3; 5V max 5.261 V (U2 VIN abs max 6.0 V)
+R68 pulse when 5V is shorted or the box is unplugged under load: at most 1/2 C V^2 = 0.67 mJ (0402 thick film; single event, not steady heat)
+INPUTFILTER OK ratio 0.141 limit 0.25

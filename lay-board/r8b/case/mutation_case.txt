@@ -1,0 +1,26 @@
+mutation run on v2_r8\case\stl
+ok  | control | passes | 0 FAIL lines
+ok  | boss 0.5 mm too tall (gap 0.0 to U7) | FAIL  boss leaves 0.5 +- 0.05 mm under the U7 package  [boss top z 10.300, package face z 10.300, gap 0.000] | 2 FAIL lines
+ok  | boss shifted 1.5 mm toward C21/R21/R60 (world -y) | FAIL  tray boss under U7 is 5.6 x 5.6, centred on the real U7 pads  [5.60 x 5.60, centre offset 1.50 from U7 at (-3.00, -4.00)] | 1 FAIL lines
+ok  | tray post added back at design (18, 18) = world (-18, 18) | FAIL  the tray touches the PCB only at the three screw holes  [4 contact patch(es), away from a hole at [(-17.9, 17.9)]] | 4 FAIL lines
+ok  | +x wall of tray and lid 0.5 mm thicker (envelope 42.5) | FAIL  outside envelope is exactly 42 x 42 x 23 mm  [STEP x -21.000..21.500 y -21.000..21.000 z -0.000..23.000; STL x -21.000..21.500 y -21.000..21.000 z 0.000..23.000] | 3 FAIL lines
+ok  | tray post tops back to the r7f 4.4 mm (no neck) | FAIL  no tray metal within 0.3 mm of non-GND copper on either face  [nearest 0.104 mm, B.Cu at z 11.495] | 1 FAIL lines
+ok  | lid post ends back to the full 3.8 mm (no neck) | FAIL  no lid metal within 0.3 mm of a part body (GND connector shells excepted)  [C1 0.120, U1 0.602, J6 1.681, TP1 2.438] | 10 FAIL lines
+ok  | vent slot 1.4 x 3.8 cut in the -x wall | FAIL  -x wall is sealed: its only openings are J5, ANT  [3 opening(s); unnamed at [(-6.0, 5.2, -4.6, 9.0)]] | 1 FAIL lines
+ok  | vent slot 1.2 x 5 cut in the lid top | FAIL  lid top is sealed: the LCD window is its only opening  [2 opening(s), areas [875.3, 2.4], window 876.2 mm2] | 1 FAIL lines
+ok  | tray post end faces not masked | FAIL  every lid and tray contact face that carries ground is masked from the anodize  [masked ['lid_rim', 'post_bore', 'post_shoulder', 'tray_rim']; missing ['tray_post_end']] | 1 FAIL lines
+ok  | tray-to-GND acceptance test dropped | FAIL  lid-, plate- and tray-to-GND < 1 ohm are assembly acceptance tests  [['lid to board GND (J5 USB-C shell) < 1 ohm, measured after assembly with a 4-wire or low-range ohmmeter', 'plate to board GND < 1 ohm, measured the same way']] | 1 FAIL lines
+ok  | lid posts reach the PCB again (two rigid seats) | FAIL  the lid does not touch the PCB anywhere (one rigid seat: the rim)  [3 contact patch(es) at [(-18.0, -18.0), (18.0, -18.0), (18.0, 18.0)]] | 8 FAIL lines
+ok  | lid posts 0.3 mm too long (gap 0.6) | FAIL  lid posts leave 0.9 mm over the PCB  [lowest lid metal z 13.300, PCB top 12.700] | 5 FAIL lines
+ok  | SMA hole 3 mm toward J5 | FAIL  SMA hole in the -x wall is round, 6.4 to 6.7 mm, at the required place  [d 6.50, centre y -7.00 z 6.00] | 3 FAIL lines
+ok  | SMA floor pocket not machined | FAIL  floor pocket clears the SMA hex (9.24 across corners, any rotation) and crimp sleeve by 0.2 mm  [nearest tray metal 0.00 mm] | 1 FAIL lines
+ok  | card opening top back under the board (J7 pads and ESP_EN face the wall) | FAIL  with the board pushed 0.35 mm against any wall no wall metal is within 0.3 mm of non-GND copper (outline +-0.2, hole play 0.1, machining 0.05)  [nearest 0.100 mm, B.Cu pushed to the +x wall, z 11.495] | 1 FAIL lines
+ok  | antenna window cut in the back wall again | FAIL  +y wall is sealed: its only openings are J4  [2 opening(s); unnamed at [(-19.0, 4.6, -3.0, 10.2)]] | 1 FAIL lines
+ok  | tray anodized outside only | FAIL  tray is anodized inside as well (the wall faces the board edge)  [Al 6061-T6, CNC, black anodized outside (emissivity ~0.85; insulation toward the board edge) except the masked contact faces (bare Al or conductive chromate conversion)] | 1 FAIL lines
+ok  | washer 1.0 mm in the spec | FAIL  case_spec names the same foam washer  [{'od': 3.6, 'id': 2.2, 't': 1.0}; closed-cell silicone or urethane (PORON type) foam washer, OD 3.6 x ID 2.2 x 1.5 mm free, one on each screw between the PCB top and the lid post end; not conductive] | 1 FAIL lines
+ok  | panel rule dropped | FAIL  case_spec carries the panel rule (no V-cut, nothing proud of the outline)  [missing] | 1 FAIL lines
+ok  | board: ATX_LED run back at y 119.68 (0.26 mm from the edge) | FAIL  with the board pushed 0.35 mm against any wall no wall metal is within 0.3 mm of non-GND copper (outline +-0.2, hole play 0.1, machining 0.05)  [nearest 0.157 mm, B.Cu pushed to the +y wall, z 11.505] | 1 FAIL lines
+ok  | board: SD_CMD_C via and In2 end back at x 80.30 | FAIL  with the board pushed 0.35 mm against any wall no wall metal is within 0.3 mm of non-GND copper (outline +-0.2, hole play 0.1, machining 0.05)  [nearest 0.005 mm, B.Cu pushed to the +x wall, z 11.495] | 2 FAIL lines
+
+22 runs, 0 bad
+MUTATION ALL CAUGHT

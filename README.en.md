@@ -4,17 +4,17 @@
 
 MF KVM is a small KVM-over-IP box built around the ESP32-P4 and running the [ESP-KVM](https://github.com/espkvm/espkvm) firmware. Plug in a host's HDMI and USB, then see its screen and use its keyboard and mouse from a browser over Wi-Fi. It can also press the host's power and reset buttons.
 
-**Status: no unit has been built yet.** The current revision, r7f, is in fabrication review at JLCPCB, unpaid. Everything that has passed is a file-level or model-level check. Nothing has been verified on hardware.
+**Status: r8b was ordered for fabrication on 2026-11-16 and the boards have not arrived.** Nothing has been soldered or powered. Everything that has passed is a file-level or model-level check. Nothing has been verified on hardware.
 
 Licensed under [LICENSE](LICENSE): hardware CERN-OHL-P-2.0, software Apache-2.0, documentation CC-BY-4.0. Third-party content keeps its own terms; see [THIRD_PARTY.md](THIRD_PARTY.md).
 
-## Current revision: r7f
+## Current revision: r8b
 
-A single 6-layer board with parts on both sides. The controller is an ESP32-P4-Module (U1, hand-soldered after assembly) and video capture is a TC358743 (U7, BGA).
+One 6-layer board, 40 × 40 mm, with parts on both sides. The controller is an ESP32-P4-Module (U1, hand-soldered after assembly) and video goes through a TC358743 (U7, BGA). The case is all aluminium with no fan, 42 × 42 × 23 mm, and the Wi-Fi antenna is external.
 
 | Top | Bottom |
 |---|---|
-| ![r7f board top render](lay-board/r7f/images/board_top.jpg) | ![r7f board bottom render](lay-board/r7f/images/board_bottom.jpg) |
+| ![r8b board top render](lay-board/r8b/images/board_top.png) | ![r8b board bottom render](lay-board/r8b/images/board_bottom.png) |
 
 <details>
 <summary>Part reference table (click to expand)</summary>
@@ -23,7 +23,7 @@ A single 6-layer board with parts on both sides. The controller is an ESP32-P4-M
 
 | Ref | What it is | Purpose / note |
 |---|---|---|
-| U1 | ESP32-P4 module | Controller and Wi-Fi; customer-supplied, hand-soldered after assembly; largest heat source |
+| U1 | ESP32-P4 module | Controller and Wi-Fi; bought separately, hand-soldered after assembly; largest heat source |
 | J3 | USB-C | To the controlled host (keyboard, mouse, virtual media) |
 | J5 | USB-C | 5 V power, flashing, console |
 | J6 | SM08B 8-pin | Round LCD |
@@ -45,65 +45,63 @@ A single 6-layer board with parts on both sides. The controller is an ESP32-P4-M
 | U3, U8, U9 | ESD protection | USB lines of J3, HDMI TMDS |
 | U10, U11, U12 | Optocoupler | ATX power, reset, LED |
 | J4 | SM06B 6-pin | ATX front panel |
-| J8 | U.FL | Wi-Fi antenna |
+| J8 | U.FL | Wi-Fi antenna (a cable takes it to an SMA jack on the case) |
 | Y1 | 27 MHz oscillator | Clock for U7 |
 | Q1 | P-channel MOSFET | microSD power switch |
-| C69 | 330 µF POSCAP | 5 V bulk capacitor |
+| R68 + C72, C73 | 0.47 Ω and two 22 µF | 5 V damping; replaces the 330 µF C69 of r7f |
 
-Resistors and most capacitors are not listed; see [`BOM_JLC.csv`](lay-board/r7f/fab_r7f/BOM_JLC.csv) for the full list.
+Resistors and most capacitors are not listed; see [`BOM_JLC.csv`](lay-board/r8b/fab_r8b/BOM_JLC.csv) for the full list.
 
 </details>
 
 | Case assembled | Exploded |
 |---|---|
-| ![r7f case assembled render](lay-board/r7f/images/case_assembled.jpg) | ![r7f case exploded render](lay-board/r7f/images/case_exploded.jpg) |
+| ![r8b case assembled render](lay-board/r8b/images/render_assembled.png) | ![r8b case exploded render](lay-board/r8b/images/render_exploded.png) |
 
-These are renders, not photos. The board file has no 3D models, so parts are boxes drawn from their real outlines and heights, and the fan is a placeholder shape. Labels inside the images are in Chinese.
+These are renders, not photos. The board file has no 3D models, so parts are boxes drawn from their real outlines and heights.
 
-| Item | Spec |
+| Item | Specification |
 |---|---|
-| Board | 40 × 45 mm, 6 layers, JLC06121H-3313 |
-| Case body | 44 × 49 × 20 mm, aluminium lid, tray in ASA / ABS / PC / PA12 (not PLA) |
-| With duct and fan | 44 × 69.2 × 35 mm (10 mm fan thickness is assumed) |
-| Rated ambient | 25 °C, with the ducted fan fitted |
-| Controller | ESP32-P4-Module base model (SKU 28101), on-module ESP32-C6, 2.4 GHz Wi-Fi, external antenna on U.FL |
+| Board | 40 × 40 mm, 6 layers, 1.2 mm, JLC06121H-3313, three mounting holes |
+| Case | 42 × 42 × 23 mm, CNC 6061 aluminium, black anodised, no fan |
+| Surface temperature (model) | About 51.5 °C at most, at 25 °C ambient and typical load |
+| Controller | ESP32-P4-Module base version (SKU 28101, 16MB, antenna on the castellated pin), with ESP32-C6 on board, 2.4 GHz Wi-Fi |
+| Antenna | U.FL on the board, cable to an SMA jack in the left wall of the case, external antenna |
 | Video | TC358743XBG, HDMI to CSI |
-| Display | 1.28-inch round LCD |
-| Fab package | [`lay-board/r7f/fab_r7f/`](lay-board/r7f/fab_r7f/), Gerber zip sha256 starts with `5edbd116` |
+| Display | 1.28 inch round LCD (optional) |
+| Power | USB-C, 1.5 A or more |
+| Fab package | [`lay-board/r8b/fab_r8b/`](lay-board/r8b/fab_r8b/), Gerber zip sha256 starts with `3613530e` |
 
-### What changed in this revision (from r7e)
+### What changed since r7f
 
-All figures below come from models, not measurements.
+| Item | Change |
+|---|---|
+| Board size | 40 × 45 to 40 × 40 mm; mounting holes 4 to 3 |
+| 5 V damping | The 330 µF C69 is removed, R68 becomes 0.47 Ω, and C72 and C73 (22 µF 0805) are added |
+| Case | From an aluminium lid, plastic tray and external fan duct to all aluminium with no fan, 42 × 42 × 23 mm |
+| Antenna (r8b) | Now external: an SMA hole in the left wall, and a U.FL to SMA cable to J8 on the board underside |
+| Edge clearance (r8b) | The two SD_CMD vias and the ATX_LED trace moved to 0.40 mm or more from the board edge |
+| Vertical clamping (r8b) | The lid posts no longer press on the board; foam washers do |
 
-| Area | Change | Result |
-|---|---|---|
-| 5 V input protection | Added eFuse U16 (TPS259531), about 2 A current limit, 5.7 V output clamp | Plug-in peak current from 10–18 A to 4.1–5.3 A |
-| HDMI CEC | Added ESD protection D1 (TPD1E10B06) on the CEC line | The line had none before |
-| microSD signals | 22 Ω in series on all 6 lines (R74–R79) | Write overshoot from 0.79–1.16 V to 0.05–0.23 V |
-| LCD signals | 33 Ω in series on DIN and CLK (R80, R81, 0201) | LCD CLK overshoot from 1.51 V to 0.61 V |
-| Cooling | Aluminium lid, 0.8 mm aluminium plate, gap filler on the P4 and C6, 12 vent slots | Lid under typical load from 52.9 °C to 49.5 °C (25 °C ambient) |
-| Ducted fan | 3D-printed duct and a 30 mm fan on its own USB supply, no PCB change | Lid 36.2 °C, tray 41.5 °C, below the 48 °C limit for contact over 1 minute (0.15 L/s, airflow assumed) |
-| Case grounding | Plated mounting holes tied to GND; contact faces of the lid and plate left unanodized | Acceptance test: lid and plate to GND < 1 Ω |
-| Hand-soldering clearance | All 22 pads next to U1 keep ≥ 0.2 mm with a solder-mask web; J6 moved 0.65 mm | Minimum 0.387 mm |
+The TMDS, CSI and USB routing is the same as r7f. From r8 to r8b no part moved, the BOM and CPL are unchanged, and only 4 of the 108 nets have different copper.
 
-**From r5 to r7f:** r6 added U.FL with a 50 Ω RF trace and moved impedance work to a field solver. r7 changed the 1.2 V rail to a buck converter (U15) and the DDC buffer to TCA9517A. r7c lengthened the board to 40 × 45 mm and added C69. r7d did CSI length matching. r7e added cold-start analysis.
+**The fabricator changed the width of the impedance-controlled traces:** 100 Ω pairs from 5.0/7.8 to 4.7/8.1 mil, and the 90 Ω USB pair from 7.09 to 6.37 mil wide, with the pitch and the stack-up unchanged. So these traces on the physical board differ from the Gerbers in this repo. Put back into this project's solver, they all stay within ±10 %; see [`IMPEDANCE_AS_BUILT.md`](lay-board/r8b/IMPEDANCE_AS_BUILT.md) (in Chinese).
 
-### Verification status
+### How far verification has gone
 
 | Passed (file and model level) | Result |
 |---|---|
-| ERC, DRC | 0 errors, 0 unconnected, 29 warnings accepted one by one |
-| Electrical rule checks, including the eFuse | All pass |
-| Mutation tests (deliberate faults must be caught) | 126 of 126 caught |
-| Case geometry | 99 of 99 |
-| Impedance, CSI matching, reference planes, solder mask, hole clearances, part bodies | Pass |
-| Independent review and delta review | 0 critical, conditional go for fabrication |
+| ERC, DRC | ERC passes; DRC 0 errors, 0 unconnected, 29 warnings each accepted |
+| Electrical rules, hot-plug, input filter, reference planes, pair gap, CSI vias, hand-solder clearance, impedance, part bodies | All pass |
+| Board mutation tests | 124 of 124 caught |
+| Case geometry | 124 checks pass; 22 of 22 mutations caught |
+| Independent review (r8) | Board conditionally ready to send. The 1 critical and 3 major case findings were fixed in r8b or closed by an owner decision. r8b did not get another independent review |
 
-**Not verified:** there is no physical board yet. EMI, RF / RSSI, video, USB, Wi-Fi, and real fan airflow and temperatures are all untested. The full list is in section 2 of the [verification report](lay-board/r7f/pdf/r7f_驗證報告.pdf) (in Chinese).
+**Not verified:** there is no physical board yet. EMI, RF / RSSI, video, USB, Wi-Fi and temperatures are all untested. The thermal model was not rerun for r8b. The firmware has only been compiled, never flashed. The antenna cable, antenna, foam washers and thermal materials have no part numbers chosen yet.
 
-**Where it stands:** in JLCPCB review, unpaid, not built. Before confirming production, U16 pin 1 and 16 parts of undetermined orientation still need checking one by one in the placement preview (U16 rotated 180° shorts VBUS to GND).
+**Where it stands:** ordered on 2026-11-16, waiting for the boards. First power-up follows [`BRINGUP_CHECKLIST.md`](lay-board/r8b/BRINGUP_CHECKLIST.md).
 
-**Full details (in Chinese):** [r7f notes](lay-board/r7f/README.md), [design report](lay-board/r7f/R7F_REPORT.md), [independent review](lay-board/r7f/REVIEW_r7f.md), [delta review](lay-board/r7f/DELTA_r7f.md), [drawings and report PDFs](lay-board/r7f/pdf/).
+**Full details (in Chinese):** [r8b notes](lay-board/r8b/README.md), [R8B report](lay-board/r8b/R8B_REPORT.md), [R8 report](lay-board/r8b/R8_REPORT.md), [independent review](lay-board/r8b/REVIEW_r8.md), [thermal analysis](lay-board/r8b/thermal/THERMAL_R8.md). The previous revision, r7f, stays in [`lay-board/r7f/`](lay-board/r7f/README.md).
 
 ## Earlier designs (archive)
 

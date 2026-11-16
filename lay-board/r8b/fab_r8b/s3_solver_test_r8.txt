@@ -1,0 +1,7 @@
+PASS Cohn stripline w=0.1234567 b=0.4: closed form 127.75, solver 126.09 (-1.30 %)
+PASS Cohn stripline w=0.2003333 b=0.5: closed form 112.83, solver 111.72 (-0.99 %)
+PASS Cohn coupled stripline w=0.1333333 s=0.1987654 b=0.5 (Zdiff): closed form 238.87, solver 235.59 (-1.37 %)
+PASS H-J microstrip w=0.1777777 h=0.1 er=4.1: closed form 53.95, solver 53.40 (-1.02 %)
+PASS continuity w 0.12267345678 g 0.2025265432 h 0.0994 against 0.1227/0.2025/0.0994: Zdiff 100.83 / 100.82 ohm (+0.01 %, limit 0.5 %)
+PASS continuity w 0.127 g 0.198 h 0.10123456789 against 0.127/0.198/0.1012346: Zdiff 99.80 / 99.80 ohm (+0.00 %, limit 0.5 %)
+RESULT PASS

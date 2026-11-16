@@ -1,0 +1,2117 @@
+{
+ "_doc": "Writes data/pin_types.json: the electrical type of every pin of every part on the board, and the datasheet limits\nverify.py applies to them. Each entry names its document and page. Run once by hand; the JSON is the reviewed artifact.\n\nPin types are KiCad's: power_in, power_out, input, output, bidirectional, tri_state, passive, free (datasheet says\n\"no internal connection\": may be left open or routed through), no_connect (datasheet says do not connect),\nopen_collector, open_emitter.\n",
+ "passive_libs": {
+  "R0402": "resistor or 0402 capacitor",
+  "C0603": "capacitor or 0603 ferrite bead",
+  "C0805": "capacitor or 0805 ferrite bead",
+  "IND4020": "inductor",
+  "TP_1.0": "test pad",
+  "CP_7343": "polarized capacitor (r7c C69, 5 V damping)",
+  "R0201": "resistor (r7f LCD series 33 ohm)"
+ },
+ "kinds": {
+  "ESP32-P4-Module": {
+   "match": {
+    "lib": "ESP32-P4-Module"
+   },
+   "doc": "Waveshare wiki ESP32-P4-Module, \"Pinout Description\" text table, https://www.waveshare.com/wiki/ESP32-P4-Module oldid=108255, read 2026-11-08",
+   "pins": {
+    "1": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "2": [
+     "LNA_OUT",
+     "passive",
+     "RF antenna pin of the ESP32-C6 (50 ohm line, no logic level)"
+    ],
+    "3": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "4": [
+     "C6_U0RXD",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "5": [
+     "C6_U0TXD",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "6": [
+     "C6_IO15",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "7": [
+     "C6_IO14",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "8": [
+     "C6_IO13",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "9": [
+     "C6_IO9",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "10": [
+     "C6_IO8",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "11": [
+     "C6_IO7",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "12": [
+     "C6_IO6",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "13": [
+     "C6_IO5",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "14": [
+     "C6_IO4",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "15": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "16": [
+     "GPIO1",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "17": [
+     "GPIO2",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "18": [
+     "GPIO3",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "19": [
+     "GPIO4",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "20": [
+     "GPIO5",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "21": [
+     "GPIO6",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "22": [
+     "GPIO7",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "23": [
+     "GPIO8",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "24": [
+     "GPIO9",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "25": [
+     "GPIO10",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "26": [
+     "GPIO11",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "27": [
+     "GPIO12",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "28": [
+     "GPIO13",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "29": [
+     "GPIO20",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "30": [
+     "GPIO21",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "31": [
+     "GPIO22",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "32": [
+     "GPIO23",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "33": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "34": [
+     "DSI_DATAP1",
+     "output",
+     "MIPI-DSI transmitter lane of the P4"
+    ],
+    "35": [
+     "DSI_DATAN1",
+     "output",
+     "MIPI-DSI transmitter lane of the P4"
+    ],
+    "36": [
+     "DSI_CLKN",
+     "output",
+     "MIPI-DSI transmitter lane of the P4"
+    ],
+    "37": [
+     "DSI_CLKP",
+     "output",
+     "MIPI-DSI transmitter lane of the P4"
+    ],
+    "38": [
+     "DSI_DATAP0",
+     "output",
+     "MIPI-DSI transmitter lane of the P4"
+    ],
+    "39": [
+     "DSI_DATAN0",
+     "output",
+     "MIPI-DSI transmitter lane of the P4"
+    ],
+    "40": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "41": [
+     "CSI_DATAN0",
+     "input",
+     "MIPI-CSI receiver lane of the P4"
+    ],
+    "42": [
+     "CSI_DATAP0",
+     "input",
+     "MIPI-CSI receiver lane of the P4"
+    ],
+    "43": [
+     "CSI_CLKP",
+     "input",
+     "MIPI-CSI receiver lane of the P4"
+    ],
+    "44": [
+     "CSI_CLKN",
+     "input",
+     "MIPI-CSI receiver lane of the P4"
+    ],
+    "45": [
+     "CSI_DATAN1",
+     "input",
+     "MIPI-CSI receiver lane of the P4"
+    ],
+    "46": [
+     "CSI_DATAP1",
+     "input",
+     "MIPI-CSI receiver lane of the P4"
+    ],
+    "47": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "48": [
+     "USB_DM",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "49": [
+     "USB_DP",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "50": [
+     "GPIO24",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "51": [
+     "GPIO25",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "52": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "66": [
+     "ESP_LDO_VO4",
+     "power_out",
+     "\"ESP32-P4 internal LDO output pin\""
+    ],
+    "83": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "84": [
+     "VBAT",
+     "power_in",
+     "supply input, \"recommended to connect 3.3V\""
+    ],
+    "85": [
+     "ESP_3V3",
+     "power_in",
+     "supply input, \"recommended to connect 3.3V\""
+    ],
+    "86": [
+     "ESP_3V3",
+     "power_in",
+     "supply input, \"recommended to connect 3.3V\""
+    ],
+    "87": [
+     "ESP_EN",
+     "input",
+     "CHIP_PU, \"enable pin, default pulled high\" (P4 datasheet v0.7 p34: do not leave floating)"
+    ],
+    "88": [
+     "GPIO0",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "53": [
+     "GPIO26",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "54": [
+     "GPIO27",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "55": [
+     "GPIO28",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "56": [
+     "GPIO29",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "57": [
+     "GPIO30",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "58": [
+     "GPIO31",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "59": [
+     "GPIO32",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "60": [
+     "GPIO33",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "61": [
+     "GPIO34",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "62": [
+     "GPIO35",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "63": [
+     "GPIO36",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "64": [
+     "GPIO37",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "65": [
+     "GPIO38",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "67": [
+     "GPIO39",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "68": [
+     "GPIO40",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "69": [
+     "GPIO41",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "70": [
+     "GPIO42",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "71": [
+     "GPIO43",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "72": [
+     "GPIO44",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "73": [
+     "GPIO45",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "74": [
+     "GPIO46",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "75": [
+     "GPIO47",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "76": [
+     "GPIO48",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "77": [
+     "GPIO49",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "78": [
+     "GPIO50",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "79": [
+     "GPIO51",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "80": [
+     "GPIO52",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "81": [
+     "GPIO53",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ],
+    "82": [
+     "GPIO54",
+     "bidirectional",
+     "GPIO (any direction via the IO matrix); USB_DM/DP and C6 UART pins are bidirectional too"
+    ]
+   }
+  },
+  "TC358743XBG": {
+   "match": {
+    "lcsc": "C3008606"
+   },
+   "doc": "Toshiba TC358743XBG datasheet 2014-05-16 p12 Fig. 3.1 (ball), p10-11 Table 3.1 (I/O)",
+   "pins": {
+    "A1": [
+     "REXT",
+     "passive",
+     "external 2k reference resistor to AVDD33 (p11)"
+    ],
+    "A2": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "A3": [
+     "VPGM",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "A4": [
+     "BIASDA",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "A5": [
+     "DAOUT",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "A6": [
+     "PFIL",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "A7": [
+     "CSID3N",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "A8": [
+     "CSID3P",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "B1": [
+     "AVDD33",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "B2": [
+     "AVDD12",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "B3": [
+     "INT",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "B4": [
+     "IR",
+     "input",
+     "I/O column \"I\" (p10)"
+    ],
+    "B5": [
+     "AVDD25",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "B6": [
+     "PCKIN",
+     "input",
+     "I/O column \"I\" (p10)"
+    ],
+    "B7": [
+     "CSID2N",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "B8": [
+     "CSID2P",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "C1": [
+     "HDMICP",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "C2": [
+     "HDMICN",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "C3": [
+     "VDDC2",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "C4": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "C5": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "C6": [
+     "VDD_MIPI",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "C7": [
+     "CSICN",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "C8": [
+     "CSICP",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "D1": [
+     "HDMID0P",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "D2": [
+     "HDMID0N",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "D3": [
+     "AVDD12",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "D4": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "D5": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "D6": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "D7": [
+     "CSID1N",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "D8": [
+     "CSID1P",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "E1": [
+     "HDMID1P",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "E2": [
+     "HDMID1N",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "E3": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "E4": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "E5": [
+     "TEST",
+     "input",
+     "I/O column \"I\" (p10)"
+    ],
+    "E6": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "E7": [
+     "CSID0N",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "E8": [
+     "CSID0P",
+     "output",
+     "CSI-2 TX lane (p10)"
+    ],
+    "F1": [
+     "HDMID2P",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "F2": [
+     "HDMID2N",
+     "input",
+     "HDMI RX PHY (p10)"
+    ],
+    "F3": [
+     "AVDD33",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "F4": [
+     "VDDIO1",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "F5": [
+     "VDDC2",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "F6": [
+     "VDD_MIPI",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "F7": [
+     "A_SCK",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "F8": [
+     "A_SD",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "G1": [
+     "CEC",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "G2": [
+     "VDDC1",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "G3": [
+     "DDC_SDA",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "G4": [
+     "I2C_SDA",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "G5": [
+     "RESETN",
+     "input",
+     "I/O column \"I\" (p10)"
+    ],
+    "G6": [
+     "EDID_SDA",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "G7": [
+     "A_WFS",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "G8": [
+     "A_OSCK",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "H1": [
+     "HPDO",
+     "output",
+     "I/O column \"O\" (p10)"
+    ],
+    "H2": [
+     "HPDI",
+     "input",
+     "I/O column \"I\" (p10)"
+    ],
+    "H3": [
+     "DDC_SCL",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "H4": [
+     "I2C_SCL",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "H5": [
+     "REFCLK",
+     "input",
+     "I/O column \"I\" (p10)"
+    ],
+    "H6": [
+     "EDID_SCL",
+     "bidirectional",
+     "I/O column \"IO\", Schmitt (p10, p11 Note2)"
+    ],
+    "H7": [
+     "VDDIO2",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ],
+    "H8": [
+     "VSS",
+     "power_in",
+     "supply / ground (p10 POWER, Ground; p11 VPGM \"tie to ground\")"
+    ]
+   }
+  },
+  "TCA9517A": {
+   "match": {
+    "lcsc": "C201698"
+   },
+   "doc": "TI TCA9517A SCPS245E (rev. Oct 2025) p4 Table 4-1",
+   "pins": {
+    "1": [
+     "VCCA",
+     "power_in",
+     "Supply"
+    ],
+    "2": [
+     "SCLA",
+     "bidirectional",
+     "Input/Output"
+    ],
+    "3": [
+     "SDAA",
+     "bidirectional",
+     "Input/Output"
+    ],
+    "4": [
+     "GND",
+     "power_in",
+     "Ground"
+    ],
+    "5": [
+     "EN",
+     "input",
+     "Input"
+    ],
+    "6": [
+     "SDAB",
+     "bidirectional",
+     "Input/Output"
+    ],
+    "7": [
+     "SCLB",
+     "bidirectional",
+     "Input/Output"
+    ],
+    "8": [
+     "VCCB",
+     "power_in",
+     "Supply"
+    ]
+   }
+  },
+  "SY8089": {
+   "match": {
+    "lcsc": "C78988"
+   },
+   "doc": "Silergy AN_SY8089/A Rev 0.9A p2 Pin Description",
+   "pins": {
+    "1": [
+     "EN",
+     "input",
+     "Enable control, do not float"
+    ],
+    "2": [
+     "GND",
+     "power_in",
+     "Ground"
+    ],
+    "3": [
+     "LX",
+     "power_out",
+     "switching node to the inductor"
+    ],
+    "4": [
+     "IN",
+     "power_in",
+     "Input"
+    ],
+    "5": [
+     "FB",
+     "input",
+     "Output feedback, divider centre"
+    ]
+   }
+  },
+  "TLV73325": {
+   "match": {
+    "lcsc": "C882825"
+   },
+   "doc": "TI TLV733P SBVS235C p4 Pin Functions, DBV",
+   "pins": {
+    "1": [
+     "IN",
+     "power_in",
+     "I"
+    ],
+    "2": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "3": [
+     "EN",
+     "input",
+     "I"
+    ],
+    "4": [
+     "NC",
+     "free",
+     "\"No internal connection\""
+    ],
+    "5": [
+     "OUT",
+     "power_out",
+     "O, regulated output"
+    ]
+   }
+  },
+  "TPD4E05U06": {
+   "match": {
+    "lcsc": "C138714"
+   },
+   "doc": "TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p4 Table 4-2 (DQA)",
+   "pins": {
+    "1": [
+     "D1+",
+     "passive",
+     "I/O ESD channel: a clamp, it never drives"
+    ],
+    "2": [
+     "D1-",
+     "passive",
+     "I/O ESD channel"
+    ],
+    "3": [
+     "GND",
+     "power_in",
+     "Ground"
+    ],
+    "4": [
+     "D2+",
+     "passive",
+     "I/O ESD channel"
+    ],
+    "5": [
+     "D2-",
+     "passive",
+     "I/O ESD channel"
+    ],
+    "6": [
+     "NC",
+     "free",
+     "\"Not connected; used for optional straight-through routing. Can be left floating or grounded\""
+    ],
+    "7": [
+     "NC",
+     "free",
+     "as pin 6"
+    ],
+    "8": [
+     "GND",
+     "power_in",
+     "Ground"
+    ],
+    "9": [
+     "NC",
+     "free",
+     "as pin 6"
+    ],
+    "10": [
+     "NC",
+     "free",
+     "as pin 6"
+    ]
+   }
+  },
+  "TPS259531": {
+   "match": {
+    "lcsc": "C2155674"
+   },
+   "doc": "TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p4 Pin Functions (TPS2595x0/1, DSG)",
+   "pins": {
+    "1": [
+     "dVdt",
+     "passive",
+     "capacitor to GND sets the output slew rate (analog I/O)"
+    ],
+    "2": [
+     "EN/UVLO",
+     "input",
+     "active-high enable, divider sets UVLO, \"Do not leave floating\""
+    ],
+    "3": [
+     "IN",
+     "power_in",
+     "power input"
+    ],
+    "4": [
+     "IN",
+     "power_in",
+     "power input"
+    ],
+    "5": [
+     "OUT",
+     "power_out",
+     "power output"
+    ],
+    "6": [
+     "FLT",
+     "open_collector",
+     "open-drain fault output, needs an external pull-up"
+    ],
+    "7": [
+     "ILM",
+     "passive",
+     "resistor to GND sets the current limit (analog I/O), \"Do not leave floating\""
+    ],
+    "8": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "9": [
+     "PAD",
+     "power_in",
+     "exposed pad, \"must be connected to GND\""
+    ]
+   }
+  },
+  "TPD1E10B06": {
+   "match": {
+    "lcsc": "C48260"
+   },
+   "doc": "TI TPD1E10B06 SLLSEB1G (Aug 2024), datasheets_r7f/tpd1e10b06.pdf p3 (bidirectional, pins interchangeable)",
+   "pins": {
+    "1": [
+     "IO",
+     "passive",
+     "ESD clamp terminal, never drives"
+    ],
+    "2": [
+     "IO",
+     "passive",
+     "ESD clamp terminal (to GND here)"
+    ]
+   }
+  },
+  "YSO110TR": {
+   "match": {
+    "lcsc": "C725995"
+   },
+   "doc": "YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 (pin function, image)",
+   "pins": {
+    "1": [
+     "OE",
+     "input",
+     "tri-state control: high (70% VDD) or floating = output on"
+    ],
+    "2": [
+     "GND",
+     "power_in",
+     "ground"
+    ],
+    "3": [
+     "OUT",
+     "tri_state",
+     "clock output, high impedance when OE low"
+    ],
+    "4": [
+     "VDD",
+     "power_in",
+     "supply"
+    ]
+   }
+  },
+  "AO3401A": {
+   "match": {
+    "lcsc": "C15127"
+   },
+   "doc": "AOS AO3401A Rev 3.1 p1 pin configuration (SOT-23: 1 G, 2 S, 3 D)",
+   "pins": {
+    "1": [
+     "G",
+     "input",
+     "gate"
+    ],
+    "2": [
+     "S",
+     "passive",
+     "source: channel terminal"
+    ],
+    "3": [
+     "D",
+     "passive",
+     "drain: channel terminal"
+    ]
+   }
+  },
+  "EL3H7": {
+   "match": {
+    "lcsc": "C92243"
+   },
+   "doc": "Everlight EL3H7-G DPC-0000031 rev 7 p1 pin configuration (as checked in the 2026-11-07 pinout audit; p1 not re-read for r7c)",
+   "pins": {
+    "1": [
+     "A",
+     "passive",
+     "LED anode"
+    ],
+    "2": [
+     "K",
+     "passive",
+     "LED cathode"
+    ],
+    "3": [
+     "E",
+     "passive",
+     "phototransistor emitter"
+    ],
+    "4": [
+     "C",
+     "passive",
+     "phototransistor collector"
+    ]
+   },
+   "note": "Discrete diode and bipolar terminals: they neither drive nor sense a logic level by themselves, so passive is the true type."
+  },
+  "HDMI-001S": {
+   "match": {
+    "lib": "HDMI-001S"
+   },
+   "doc": "HDMI 1.4 Type A pin assignment (1 D2+ ... 19 HPD); Xunpu HDMI-001S drawing marks pins 1 and 19; 20-23 shell",
+   "pins": {
+    "1": [
+     "D2+",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "2": [
+     "D2_SH",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "3": [
+     "D2-",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "4": [
+     "D1+",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "5": [
+     "D1_SH",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "6": [
+     "D1-",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "7": [
+     "D0+",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "8": [
+     "D0_SH",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "9": [
+     "D0-",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "10": [
+     "CK+",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "11": [
+     "CK_SH",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "12": [
+     "CK-",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "13": [
+     "CEC",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "14": [
+     "UTILITY",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "15": [
+     "SCL",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "16": [
+     "SDA",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "17": [
+     "DDC_GND",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "18": [
+     "+5V",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "19": [
+     "HPD",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "20": [
+     "SHELL",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "21": [
+     "SHELL",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "22": [
+     "SHELL",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "23": [
+     "SHELL",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ]
+   }
+  },
+  "USB-C_HX_16P": {
+   "match": {
+    "lib": "USB-C_HX_16P"
+   },
+   "doc": "HX TYPE-C 16P (LCSC C41427493) drawing; USB Type-C receptacle pin names",
+   "pins": {
+    "1": [
+     "1",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "2": [
+     "2",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "3": [
+     "3",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "4": [
+     "4",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "A1B12": [
+     "A1B12",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "B1A12": [
+     "B1A12",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "A4B9": [
+     "A4B9",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "B4A9": [
+     "B4A9",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "A5": [
+     "A5",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "B5": [
+     "B5",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "A6": [
+     "A6",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "B6": [
+     "B6",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "A7": [
+     "A7",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "B7": [
+     "B7",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "A8": [
+     "A8",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "B8": [
+     "B8",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ]
+   }
+  },
+  "JST_SM06B": {
+   "match": {
+    "lib": "JST_SM06B"
+   },
+   "doc": "JST SH SM06B-SRSS-TB, 6 contacts + 2 fixing tabs",
+   "pins": {
+    "1": [
+     "1",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "2": [
+     "2",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "3": [
+     "3",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "4": [
+     "4",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "5": [
+     "5",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "6": [
+     "6",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "7": [
+     "7",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "8": [
+     "8",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ]
+   }
+  },
+  "JST_SM08B": {
+   "match": {
+    "lib": "JST_SM08B"
+   },
+   "doc": "JST SH SM08B-SRSS-TB, 8 contacts + 2 fixing tabs",
+   "pins": {
+    "1": [
+     "1",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "2": [
+     "2",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "3": [
+     "3",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "4": [
+     "4",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "5": [
+     "5",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "6": [
+     "6",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "7": [
+     "7",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "8": [
+     "8",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "9": [
+     "9",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "10": [
+     "10",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ]
+   }
+  },
+  "microSD": {
+   "match": {
+    "lib": "microSD_Molex_104031-0811"
+   },
+   "doc": "Molex 104031-0811 drawing (LCSC C585350) T1-T8, 9-10 detect switch, SH shell",
+   "pins": {
+    "1": [
+     "1",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "2": [
+     "2",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "3": [
+     "3",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "4": [
+     "4",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "5": [
+     "5",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "6": [
+     "6",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "7": [
+     "7",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "8": [
+     "8",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "9": [
+     "9",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "10": [
+     "10",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "SH1": [
+     "SH1",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "SH2": [
+     "SH2",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "SH3": [
+     "SH3",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "SH4": [
+     "SH4",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ]
+   }
+  },
+  "U.FL": {
+   "match": {
+    "lib": "U.FL-R-SMT-1"
+   },
+   "doc": "Hirose U.FL catalogue p3: 1 signal, 2-3 ground",
+   "pins": {
+    "1": [
+     "SIG",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "2": [
+     "GND",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ],
+    "3": [
+     "GND",
+     "passive",
+     "connector contact: a wire, no driver of its own"
+    ]
+   }
+  }
+ },
+ "limits": {
+  "TC358743XBG": {
+   "B1": {
+    "supply": [
+     3.135,
+     3.465
+    ],
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD33"
+   },
+   "F3": {
+    "supply": [
+     3.135,
+     3.465
+    ],
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD33"
+   },
+   "B2": {
+    "supply": [
+     1.15,
+     1.25
+    ],
+    "drop": "AVDD12",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD12"
+   },
+   "D3": {
+    "supply": [
+     1.15,
+     1.25
+    ],
+    "drop": "AVDD12",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD12"
+   },
+   "B5": {
+    "supply": [
+     2.25,
+     2.75
+    ],
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 AVDD25"
+   },
+   "C3": {
+    "supply": [
+     1.1,
+     1.3
+    ],
+    "drop": "BEAD",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC"
+   },
+   "F5": {
+    "supply": [
+     1.1,
+     1.3
+    ],
+    "drop": "BEAD",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC"
+   },
+   "G2": {
+    "supply": [
+     1.1,
+     1.3
+    ],
+    "drop": "BEAD",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDC"
+   },
+   "C6": {
+    "supply": [
+     1.1,
+     1.3
+    ],
+    "drop": "BEAD",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDD_MIPI"
+   },
+   "F6": {
+    "supply": [
+     1.1,
+     1.3
+    ],
+    "drop": "BEAD",
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDD_MIPI"
+   },
+   "F4": {
+    "supply": [
+     3.0,
+     3.6
+    ],
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDIO1"
+   },
+   "H7": {
+    "supply": [
+     1.65,
+     3.6
+    ],
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p15 5.2 VDDIO2"
+   },
+   "E5": {
+    "vil": {
+     "k": 0.3,
+     "of": "H7"
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 TEST \"0: Normal mode\", p16 VIL 0.3 VDDIO"
+   },
+   "A3": {
+    "vil": {
+     "k": 0.0,
+     "of": "H7"
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p11 VPGM \"please tie to ground\""
+   },
+   "B4": {
+    "vil": {
+     "k": 0.3,
+     "of": "H7"
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 IR, Sch input with no pull and no \"when not used\" rule: r7c ties it low (VIL 0.3 VDDIO, p16) so it cannot float"
+   },
+   "H5": {
+    "vih": {
+     "k": 0.7,
+     "of": "H7"
+    },
+    "vmax": {
+     "of": "H7",
+     "add": 0.3
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 REFCLK on VDDIO2, p16 VIH 0.7 VDDIO, p15 VIN_IO max VDDIO+0.3"
+   },
+   "G5": {
+    "vmax": {
+     "of": "H7",
+     "add": 0.3
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 RESETN on VDDIO2, p15 VIN_IO"
+   },
+   "G4": {
+    "vmax": {
+     "of": "H7",
+     "add": 0.3
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 I2C on VDDIO2, p15 VIN_IO"
+   },
+   "H4": {
+    "vmax": {
+     "of": "H7",
+     "add": 0.3
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 I2C on VDDIO2, p15 VIN_IO"
+   },
+   "G3": {
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 DDC on VDDIO1, p11 Note1 \"5V tolerant\" (5.5 V ASSUMED as the meaning of 5 V tolerant)"
+   },
+   "H3": {
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10, p11 Note1"
+   },
+   "H2": {
+    "vih": {
+     "k": 0.7,
+     "of": "F4"
+    },
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10 HPDI on VDDIO1, p11 Note1 5 V tolerant, p16 VIH 0.7 VDDIO, IILH 10 uA"
+   },
+   "A1": {
+    "rext": [
+     2000,
+     0.01,
+     "B1"
+    ],
+    "src": "Toshiba TC358743XBG datasheet 2014-05-16 p11 REXT \"connect to AVDD33 with a 2K ohm resistor (+-1%)\""
+   }
+  },
+  "TCA9517A": {
+   "1": {
+    "supply": [
+     0.9,
+     5.5
+    ],
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3"
+   },
+   "8": {
+    "supply": [
+     2.7,
+     5.5
+    ],
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3"
+   },
+   "5": {
+    "vih": {
+     "k": 0.7,
+     "of": "8"
+    },
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p5 5.3 VIH EN 0.7 x VCCB, max 5.5"
+   },
+   "2": {
+    "pullup_of": "1",
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p4: A side \"connect to VCCA through a pull-up resistor\""
+   },
+   "3": {
+    "pullup_of": "1",
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p4"
+   },
+   "6": {
+    "pullup_of": "8",
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p4: B side \"connect to VCCB through a pull-up resistor\""
+   },
+   "7": {
+    "pullup_of": "8",
+    "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p4"
+   }
+  },
+  "SY8089": {
+   "4": {
+    "supply": [
+     2.7,
+     5.5
+    ],
+    "abs": 6.0,
+    "src": "Silergy AN_SY8089/A Rev 0.9A p4 VIN 2.7-5.5, p2 abs 6.0"
+   },
+   "1": {
+    "vih": {
+     "abs": 1.5
+    },
+    "vmax": {
+     "of": "4",
+     "add": 0.6
+    },
+    "src": "Silergy AN_SY8089/A Rev 0.9A p4 VENH 1.5, p2 EN abs VIN+0.6, \"do not float\""
+   },
+   "5": {
+    "buck": {
+     "vref": [
+      0.588,
+      0.612
+     ],
+     "ifb": 5e-08,
+     "lx": "3"
+    },
+    "src": "Silergy AN_SY8089/A Rev 0.9A p2 Vout=0.6(1+R1/R2), p4 VREF 0.588-0.612 (25 C), IFB +-50 nA"
+   }
+  },
+  "TLV73325": {
+   "1": {
+    "supply": [
+     1.4,
+     5.5
+    ],
+    "src": "TI TLV733P SBVS235C p5 6.3"
+   },
+   "3": {
+    "vih": {
+     "abs": 0.9
+    },
+    "vmax": {
+     "of": "1",
+     "add": 0.3
+    },
+    "src": "TI TLV733P SBVS235C p6 VEN(HI) 0.9, p5 VEN abs VIN+0.3"
+   },
+   "5": {
+    "fixed": [
+     2.465,
+     2.535
+    ],
+    "src": "TI TLV733P SBVS235C p6 DC output accuracy +-1.4% over temperature"
+   }
+  },
+  "YSO110TR": {
+   "4": {
+    "supply": [
+     1.8,
+     3.3
+    ],
+    "level": "WARN",
+    "src": "YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 supply 1.8-3.3 V (listed values, no tolerance given)"
+   },
+   "1": {
+    "vih": {
+     "k": 0.7,
+     "of": "4"
+    },
+    "src": "YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 tri-state high 70% VDD"
+   },
+   "3": {
+    "voh": {
+     "k": 0.9,
+     "of": "4"
+    },
+    "load_pf": 15,
+    "src": "YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1 VOH 90% VDD, load 15 pF max"
+   }
+  },
+  "ESP32-P4-Module": {
+   "85": {
+    "supply": [
+     3.0,
+     3.6
+    ],
+    "src": "Waveshare ESP32-P4-Module wiki: 3.3 V supply; 3.0-3.6 is the P4 VDDPST range, ESP32-P4 datasheet v0.7 p32 (not re-read for r7c)"
+   },
+   "86": {
+    "supply": [
+     3.0,
+     3.6
+    ],
+    "src": "as 85"
+   },
+   "84": {
+    "supply": [
+     3.0,
+     3.6
+    ],
+    "src": "as 85"
+   },
+   "87": {
+    "pullup": true,
+    "src": "Espressif ESP32-P4 datasheet v0.7 p34 CHIP_PU: do not leave floating; p90 VIH_nRST 0.75 VDD"
+   },
+   "18": {
+    "vih": {
+     "k": 0.75,
+     "of": "85"
+    },
+    "vmax": {
+     "of": "85",
+     "add": 0.3
+    },
+    "src": "Espressif ESP32-P4 datasheet v0.7 p89 VIH 0.75 VDD, max VDD+0.3"
+   }
+  },
+  "TPD4E05U06": {
+   "1": {
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V"
+   },
+   "2": {
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V"
+   },
+   "4": {
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V"
+   },
+   "5": {
+    "vmax": {
+     "abs": 5.5
+    },
+    "src": "TI TPDxE05U06 SLVSBO7O (Aug 2024), datasheets_r7/tpd4e05u06_slvsbo7o.pdf p7 VRWM 5.5 V"
+   }
+  },
+  "AO3401A": {
+   "1": {
+    "vgs_max": 12,
+    "src": "AOS AO3401A Rev 3.1 p1 VGS +-12 V"
+   }
+  },
+  "TPS259531": {
+   "3": {
+    "supply": [
+     2.7,
+     18.0
+    ],
+    "abs": 20.0,
+    "src": "TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p5 7.3 VIN 2.7-18 V, 7.1 abs 20 V"
+   },
+   "2": {
+    "vmax": {
+     "abs": 6.0
+    },
+    "src": "TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p5 7.3 VEN 0-6 V (7.1 abs 7 V)"
+   },
+   "5": {
+    "efuse": {
+     "from": "3",
+     "clamp": [
+      5.2,
+      5.7
+     ]
+    },
+    "src": "TI TPS2595xx SLVSE57C (Apr 2018), datasheets_r7f/tps2595.pdf p7 VCLAMP 5.2-5.7 V (TPS25953x), output follows IN below VOVC 5.5-5.9 V"
+   }
+  }
+ },
+ "domains": {
+  "TC358743XBG": {
+   "src": "Toshiba TC358743XBG datasheet 2014-05-16 p10-11 Table 3.1 \"Voltage Supply\" column; p15 VOUT_APLL",
+   "pins": {
+    "A4": "B5",
+    "A5": "B5",
+    "A6": "B5",
+    "A7": "C6",
+    "A8": "C6",
+    "B3": "H7",
+    "B4": "H7",
+    "B6": "B5",
+    "B7": "C6",
+    "B8": "C6",
+    "C1": "B1",
+    "C2": "B1",
+    "C7": "C6",
+    "C8": "C6",
+    "D1": "B1",
+    "D2": "B1",
+    "D7": "C6",
+    "D8": "C6",
+    "E1": "B1",
+    "E2": "B1",
+    "E5": "H7",
+    "E7": "C6",
+    "E8": "C6",
+    "F1": "B1",
+    "F2": "B1",
+    "F7": "H7",
+    "F8": "H7",
+    "G1": "F4",
+    "G3": "F4",
+    "G4": "H7",
+    "G5": "H7",
+    "G6": "H7",
+    "G7": "H7",
+    "G8": "H7",
+    "H1": "F4",
+    "H2": "F4",
+    "H3": "F4",
+    "H4": "H7",
+    "H5": "H7",
+    "H6": "H7"
+   }
+  },
+  "ESP32-P4-Module": {
+   "src": "Waveshare wiki ESP32-P4-Module, \"Pinout Description\" text table, https://www.waveshare.com/wiki/ESP32-P4-Module oldid=108255, read 2026-11-08; GPIO39-48 are on VDD_IO_5 = ESP_LDO_VO4 (wiki pin 66 text), bounded here by the module 3.3 V supply",
+   "pins": {
+    "4": "85",
+    "5": "85",
+    "6": "85",
+    "7": "85",
+    "8": "85",
+    "9": "85",
+    "10": "85",
+    "11": "85",
+    "12": "85",
+    "13": "85",
+    "14": "85",
+    "16": "85",
+    "17": "85",
+    "18": "85",
+    "19": "85",
+    "20": "85",
+    "21": "85",
+    "22": "85",
+    "23": "85",
+    "24": "85",
+    "25": "85",
+    "26": "85",
+    "27": "85",
+    "28": "85",
+    "29": "85",
+    "30": "85",
+    "31": "85",
+    "32": "85",
+    "34": "85",
+    "35": "85",
+    "36": "85",
+    "37": "85",
+    "38": "85",
+    "39": "85",
+    "41": "85",
+    "42": "85",
+    "43": "85",
+    "44": "85",
+    "45": "85",
+    "46": "85",
+    "48": "85",
+    "49": "85",
+    "50": "85",
+    "51": "85",
+    "87": "85",
+    "88": "85",
+    "53": "85",
+    "54": "85",
+    "55": "85",
+    "56": "85",
+    "57": "85",
+    "58": "85",
+    "59": "85",
+    "60": "85",
+    "61": "85",
+    "62": "85",
+    "63": "85",
+    "64": "85",
+    "65": "85",
+    "67": "85",
+    "68": "85",
+    "69": "85",
+    "70": "85",
+    "71": "85",
+    "72": "85",
+    "73": "85",
+    "74": "85",
+    "75": "85",
+    "76": "85",
+    "77": "85",
+    "78": "85",
+    "79": "85",
+    "80": "85",
+    "81": "85",
+    "82": "85"
+   }
+  },
+  "TCA9517A": {
+   "src": "TI TCA9517A SCPS245E (rev. Oct 2025) p4-5: A side on VCCA, B side and EN on VCCB",
+   "pins": {
+    "2": "1",
+    "3": "1",
+    "5": "8",
+    "6": "8",
+    "7": "8"
+   }
+  },
+  "YSO110TR": {
+   "src": "YXC YSO110TR (LCSC C725995) datasheet, datasheets_r7/dl/C725995_ds.pdf p1",
+   "pins": {
+    "1": "4",
+    "3": "4"
+   }
+  }
+ },
+ "external": {
+  "J5.A4B9": {
+   "rail": [
+    4.75,
+    5.5
+   ],
+   "src": "USB Type-C vSafe5V 4.75-5.5 V (box power input; Rd only, so no higher voltage is negotiated)"
+  },
+  "J3.A4B9": {
+   "rail": [
+    4.75,
+    5.5
+   ],
+   "src": "USB Type-C vSafe5V 4.75-5.5 V (host port VBUS, used for sensing only)"
+  },
+  "J2.18": {
+   "rail": [
+    4.7,
+    5.3
+   ],
+   "src": "HDMI 1.4 +5V Power from the source, 4.7-5.3 V (as used in R7B_REPORT M5; spec not re-read for r7c)"
+  },
+  "J5.A1B12": {
+   "rail": [
+    0.0,
+    0.0
+   ],
+   "src": "USB-C GND: the board ground is the 5 V source return"
+  }
+ },
+ "open_ok": {
+  "ESP32-P4-Module.GPIO": {
+   "level": "OK",
+   "why": "unused P4/C6 GPIO or C6_IO pad: firmware owns it and can enable the internal pull (ESP32-P4 datasheet v0.7 p89 RPU/RPD). ASSUMED acceptable, no datasheet sentence quoted; the Waveshare DEV-KIT also leaves unused pads open"
+  },
+  "TC358743XBG.G6": {
+   "level": "WARN",
+   "why": "EDID_SDA unused. Toshiba TC358743XBG datasheet 2014-05-16 p10 gives no \"when not used\" rule for EDID, buffer type N (no pull): floating Schmitt input. Same as the Antmicro reference (pinout audit O2)"
+  },
+  "TC358743XBG.H6": {
+   "level": "WARN",
+   "why": "EDID_SCL unused, as G6"
+  }
+ }
+}

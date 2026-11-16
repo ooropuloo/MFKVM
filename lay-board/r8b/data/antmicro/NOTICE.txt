@@ -1,0 +1,8 @@
+a.net is a netlist of Antmicro's hdmi-mipi-bridge board, https://github.com/antmicro/hdmi-mipi-bridge,
+Copyright Antmicro, licensed under the Apache License, Version 2.0 (see LICENSE in this folder).
+
+It was exported by us on 2026-11-06 with KiCad's kicad-cli from antmicro-hdmi-mipi-bridge-hw.kicad_sch on the
+repository's main branch, unmodified after export. Its (source) line names the local path used at that time.
+sha256 92c15577c062cff548778d76204c02796d29168a52187b0adb6707016b70f17d
+
+tools/verify.py reads it to check the TC358743 balls by function. It is not part of the board.

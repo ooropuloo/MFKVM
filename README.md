@@ -4,17 +4,17 @@
 
 MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkvm) 韌體的 KVM over IP 小盒子：接上主機的 HDMI 和 USB 之後，就能透過 Wi-Fi 從瀏覽器看主機畫面、操作鍵盤滑鼠，也能按主機的電源和重置鍵。這個 repo 並列兩個設計：`off-the-shelf/` 用買得到的現成板組裝，只自製一片 ATX 小板；`lay-board/` 把所有電路自己布在一片 6 層板上。
 
-**狀態：還沒有做出實品。** 目前版本 r7f 已送 JLC 審核、尚未付款。通過的都是檔案和模型層級的檢查，沒有任何一項在硬體上驗證過。
+**狀態：r8b 已於 2026-11-16 下單打板，板子還沒到。** 沒有焊過、沒有上電，通過的都是檔案和模型層級的檢查，沒有任何一項在硬體上驗證過。
 
 授權見 [LICENSE](LICENSE)：硬體 CERN-OHL-P-2.0、程式 Apache-2.0、文件 CC-BY-4.0。第三方內容另依原本的條款，見 [THIRD_PARTY.md](THIRD_PARTY.md)。
 
-## 目前版本：r7f
+## 目前版本：r8b
 
-6 層單片板，雙面放零件。主控是 ESP32-P4-Module（U1，組裝後手焊），影像用 TC358743（U7，BGA）。
+6 層單片板，40 × 40 mm，雙面放零件。主控是 ESP32-P4-Module（U1，組裝後手焊），影像用 TC358743（U7，BGA）。外殼是全鋁、無風扇，42 × 42 × 23 mm，Wi-Fi 天線外接。
 
 | 正面 | 背面 |
 |---|---|
-| ![r7f 板子正面算繪圖](lay-board/r7f/images/board_top.jpg) | ![r7f 板子背面算繪圖](lay-board/r7f/images/board_bottom.jpg) |
+| ![r8b 板子正面算繪圖](lay-board/r8b/images/board_top.png) | ![r8b 板子背面算繪圖](lay-board/r8b/images/board_bottom.png) |
 
 <details>
 <summary>零件代號對照表（點開看圖查詢）</summary>
@@ -23,7 +23,7 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 
 | 代號 | 是什麼 | 用途／備註 |
 |---|---|---|
-| U1 | ESP32-P4 模組 | 主控加 Wi-Fi，客供、組裝後手焊，最大熱源 |
+| U1 | ESP32-P4 模組 | 主控加 Wi-Fi，另外買、組裝後手焊，最大熱源 |
 | J3 | USB-C | 接被控主機（鍵盤滑鼠、虛擬媒體） |
 | J5 | USB-C | 5 V 供電、燒錄、console |
 | J6 | SM08B 8P | 接圓形 LCD |
@@ -45,65 +45,63 @@ MF KVM 是以 ESP32-P4 為主控、跑 [ESP-KVM](https://github.com/espkvm/espkv
 | U3、U8、U9 | ESD 保護 | J3 的 USB 線、HDMI TMDS |
 | U10、U11、U12 | 光耦 | ATX 電源、重置、LED |
 | J4 | SM06B 6P | 接 ATX 前面板 |
-| J8 | U.FL | 接 Wi-Fi 天線 |
+| J8 | U.FL | 接 Wi-Fi 天線（用線接到外殼上的 SMA 座） |
 | Y1 | 27 MHz 振盪器 | U7 的時脈 |
 | Q1 | P 通道 MOSFET | microSD 電源開關 |
-| C69 | 330 µF POSCAP | 5 V 大電容 |
+| R68 + C72、C73 | 0.47 Ω 加兩顆 22 µF | 5 V 阻尼，取代 r7f 的 330 µF C69 |
 
-電阻、電容太多沒有列，完整清單見 [`BOM_JLC.csv`](lay-board/r7f/fab_r7f/BOM_JLC.csv)。
+電阻、電容太多沒有列，完整清單見 [`BOM_JLC.csv`](lay-board/r8b/fab_r8b/BOM_JLC.csv)。
 
 </details>
 
 | 外殼組裝 | 爆炸圖 |
 |---|---|
-| ![r7f 外殼組裝算繪圖](lay-board/r7f/images/case_assembled.jpg) | ![r7f 外殼爆炸算繪圖](lay-board/r7f/images/case_exploded.jpg) |
+| ![r8b 外殼組裝算繪圖](lay-board/r8b/images/render_assembled.png) | ![r8b 外殼爆炸算繪圖](lay-board/r8b/images/render_exploded.png) |
 
-以上都是電腦算繪，不是照片。板檔沒有 3D 模型，零件是依外形和高度畫的方塊，風扇是示意外形。
+以上都是電腦算繪，不是照片。板檔沒有 3D 模型，零件是依外形和高度畫的方塊。
 
 | 項目 | 規格 |
 |---|---|
-| 板子 | 40 × 45 mm，6 層，JLC06121H-3313 |
-| 外殼本體 | 44 × 49 × 20 mm，鋁上蓋，底殼 ASA／ABS／PC／PA12（不用 PLA） |
-| 含導管和風扇 | 44 × 69.2 × 35 mm（風扇厚度 10 mm 是假設） |
-| 額定環境溫度 | 25 °C，要裝導管式風扇 |
-| 主控 | ESP32-P4-Module 基本款（SKU 28101），內建 ESP32-C6，2.4 GHz Wi-Fi，U.FL 外接天線 |
+| 板子 | 40 × 40 mm，6 層，1.2 mm，JLC06121H-3313，三顆安裝孔 |
+| 外殼 | 42 × 42 × 23 mm，6061 鋁 CNC、黑色陽極，無風扇 |
+| 表面溫度（模型） | 室溫 25 °C、一般負載下最高約 51.5 °C |
+| 主控 | ESP32-P4-Module 基本款（SKU 28101，16MB、天線從焊盤引出），內建 ESP32-C6，2.4 GHz Wi-Fi |
+| 天線 | 板上 U.FL，轉 SMA 到外殼左牆，外接天線 |
 | 影像 | TC358743XBG，HDMI 轉 CSI |
-| 螢幕 | 1.28 吋圓形 LCD |
-| 打板包 | [`lay-board/r7f/fab_r7f/`](lay-board/r7f/fab_r7f/)，Gerber zip sha256 開頭 `5edbd116` |
+| 螢幕 | 1.28 吋圓形 LCD（選配） |
+| 供電 | Type-C，要能供 1.5 A 以上 |
+| 打板包 | [`lay-board/r8b/fab_r8b/`](lay-board/r8b/fab_r8b/)，Gerber zip sha256 開頭 `3613530e` |
 
-### 這版改了什麼（相對 r7e）
+### 這版改了什麼（相對 r7f）
 
-下表的數字都是模型算出來的，不是實測。
+| 項目 | 改了什麼 |
+|---|---|
+| 板子尺寸 | 40 × 45 → 40 × 40 mm，安裝孔 4 顆 → 3 顆 |
+| 5 V 阻尼 | 拿掉 330 µF 的 C69，R68 改成 0.47 Ω，新增 C72、C73（22 µF 0805） |
+| 外殼 | 由「鋁上蓋＋塑膠底殼＋外接風扇導管」改成全鋁、無風扇，42 × 42 × 23 mm |
+| 天線（r8b） | 改外接：外殼左牆開 SMA 孔，U.FL 轉 SMA 線接板子背面的 J8 |
+| 板邊淨空（r8b） | SD_CMD 的兩顆過孔和 ATX_LED 走線往板內移到離板邊 0.40 mm 以上 |
+| 高度夾持（r8b） | 上蓋的柱子不再壓板子，改用泡棉墊圈 |
 
-| 項目 | 改了什麼 | 結果 |
-|---|---|---|
-| 5 V 輸入保護 | 加 eFuse U16（TPS259531），限流約 2 A，輸出鉗位 5.7 V | 插電瞬間峰值電流 10–18 A → 4.1–5.3 A |
-| HDMI CEC | CEC 線加 ESD 保護 D1（TPD1E10B06） | 原本這條線沒有保護 |
-| microSD 訊號 | 6 條線各串 22 Ω（R74–R79） | 寫入過衝 0.79–1.16 V → 0.05–0.23 V |
-| LCD 訊號 | DIN、CLK 串 33 Ω（R80、R81，0201） | LCD CLK 過衝 1.51 V → 0.61 V |
-| 散熱 | 鋁上蓋、0.8 mm 鋁板、P4 和 C6 上的導熱膠、12 條通風槽 | 一般負載下上蓋 52.9 °C → 49.5 °C（環境 25 °C） |
-| 導管式風扇 | 加 3D 列印導管和 30 mm 風扇，風扇自己接 USB 供電，PCB 不改 | 上蓋 36.2 °C、底殼 41.5 °C，低於接觸超過 1 分鐘的 48 °C（0.15 L/s，流量是假設） |
-| 外殼接地 | 安裝孔鍍通接地，上蓋和鋁板的接觸面不上陽極膜 | 驗收：上蓋、鋁板對 GND 要 < 1 Ω |
-| 手焊間距 | U1 旁 22 個焊盤都留 ≥ 0.2 mm 和防焊隔開，J6 外移 0.65 mm | 最小 0.387 mm |
+TMDS、CSI、USB 的走線和 r7f 相同；r8 → r8b 零件位置、BOM、CPL 都沒有變，108 個網路只有 4 個的銅不同。
 
-**從 r5 走到 r7f 的主要變化：** r6 加 U.FL 和 50 Ω RF 線、阻抗改用場解算；r7 的 1.2 V 改成降壓（U15）、DDC 改 TCA9517A；r7c 板子加長到 40 × 45 mm 並加 C69；r7d 做 CSI 等長；r7e 補冷啟動分析。
+**板廠生產時改了阻抗線的線寬：** 100 Ω 線 5.0/7.8 → 4.7/8.1 mil，USB 90 Ω 線寬 7.09 → 6.37 mil，中心距和疊構不變。所以實體板的這幾條線和 repo 裡的 Gerber 不同。用本專案的解算器代回去，都還在 ±10 % 內，見 [`IMPEDANCE_AS_BUILT.md`](lay-board/r8b/IMPEDANCE_AS_BUILT.md)。
 
 ### 驗證到哪裡
 
 | 已通過（檔案和模型層級） | 結果 |
 |---|---|
-| ERC、DRC | 0 錯誤、0 未連線，29 個警告逐項接受 |
-| 電氣規則檢查（含 eFuse） | 全部通過 |
-| 故意放錯測試 | 126 次全部抓到 |
-| 外殼幾何 | 99/99 |
-| 阻抗、CSI 等長、參考層、防焊、孔距、零件本體 | 通過 |
-| 獨立複審與差異複審 | 0 嚴重，有條件可送板 |
+| ERC、DRC | ERC 通過；DRC 0 錯誤、0 未連線，29 個警告逐項接受 |
+| 電氣規則、熱插拔、輸入濾波、參考層、差動對間距、CSI 過孔、手焊間距、阻抗、零件本體 | 全部通過 |
+| 板子故意放錯測試 | 124 項全部抓到 |
+| 外殼幾何 | 124 項通過；故意放錯 22 項全部抓到 |
+| 獨立複審（r8） | 板子有條件可送；外殼的 1 項嚴重、3 項主要問題在 r8b 處理或由使用者裁決結案。r8b 沒有再做一次獨立複審 |
 
-**沒有驗證：** 還沒有實體板，EMI、RF／RSSI、影像、USB、Wi-Fi、風扇實際風量和溫度都沒測過。完整清單在[驗證報告](lay-board/r7f/pdf/r7f_驗證報告.pdf)第 2 節。
+**沒有驗證：** 還沒有實體板，EMI、RF／RSSI、影像、USB、Wi-Fi、溫度都沒測過。熱模型在 r8b 沒有重跑。韌體只編譯過，沒有燒過。天線線、天線、泡棉墊圈、導熱材料都還沒選定料號。
 
-**現在的進度：** 已送 JLC 審核，尚未付款，尚未打板。JLC 按確認前還要在預覽逐顆核對 U16 第 1 腳和 16 顆方向未定的零件（U16 轉 180° 會讓 VBUS 短路到 GND）。
+**現在的進度：** 2026-11-16 下單，等板子。到貨後照 [`BRINGUP_CHECKLIST.md`](lay-board/r8b/BRINGUP_CHECKLIST.md) 上電。
 
-**完整資料：** [r7f 說明](lay-board/r7f/README.md)、[改版報告](lay-board/r7f/R7F_REPORT.md)、[獨立複審](lay-board/r7f/REVIEW_r7f.md)、[差異複審](lay-board/r7f/DELTA_r7f.md)、[圖面與報告 PDF](lay-board/r7f/pdf/)。
+**完整資料：** [r8b 說明](lay-board/r8b/README.md)、[R8B 改版報告](lay-board/r8b/R8B_REPORT.md)、[R8 改版報告](lay-board/r8b/R8_REPORT.md)、[獨立複審](lay-board/r8b/REVIEW_r8.md)、[熱分析](lay-board/r8b/thermal/THERMAL_R8.md)。上一版 r7f 的資料留在 [`lay-board/r7f/`](lay-board/r7f/README.md)。
 
 ## 較早的設計（ARCHIVE）
 

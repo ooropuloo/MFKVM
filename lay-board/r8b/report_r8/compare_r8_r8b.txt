@@ -1,0 +1,66 @@
+Copper per net, old against new. Segments and vias match only if every coordinate, width and layer match, to 0.1 um.
+  CHANGED ATX_LED: segments -6 +3 of 14, vias -0 +0 of 1
+  CHANGED LDO_VO4: segments -4 +3 of 37, vias -0 +0 of 2
+  CHANGED SD_CMD: segments -3 +4 of 9, vias -1 +1 of 1
+  CHANGED SD_CMD_C: segments -7 +4 of 26, vias -1 +1 of 2
+4 of 108 routed nets changed
+unchanged routed nets (104): 3V3 5V 5V_DAMP ATX_PWR ATX_RST AVDD12 AVDD25 BOOT C6_IO8 C6_IO9 C6_RXD C6_TXD CK_N CK_P CSI_CK_N CSI_CK_P CSI_D0_N CSI_D0_P CSI_D1_N CSI_D1_P D0_N D0_P D1_N D1_P D2_N D2_P DDC3_SCL DDC3_SDA DDC_SCL DDC_SDA EF_DVDT EF_EN EF_ILM ESP_EN FB_1V2 FB_3V3 FB_MID GND GPIO36 HDMI_5V HDMI_CEC HDMI_HPD HOST_CC1 HOST_CC2 HOST_VBUS HOST_VBUS_DIV HPDI I2C_SCL I2C_SDA LCD_CLK LCD_CLK_J LCD_CS LCD_DC LCD_DIN LCD_DIN_J LCD_RST LED_A LED_IN LED_K LNA_OUT OSC_OUT OSC_VDD PWR_C PWR_CC1 PWR_CC2 PWR_E PWR_LED RST_C RST_E RST_LED SD1_VDD SD_CLK SD_CLK_C SD_D0 SD_D0_C SD_D1 SD_D1_C SD_D2 SD_D2_C SD_D3 SD_D3_C SD_PWR_N SD_SRC SW SW_1V2 TC_BIASDA TC_HPDO TC_PCKIN TC_PFIL TC_REFCLK TC_REXT TC_RST U0_RX U0_TX USB2_DN USB2_DP USB_DN USB_DP V1V2 V1V2_SNS V2V5 VBUS_IN VDDC VDD_MIPI
+pads 558 then 558; net changed or new or gone: {}
+
+High-speed nets:
+  identical D2_P       21 segments, 0 vias
+  identical D2_N       6 segments, 0 vias
+  identical D1_P       13 segments, 0 vias
+  identical D1_N       6 segments, 0 vias
+  identical D0_P       13 segments, 0 vias
+  identical D0_N       6 segments, 0 vias
+  identical CK_P       13 segments, 0 vias
+  identical CK_N       6 segments, 0 vias
+  identical CSI_D0_P   12 segments, 1 vias
+  identical CSI_D0_N   6 segments, 1 vias
+  identical CSI_D1_P   16 segments, 1 vias
+  identical CSI_D1_N   23 segments, 1 vias
+  identical CSI_CK_P   20 segments, 1 vias
+  identical CSI_CK_N   16 segments, 1 vias
+  identical USB_DP     7 segments, 3 vias
+  identical USB_DN     6 segments, 3 vias
+  identical USB2_DP    21 segments, 3 vias
+  identical USB2_DN    18 segments, 4 vias
+  identical DDC_SCL    19 segments, 4 vias
+  identical DDC_SDA    7 segments, 0 vias
+  identical DDC3_SCL   44 segments, 3 vias
+  identical DDC3_SDA   19 segments, 2 vias
+  identical TC_REFCLK  6 segments, 0 vias
+  identical OSC_OUT    3 segments, 0 vias
+
+Gerber XOR per layer, mm2. Areas are design coordinates, x right and y down:
+  p4_kvm_mini-B_Cu.gbr: 2.6069 in 15 pieces
+      extent x -19.78..5.82, y -7.08..19.74
+  p4_kvm_mini-B_Mask.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-B_Paste.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-B_Silkscreen.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-Edge_Cuts.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Cu.gbr: 1.4802 in 13 pieces
+      extent x -19.78..-16.33, y -7.08..0.11
+  p4_kvm_mini-F_Mask.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Paste.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-F_Silkscreen.gbr: 1.4047 in 27 pieces
+      extent x 2.63..3.78, y -17.46..-14.79
+  p4_kvm_mini-In1_Cu.gbr: 0.4427 in 9 pieces
+      extent x -19.78..-19.03, y -7.08..-2.18
+  p4_kvm_mini-In2_Cu.gbr: 0.2483 in 5 pieces
+      extent x -19.78..-19.16, y -6.92..-2.37
+  p4_kvm_mini-In3_Cu.gbr: 0.4184 in 9 pieces
+      extent x -19.78..-18.94, y -7.08..-2.18
+  p4_kvm_mini-In4_Cu.gbr: 0.4427 in 9 pieces
+      extent x -19.78..-19.03, y -7.08..-2.18
+  p4_kvm_mini-NPTH-drl_map.gbr: 0.0000 in 0 pieces
+  p4_kvm_mini-PTH-drl_map.gbr: 0.1954 in 8 pieces
+      extent x -19.73..-19.20, y -6.87..-2.42
+
+Drill files:
+  p4_kvm_mini-PTH.drl: 328 holes, then 328; removed ['X80.416Y-93.422', 'X80.513Y-97.435'], added ['X80.62Y-97.435', 'X80.65Y-93.28']
+  p4_kvm_mini-NPTH.drl: 0 holes, then 0; removed [], added []
+
+RESULT high-speed nets identical
+high-speed identical changed nets ['ATX_LED', 'LDO_VO4', 'SD_CMD', 'SD_CMD_C']
