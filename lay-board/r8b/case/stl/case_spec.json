@@ -81,6 +81,14 @@
   "z0": 6.9,
   "z1": 11.45
  },
+ "hdmi_opening": {
+  "x": 8.0,
+  "z": 8.5,
+  "w": 16.2,
+  "h": 6.8,
+  "chamfer": 1.8,
+  "narrow_edge": "board side (+z)"
+ },
  "antenna": {
   "wall": "-x",
   "y": -10.0,

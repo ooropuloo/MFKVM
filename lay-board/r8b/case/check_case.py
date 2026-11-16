@@ -69,6 +69,11 @@ HOLES_N = 3
 LCD_D, LCD_T = 39.0, 3.6
 SCREW_HEAD_D, SCREW_L, SCREW_MAJOR, SCREW_SEAT = 3.8, 16.0, 2.0, 1.8
 USB_SHELL, HDMI_SHELL = (8.94, 3.2), (15.0, 6.0)
+# The HDMI shell's mating face is not a rectangle: the two corners on the PCB side are cut off (XunPu HDMI-001S drawing, shell 14.95 x 5.96).
+# The drawing gives no dimension for the cut; it scales to about 2.2 mm. ASSUMED 1.6 mm as the smallest it could be, so a wall that clears
+# this shape clears the real shell. Measure the part before the case is machined.
+HDMI_SHELL_CUT = 1.6
+HDMI_OPEN_TAPER = 2.0        # the opening's edge on the board side is at least this much shorter than its edge on the floor side
 PLUG = {'J3': (12.0, 8.0), 'J5': (12.0, 8.0), 'J2': (19.5, 11.0)}  # worst case overmoulds, from layout.py's sources
 PLUG_REACH = 1.2             # the overmould may come this close to the board edge (r7f: 0.8 mm pocket in a wall 2.0 mm past the edge)
 METAL_CLEAR = 0.3            # bare or anodized metal to non-GND copper or to a part body, true 3-D distance
@@ -423,9 +428,15 @@ def stadium(u, z, w, h):
     return LineString([(u - (w - h) / 2, z), (u + (w - h) / 2, z)]).buffer(h / 2)
 
 
+def hdmi_shell(u):
+    """Mating face of the bottom-side HDMI shell: 15 x 6 under the board, the two corners against the board cut off."""
+    w, h, c = HDMI_SHELL[0] / 2, HDMI_SHELL[1], HDMI_SHELL_CUT
+    return Polygon([(u - w, Z_BOT - h), (u + w, Z_BOT - h), (u + w, Z_BOT - c), (u + w - c, Z_BOT), (u - w + c, Z_BOT), (u - w, Z_BOT - c)])
+
+
 usb_z = Z_TOP + USB_SHELL[1] / 2
 need = {
-    'J2': ('-y', sbox(CONN['J2'][0] - HDMI_SHELL[0] / 2, Z_BOT - HDMI_SHELL[1], CONN['J2'][0] + HDMI_SHELL[0] / 2, Z_BOT), 'HDMI shell 15 x 6'),
+    'J2': ('-y', hdmi_shell(CONN['J2'][0]), f'HDMI shell 15 x 6 with {HDMI_SHELL_CUT} mm cut corners'),
     'J3': ('-y', stadium(CONN['J3'][0], usb_z, *USB_SHELL), 'USB-C shell 8.94 x 3.2'),
     'J5': ('-x', stadium(CONN['J5'][1], usb_z, *USB_SHELL), 'USB-C shell 8.94 x 3.2'),
     'J7': ('+x', sbox(CONN['J7'][1] - 5.5, Z_BOT - 1.42, CONN['J7'][1] + 5.5, Z_BOT - 0.4), 'card 11 wide at the shell'),
@@ -471,6 +482,19 @@ for ref, (wall, shape, what) in need.items():
             check(f'{ref} plug overmould {w} x {ht} reaches within {PLUG_REACH} mm of the board edge', hit < 0.05, f'{hit:.2f} mm2 in the way {past - PLUG_REACH:.2f} mm inside the outer face')
 gap = abs(CONN['J2'][0] - CONN['J3'][0]) - (PLUG['J2'][0] + PLUG['J3'][0]) / 2
 check('HDMI and host USB plugs fit side by side', gap > 0.3, f'{gap:.2f} mm between overmoulds')
+# HDMI opening follows the receptacle's shape: narrow edge against the board, and metal stays METAL_CLEAR off the shell all round
+_h = hole_near(sections['-y'], need['J2'][1])
+if _h is None:
+    check('HDMI opening has the receptacle shape, narrow edge on the board side', False, 'no opening at the connector centre')
+else:
+    _x0, _z0, _x1, _z1 = _h.bounds
+    _wide = lambda z: sum(g.length for g in geoms(LineString([(_x0 - 1, z), (_x1 + 1, z)]).intersection(_h)) if g.geom_type == 'LineString')
+    _board, _floor = _wide(_z1 - 0.3), _wide(_z0 + 0.3)
+    check('HDMI opening has the receptacle shape, narrow edge on the board side', _floor - _board >= HDMI_OPEN_TAPER,
+          f'{_board:.2f} mm wide 0.3 below its board-side edge, {_floor:.2f} mm wide 0.3 above its floor-side edge, need {HDMI_OPEN_TAPER} less on the board side')
+    _near = need['J2'][1].buffer(METAL_CLEAR).intersection(sections['-y']).area
+    check(f'HDMI opening keeps {METAL_CLEAR} mm round the shell (cut corners taken as {HDMI_SHELL_CUT} mm)', _near < 0.05, f'{_near:.2f} mm2 of wall within {METAL_CLEAR} mm of the shell')
+
 # sealed: every void through a wall is one of the named openings
 for wall in WALLS:
     named = [r for r, (w, _, _) in need.items() if w == wall]
@@ -617,6 +641,11 @@ for p in D['parts']:
         else:
             b = prof.extrude(x1 - x0 - 0.2).translate((x0 + 0.1, CONN[p['ref']][1], usb_z)).val()
         assert abs(b.BoundingBox().zmax - Z_TOP - USB_SHELL[1]) < 1e-6
+    elif p['ref'] == 'J2':      # the HDMI shell is a tube of its mating-face outline along y: the two corners against the board are cut (HDMI_SHELL_CUT)
+        w, c = (x1 - x0) / 2 - 0.1, HDMI_SHELL_CUT
+        prof = cq.Workplane('XZ').polyline([(-w, z0), (w, z0), (w, z1 - c), (w - c, z1), (-w + c, z1), (-w, z1 - c)]).close()
+        b = prof.extrude(y1 - y0 - 0.2).translate(((x0 + x1) / 2, y1 - 0.1, 0)).val()
+        assert abs(b.BoundingBox().zmax - Z_BOT) < 1e-6 and abs(b.BoundingBox().ymin - (y0 + 0.1)) < 1e-6
     else:
         b = bx(x0 + 0.1, x1 - 0.1, y0 + 0.1, y1 - 0.1, z0, z1)
     BODY[p['ref']] = b

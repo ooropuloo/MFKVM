@@ -104,6 +104,32 @@ def sma_moved(w):
     return w.cut(cq.Workplane('YZ').circle(ANT['hole'] / 2).extrude(3).translate((-22, ANT['y'] + 3.0, ANT['z'])))
 
 
+HO = SPEC['hdmi_opening']
+Y_FRONT = -SPEC['envelope'][1] / 2
+
+
+def hdmi_rect(w):
+    """Back to the plain 16.2 x 6.8 rectangle: the cut corners are machined away."""
+    return w.cut(box(HO['x'] - HO['w'] / 2, HO['x'] + HO['w'] / 2, Y_FRONT - 1, Y_FRONT + SPEC['wall'] + 1, HO['z'] - HO['h'] / 2, HO['z'] + HO['h'] / 2))
+
+
+def hdmi_upside_down(w):
+    """The same outline turned over: narrow edge toward the floor, as for a receptacle on the top side of a board."""
+    a, b, c = HO['w'] / 2, HO['h'] / 2, HO['chamfer']
+    w = w.union(box(HO['x'] - a - 0.5, HO['x'] + a + 0.5, Y_FRONT, Y_FRONT + SPEC['wall'], HO['z'] - b - 0.3, HO['z'] + b + 0.3))
+    pts = [(-a, b), (a, b), (a, -b + c), (a - c, -b), (-a + c, -b), (-a, -b + c)]
+    return w.cut(cq.Workplane('XZ').polyline(pts).close().extrude(SPEC['wall'] + 2).translate((HO['x'], Y_FRONT + SPEC['wall'] + 1, HO['z'])))
+
+
+def hdmi_cut_too_big(w):
+    """Corners cut 3.2 mm instead of 1.8: the sloped edges come onto the shell."""
+    a, b = HO['w'] / 2, HO['h'] / 2
+    for s in (-1, 1):
+        tri = [(s * a, b), (s * (a - 3.2), b), (s * a, b - 3.2)]
+        w = w.union(cq.Workplane('XZ').polyline(tri).close().extrude(SPEC['wall']).translate((HO['x'], Y_FRONT + SPEC['wall'], HO['z'])))
+    return w
+
+
 def board_edit(pairs):
     """A board fault: the mutated .kicad_pcb goes into the case copy as _board.kicad_pcb and the run uses it."""
     def mod(d):
@@ -133,6 +159,9 @@ MUT = [
     ('lid posts reach the PCB again (two rigid seats)', edit('lid', lid_posts_down(0.0)), r'lid does not touch the PCB'),
     ('lid posts 0.3 mm too long (gap 0.6)', edit('lid', lid_posts_down(0.6)), r'lid posts leave 0\.9|working range'),
     ('SMA hole 3 mm toward J5', edit('tray', sma_moved), r'SMA hole in the -x wall is round'),
+    ('HDMI opening back to a plain rectangle', edit('tray', hdmi_rect), r'HDMI opening has the receptacle shape'),
+    ('HDMI opening upside down (narrow edge toward the floor)', edit('tray', hdmi_upside_down), r'HDMI opening has the receptacle shape|J2 opening in -y wall clears'),
+    ('HDMI opening corners cut 3.2 mm', edit('tray', hdmi_cut_too_big), r'HDMI opening keeps|J2 opening in -y wall clears'),
     ('SMA floor pocket not machined', edit('tray', lambda w: w.union(box(PK['x0'], PK['x1'], PK['y0'], PK['y1'], PK['z0'], FL))), r'floor pocket clears the SMA hex'),
     ('card opening top back under the board (J7 pads and ESP_EN face the wall)', edit('tray', lambda w: w.union(box(20.25, 21.0, -2.2, 10.4, ST['z_bot'] - 0.05, ST['z_bot'] + SPEC['sd_relief']))), r'pushed 0\.35 mm against any wall'),
     ('antenna window cut in the back wall again', edit('tray', lambda w: w.cut(box(-19.0, -3.0, 20.0, 22.0, FL + 0.4, FL + 6.0))), r'\+y wall is sealed'),

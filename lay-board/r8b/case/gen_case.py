@@ -126,6 +126,13 @@ J7_Y = at('J7')[1]
 J4_X = at('J4')[0]
 U7_X, U7_Y = at('U7')
 HDMI_Z = Z_BOT - 3.0
+# HDMI opening in the shape of the receptacle (2026-11-16). It was a 16.2 x 6.8 rectangle; the outline stays inside that rectangle, with the
+# two corners on the board side cut off. J2 is on the bottom side, so its shell hangs below the board with its narrow edge up against the
+# board (XunPu HDMI-001S drawing: shell 14.95 x 5.96, the two cut corners are on the PCB side). The drawing does not dimension the cut;
+# it scales to about 2.2 mm. 1.8 mm here leaves the wall clear of a shell whose cut is as small as 1.6 mm (check_case.py).
+HDMI_OPEN = dict(x=HDMI_X, z=HDMI_Z, w=16.2, h=6.8, chamfer=1.8, narrow_edge='board side (+z)')
+_w, _h, _c = HDMI_OPEN['w'] / 2, HDMI_OPEN['h'] / 2, HDMI_OPEN['chamfer']
+HDMI_OPEN_PTS = [(-_w, -_h), (_w, -_h), (_w, _h - _c), (_w - _c, _h), (-_w + _c, _h), (-_w, _h - _c)]   # (x, z) about (HDMI_X, HDMI_Z)
 USB_Z = Z_TOP + 1.6
 assert parts['J5']['x'] > 0 and at('J5')[0] < 0, 'J5 must land on the -x wall'
 assert parts['J7']['x'] < 0 and at('J7')[0] > 0, 'J7 must land on the +x wall'
@@ -189,7 +196,7 @@ for x, y in HOLES:
     tray = tray.cut(cyl(x, y, -1, Z_BOT + 1, BORE_D))
     tray = tray.cut(cyl(x, y, -1, HEAD_Z, HEAD_D))
 tray = tray.union(box(U7_X - BOSS / 2, U7_X + BOSS / 2, U7_Y - BOSS / 2, U7_Y + BOSS / 2, FLOOR - 0.01, Z_BOT - U7_PKG_H - BOSS_GAP))
-tray = tray.cut(box(HDMI_X - 8.1, HDMI_X + 8.1, Y0 - 1, Y0 + WALL + 1, HDMI_Z - 3.4, HDMI_Z + 3.4))
+tray = tray.cut(cq.Workplane('XZ').polyline(HDMI_OPEN_PTS).close().extrude(WALL + 2).translate((HDMI_X, Y0 + WALL + 1, HDMI_Z)))
 tray = tray.cut(cq.Workplane('XZ').slot2D(9.9, 4.1).extrude(WALL + 2).translate((USB_X, Y0 + WALL + 1, USB_Z)))
 tray = tray.cut(cq.Workplane('YZ').slot2D(9.9, 4.1).extrude(WALL + 2).translate((-half - 1, J5_Y, USB_Z)))
 tray = tray.cut(box(half - WALL - 0.01, half + 1, J7_Y - 6.3, J7_Y + 6.3, Z_BOT - 2.2, Z_BOT + SD_RELIEF))
@@ -234,7 +241,7 @@ SPEC = dict(materials=MATERIALS, masked=MASKED, acceptance=ACCEPT, lid_hold=LID_
             post_d=POST_D, shoulder_d=SHOULDER_D, plate_hole_d=PLATE_HOLE_D, tray_post_d=TRAY_POST_D, neck=dict(d=NECK_D, tray_h=TRAY_NECK_H, lid_h=LID_NECK_H),
             screws='3 x M2 x 16 from the bottom, head seat z %.1f, tapped M2 in the lid posts' % HEAD_Z,
             boss=dict(ref='U7', centre=[U7_X, U7_Y], size=BOSS, top_z=Z_BOT - U7_PKG_H - BOSS_GAP, gap=BOSS_GAP, package_h=U7_PKG_H),
-            j4_opening=J4_OPEN, antenna=ANT, sma_pocket=POCKET, sd_relief=SD_RELIEF,
+            j4_opening=J4_OPEN, hdmi_opening=HDMI_OPEN, antenna=ANT, sma_pocket=POCKET, sd_relief=SD_RELIEF,
             compliant=dict(slot_gap=SLOT_GAP, washer=WASHER, note='the only rigid seat is lid rim / plate / tray rim; the lid posts do not touch the PCB'),
             panel='no V-cut on any edge; routed outline with mouse-bite tabs set inside the outline or filed flush after break-out: nothing may stand proud of the 40.00 mm outline',
             assembly=['SMA jack through the -x wall hole from inside, lock washer and nut outside, before the PCB goes in', 'U.FL plug onto J8 (board underside), cable laid on the floor clear of the U7 boss',

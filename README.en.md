@@ -88,6 +88,7 @@ Exploded illustration (AI-generated). From top to bottom: lid, round LCD, alumin
 | Antenna (r8b) | Now external: an SMA hole in the left wall, and a U.FL to SMA cable to J8 on the board underside |
 | Edge clearance (r8b) | The two SD_CMD vias and the ATX_LED trace moved to 0.40 mm or more from the board edge |
 | Vertical clamping (r8b) | The lid posts no longer press on the board; foam washers do |
+| HDMI opening (case, 2026-11-16) | From a rectangle to the outline of the HDMI receptacle, narrow edge up, because the receptacle is on the underside of the board. The board is unchanged |
 
 The TMDS, CSI and USB routing is the same as r7f. From r8 to r8b no part moved, the BOM and CPL are unchanged, and only 4 of the 108 nets have different copper.
 
@@ -100,7 +101,7 @@ The TMDS, CSI and USB routing is the same as r7f. From r8 to r8b no part moved, 
 | ERC, DRC | ERC passes; DRC 0 errors, 0 unconnected, 29 warnings each accepted |
 | Electrical rules, hot-plug, input filter, reference planes, pair gap, CSI vias, hand-solder clearance, impedance, part bodies | All pass |
 | Board mutation tests | 124 of 124 caught |
-| Case geometry | 124 checks pass; 22 of 22 mutations caught |
+| Case geometry | 126 checks pass; the mutation tests are being rerun after the HDMI opening change |
 | Independent review (r8) | Board conditionally ready to send. The 1 critical and 3 major case findings were fixed in r8b or closed by an owner decision. r8b did not get another independent review |
 
 **Not verified:** there is no physical board yet. EMI, RF / RSSI, video, USB, Wi-Fi and temperatures are all untested. The thermal model was not rerun for r8b. The firmware has only been compiled, never flashed. The antenna cable, antenna, foam washers and thermal materials have no part numbers chosen yet.
