@@ -13,6 +13,9 @@ ok  | tray-to-GND acceptance test dropped | FAIL  lid-, plate- and tray-to-GND <
 ok  | lid posts reach the PCB again (two rigid seats) | FAIL  the lid does not touch the PCB anywhere (one rigid seat: the rim)  [3 contact patch(es) at [(-18.0, -18.0), (18.0, -18.0), (18.0, 18.0)]] | 8 FAIL lines
 ok  | lid posts 0.3 mm too long (gap 0.6) | FAIL  lid posts leave 0.9 mm over the PCB  [lowest lid metal z 13.300, PCB top 12.700] | 5 FAIL lines
 ok  | SMA hole 3 mm toward J5 | FAIL  SMA hole in the -x wall is round, 6.4 to 6.7 mm, at the required place  [d 6.50, centre y -7.00 z 6.00] | 3 FAIL lines
+ok  | HDMI opening back to a plain rectangle | FAIL  HDMI opening has the receptacle shape, narrow edge on the board side  [16.20 mm wide 0.3 below its board-side edge, 16.20 mm wide 0.3 above its floor-side edge, need 2.0 less on the board side] | 1 FAIL lines
+ok  | HDMI opening upside down (narrow edge toward the floor) | FAIL  J2 opening in -y wall clears the HDMI shell 15 x 6 with 1.6 mm cut corners  [0.64 mm2 of wall in the way at u 8.00] | 4 FAIL lines
+ok  | HDMI opening corners cut 3.2 mm | FAIL  J2 opening in -y wall clears the HDMI shell 15 x 6 with 1.6 mm cut corners  [2.28 mm2 of wall in the way at u 8.00] | 3 FAIL lines
 ok  | SMA floor pocket not machined | FAIL  floor pocket clears the SMA hex (9.24 across corners, any rotation) and crimp sleeve by 0.2 mm  [nearest tray metal 0.00 mm] | 1 FAIL lines
 ok  | card opening top back under the board (J7 pads and ESP_EN face the wall) | FAIL  with the board pushed 0.35 mm against any wall no wall metal is within 0.3 mm of non-GND copper (outline +-0.2, hole play 0.1, machining 0.05)  [nearest 0.100 mm, B.Cu pushed to the +x wall, z 11.495] | 1 FAIL lines
 ok  | antenna window cut in the back wall again | FAIL  +y wall is sealed: its only openings are J4  [2 opening(s); unnamed at [(-19.0, 4.6, -3.0, 10.2)]] | 1 FAIL lines
@@ -22,5 +25,5 @@ ok  | panel rule dropped | FAIL  case_spec carries the panel rule (no V-cut, not
 ok  | board: ATX_LED run back at y 119.68 (0.26 mm from the edge) | FAIL  with the board pushed 0.35 mm against any wall no wall metal is within 0.3 mm of non-GND copper (outline +-0.2, hole play 0.1, machining 0.05)  [nearest 0.157 mm, B.Cu pushed to the +y wall, z 11.505] | 1 FAIL lines
 ok  | board: SD_CMD_C via and In2 end back at x 80.30 | FAIL  with the board pushed 0.35 mm against any wall no wall metal is within 0.3 mm of non-GND copper (outline +-0.2, hole play 0.1, machining 0.05)  [nearest 0.005 mm, B.Cu pushed to the +x wall, z 11.495] | 2 FAIL lines
 
-22 runs, 0 bad
+25 runs, 0 bad
 MUTATION ALL CAUGHT

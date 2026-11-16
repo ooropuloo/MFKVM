@@ -101,7 +101,7 @@ The TMDS, CSI and USB routing is the same as r7f. From r8 to r8b no part moved, 
 | ERC, DRC | ERC passes; DRC 0 errors, 0 unconnected, 29 warnings each accepted |
 | Electrical rules, hot-plug, input filter, reference planes, pair gap, CSI vias, hand-solder clearance, impedance, part bodies | All pass |
 | Board mutation tests | 124 of 124 caught |
-| Case geometry | 126 checks pass; the mutation tests are being rerun after the HDMI opening change |
+| Case geometry | 126 checks pass; all 25 mutation runs (1 control, 24 faults) behave as expected |
 | Independent review (r8) | Board conditionally ready to send. The 1 critical and 3 major case findings were fixed in r8b or closed by an owner decision. r8b did not get another independent review |
 
 **Not verified:** there is no physical board yet. EMI, RF / RSSI, video, USB, Wi-Fi and temperatures are all untested. The thermal model was not rerun for r8b. The firmware has only been compiled, never flashed. The antenna cable, antenna, foam washers and thermal materials have no part numbers chosen yet.
