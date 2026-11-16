@@ -129,12 +129,12 @@ TMDS、CSI、USB 的走線和 r7f 相同；r8 → r8b 零件位置、BOM、CPL �
 
 ## 3D 頁面
 
-這兩個連結是**擁有者私人頁面，別人打不開**。每個資料夾裡的本機 HTML 是同一份內容，下載後用瀏覽器開就能看（3D 需要連上網路載入 three.js）：
+每個資料夾裡有一份 HTML，下載後用瀏覽器開就能看（3D 需要連上網路載入 three.js）：
 
-| 設計 | 私人連結 | 本機檔案 |
-|---|---|---|
-| lay-board | https://claude.ai/artifact/GMou6HJAjchfPkJ2fzq8we | [`lay-board/kvm-mini.html`](lay-board/kvm-mini.html) |
-| off-the-shelf | https://claude.ai/artifact/LdwRVth9BPiBVDjdgMhgdb | [`off-the-shelf/v3.html`](off-the-shelf/v3.html) |
+| 設計 | 檔案 |
+|---|---|
+| lay-board | [`lay-board/kvm-mini.html`](lay-board/kvm-mini.html) |
+| off-the-shelf | [`off-the-shelf/v3.html`](off-the-shelf/v3.html) |
 
 ## 不在這個 repo 的東西
 
